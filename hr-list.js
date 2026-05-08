@@ -26,12 +26,7 @@ async function loadEmployeesOnly() {
 
     allEmployees = result.employees || [];
     createDepartmentFilter(allEmployees);
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="9">조회 조건을 선택한 뒤 조회 버튼을 눌러주세요.</td>
-      </tr>
-    `;
+    clearTableMessage();
 
   } catch (err) {
     tbody.innerHTML = `
@@ -61,14 +56,9 @@ function searchEmployee() {
     const empStatus = emp.status || "";
     const name = emp.name || "";
 
-    const matchDept =
-      dept === "all" || department === dept;
-
-    const matchStatus =
-      status === "all" || empStatus === status;
-
-    const matchKeyword =
-      keyword === "" || name.includes(keyword);
+    const matchDept = dept === "all" || department === dept;
+    const matchStatus = status === "all" || empStatus === status;
+    const matchKeyword = keyword === "" || name.includes(keyword);
 
     return matchDept && matchStatus && matchKeyword;
   });
@@ -126,6 +116,10 @@ function resetSearch() {
   document.getElementById("statusFilter").value = "all";
   document.getElementById("searchInput").value = "";
 
+  clearTableMessage();
+}
+
+function clearTableMessage() {
   document.getElementById("employeeTableBody").innerHTML = `
     <tr>
       <td colspan="9">조회 조건을 선택한 뒤 조회 버튼을 눌러주세요.</td>

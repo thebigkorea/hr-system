@@ -196,3 +196,16 @@ td{
     margin:0;
   }
 }
+.ceo-line{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  margin-top:10px;
+}
+
+.stamp{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}

@@ -23,7 +23,6 @@ body{
 }
 
 .top-area p{
-  margin-top:12px;
   color:#666;
   font-size:20px;
 }
@@ -71,7 +70,7 @@ body{
 }
 
 #message{
-  margin-top:18px;
+  margin-top:20px;
   font-size:16px;
   color:#333;
 }
@@ -127,32 +126,32 @@ td{
   font-size:20px;
 }
 
-.today{
-  margin-top:30px;
-}
-
 .sign-area{
-  margin-top:40px;
+  text-align:center;
 }
 
 .ceo-line{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:10px;
-  margin-top:14px;
+  gap:8px;
+  margin-top:10px;
+}
+
+.ceo-name{
+  display:inline-block;
 }
 
 .stamp-img{
-  width:78px;
-  height:78px;
+  width:82px;
+  height:82px;
   object-fit:contain;
-  opacity:0.94;
-  transform:rotate(-6deg);
+  display:inline-block;
+  opacity:0.95;
+  transform:rotate(-5deg);
 }
 
 /* 인쇄 */
-
 @media print {
 
   @page{
@@ -179,6 +178,7 @@ td{
     max-width:none;
     margin:0;
     padding:0;
+    overflow:hidden;
   }
 
   .preview-box{
@@ -186,6 +186,7 @@ td{
     padding:0;
     width:210mm;
     height:297mm;
+    overflow:hidden;
   }
 
   .paper{
@@ -210,10 +211,6 @@ td{
     margin-bottom:24mm;
   }
 
-  table{
-    width:100%;
-  }
-
   th, td{
     font-size:11pt;
     padding:8pt;
@@ -230,7 +227,7 @@ td{
   }
 
   .stamp-img{
-    width:70px;
-    height:70px;
+    width:72px;
+    height:72px;
   }
 }

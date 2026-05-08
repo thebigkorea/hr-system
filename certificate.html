@@ -1,149 +1,102 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>재직증명서</title>
-
   <link rel="stylesheet" href="certificate.css">
 </head>
 
 <body>
-
 <div class="container">
 
-  <!-- 입력 영역 -->
-  <div class="form-box no-print">
-
+  <div class="top-area no-print">
     <h1>재직증명서</h1>
-    <p class="sub-title">Certificate of Employment</p>
-
-    <label>직원 이름</label>
-    <input
-      type="text"
-      id="empName"
-      placeholder="직원명 입력"
-    >
-
-    <label>주민번호 뒤 첫 자리</label>
-    <input
-      type="password"
-      id="empBack"
-      maxlength="1"
-      placeholder="예: 1"
-    >
-
-    <label>제출 용도</label>
-    <input
-      type="text"
-      id="purpose"
-      placeholder="예: 금융기관 제출용"
-    >
-
-    <button onclick="generateCertificate()">
-      재직증명서 조회 및 출력
-    </button>
-
-    <div id="message"></div>
-
+    <p>Certificate of Employment</p>
   </div>
 
-  <!-- 출력 영역 -->
-  <div class="preview-box" id="previewBox">
+  <div class="form-box no-print">
+    <label>직원 이름</label>
+    <input type="text" id="name" placeholder="직원명 입력">
 
+    <label>주민번호 뒤 7자리</label>
+    <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
+
+    <label>제출 용도</label>
+    <input type="text" id="purpose" placeholder="예: 금융기관 제출용">
+
+    <button onclick="createCertificate()">재직증명서 조회 및 출력</button>
+    <p id="message"></p>
+  </div>
+
+  <div class="preview-box" id="previewBox">
     <div class="paper">
 
-      <!-- 발급번호 -->
       <div class="issue-no">
-        발급번호 : <span id="issueNo">2026-001호</span>
+        발급번호 : <span id="issueNo">-</span>
       </div>
 
-      <!-- 제목 -->
-      <h2 class="paper-title">재 직 증 명 서</h2>
+      <h2>재 직 증 명 서</h2>
 
-      <!-- 표 -->
-      <table class="cert-table">
-
+      <table>
         <tr>
           <th>성 명</th>
           <td id="certName"></td>
         </tr>
-
         <tr>
           <th>주민등록번호</th>
-          <td id="certJumin"></td>
+          <td id="certSsn"></td>
         </tr>
-
         <tr>
           <th>현 주 소</th>
           <td id="certAddress"></td>
         </tr>
-
         <tr>
           <th>소 속</th>
-          <td id="certStore"></td>
+          <td id="certDepartment"></td>
         </tr>
-
         <tr>
           <th>직 위</th>
           <td id="certPosition"></td>
         </tr>
-
         <tr>
           <th>근무기간</th>
           <td id="certPeriod"></td>
         </tr>
-
         <tr>
           <th>용 도</th>
           <td id="certPurpose"></td>
         </tr>
-
       </table>
 
-      <!-- 하단 -->
       <div class="bottom-text">
+        위와 같이 증명합니다.<br><br>
 
-        <p>위와 같이 증명합니다.</p>
+        <span id="certToday"></span>
 
-        <p class="today" id="certToday"></p>
+        <br><br><br>
 
         <div class="sign-area">
-
-          <div>
-            대전광역시 유성구 테크노4로 29 (관평동) 201호
-          </div>
-
-          <div>
-            주식회사 더큰코리아
-          </div>
+          <div>대전광역시 유성구 테크노4로 29 (관평동) 201호</div>
+          <div>주식회사 더큰코리아</div>
 
           <div class="ceo-line">
+            <span class="ceo-name">대표이사 박병호</span>
 
-            <span class="ceo-name">
-              대표이사 박병호
-            </span>
-
-            <!-- 법인 인감 -->
             <img
-              src="./stamp.png"
+              src="https://thebigkorea.github.io/hr-system/stamp.png"
               class="stamp-img"
               alt="법인인감"
             >
-
           </div>
-
         </div>
-
       </div>
 
     </div>
-
   </div>
 
 </div>
 
 <script src="certificate.js"></script>
-
 </body>
 </html>

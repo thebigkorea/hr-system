@@ -4,27 +4,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>경력증명서</title>
-  <link rel="stylesheet" href="certificate.css">
+  <link rel="stylesheet" href="career.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="top-area">
-      <h1>경력증명서</h1>
-      <p>Career Certificate</p>
+<div class="container">
+
+  <div class="top-area no-print">
+    <h1>경력증명서</h1>
+    <p>Career Certificate</p>
+  </div>
+
+  <div class="form-box no-print">
+    <div class="input-group">
+      <label>직원 이름</label>
+      <input type="text" id="name" placeholder="직원명 입력">
     </div>
 
-    <div class="form-box">
-      <label>직원 이름</label>
-      <input type="text" placeholder="이름 입력">
+    <div class="input-group">
+      <label>주민번호 뒤 7자리</label>
+      <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
+    </div>
 
-      <label>주민번호 뒤 4자리</label>
-      <input type="password" placeholder="뒤 4자리 입력">
+    <div class="input-group">
+      <label>담당 업무</label>
+      <input type="text" id="work" placeholder="예: 한식당 홀 서비스 및 매장관리">
+    </div>
 
+    <div class="input-group">
       <label>제출 용도</label>
-      <input type="text" placeholder="예: 이직 제출용">
+      <input type="text" id="purpose" placeholder="예: 이직 제출용">
+    </div>
 
-      <button onclick="window.print()">경력증명서 출력</button>
+    <button onclick="createCareerCertificate()">경력증명서 조회 및 생성</button>
+    <p id="message"></p>
+  </div>
+
+  <div class="preview-box" id="previewBox">
+    <div class="paper">
+
+      <div class="issue-no">
+        발급번호 : <span id="issueNo">-</span>
+      </div>
+
+      <h2>경 력 증 명 서</h2>
+
+      <table>
+        <tr><th>성 명</th><td id="certName"></td></tr>
+        <tr><th>주민등록번호</th><td id="certSsn"></td></tr>
+        <tr><th>현 주 소</th><td id="certAddress"></td></tr>
+        <tr><th>소 속</th><td id="certDepartment"></td></tr>
+        <tr><th>직 위</th><td id="certPosition"></td></tr>
+        <tr><th>재직기간</th><td id="certPeriod"></td></tr>
+        <tr><th>담당업무</th><td id="certWork"></td></tr>
+        <tr><th>용 도</th><td id="certPurpose"></td></tr>
+      </table>
+
+      <div class="bottom-text">
+        위 사람은 당사에 재직하였음을 증명합니다.<br><br>
+
+        <span id="certToday"></span>
+
+        <br><br><br>
+
+        <div class="sign-area">
+          <div>서울특별시 송파구 올림픽로 300 롯데월드몰 5층</div>
+          <div>한국의집 롯데월드몰</div>
+
+          <div class="ceo-line">
+            <span class="ceo-name">대표이사 박병호</span>
+            <img
+              src="https://thebigkorea.github.io/hr-system/stamp.png"
+              class="stamp-img"
+              alt="법인인감"
+            >
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="print-btn-area no-print">
+      <button class="print-btn" onclick="window.print()">인쇄하기</button>
     </div>
   </div>
+
+</div>
+
+<script src="career.js"></script>
 </body>
 </html>

@@ -72,6 +72,11 @@
       </div>
 
       <div class="input-group">
+        <label>월 기준시간</label>
+        <input type="text" id="monthHour" value="209">
+      </div>
+
+      <div class="input-group">
         <label>근무시간</label>
         <input type="text" id="workTime" placeholder="예: 10:00 - 21:00">
       </div>
@@ -80,11 +85,11 @@
         <label>휴게시간</label>
         <input type="text" id="breakTime" placeholder="예: 14:00 - 15:00">
       </div>
-    </div>
 
-    <div class="input-group">
-      <label>근무장소</label>
-      <input type="text" id="workPlace" value="한국의집 롯데월드몰점">
+      <div class="input-group">
+        <label>근무장소</label>
+        <input type="text" id="workPlace" value="한국의집 롯데월드몰점">
+      </div>
     </div>
 
     <div class="input-group">
@@ -146,9 +151,6 @@
       <h3>제1조 계약기간</h3>
       <p>입사일 : <span id="cJoinDate">________</span></p>
       <p>입사일로부터 기간의 정함이 없는 근로계약을 체결한다. 수습기간은 3개월로 한다.</p>
-      <p class="small">
-        수습기간 중의 임금은 월 급여의 100%로 하며, 업무 적격성 판단 결과 회사와 맞지 않을 경우 관계 법령에 따라 조치할 수 있다.
-      </p>
 
       <h3>제2조 근무장소 및 업무내용</h3>
       <p>① 근무장소 : <span id="cWorkPlace">________</span></p>
@@ -169,59 +171,63 @@
         </tr>
       </table>
 
-      <p>② 회사는 필요한 경우 직원과 협의하여 근무요일, 근무시간 및 휴게시간을 변경할 수 있다.</p>
-
       <h3>제4조 휴일 및 휴가</h3>
       <p>① 법정유급휴일은 주휴일 및 근로자의 날로 한다.</p>
       <p>② 근로기준법이 정하는 바에 따라 연차휴가를 부여한다.</p>
 
       <h3>제5조 임금</h3>
-      <p>① 임금은 기본급, 연장수당, 직무수당, 직책수당, 식대 등으로 구성된다.</p>
+      <p>
+        ① 임금은 주휴포함 월 <strong id="cMonthHour">209</strong>시간에 해당하는 기본급 및 식대,
+        연장수당, 연차수당 등으로 구성된다.
+      </p>
 
-      <table>
+      <table class="salary-table">
         <tr>
-          <th>구분</th>
-          <th>금액</th>
+          <th colspan="2">구분</th>
+          <th>금액 (단위:원)</th>
           <th>산정 기준</th>
         </tr>
+
         <tr>
+          <td rowspan="5" class="vertical-cell">구<br>성<br>항<br>목</td>
           <td>기본급</td>
-          <td id="cBasePay">________원</td>
-          <td>월 소정근로시간 기준 임금</td>
+          <td id="cBasePay">________</td>
+          <td>월 기준시간 분의 임금</td>
         </tr>
+
         <tr>
           <td>연장수당</td>
-          <td id="cOvertimePay">________원</td>
+          <td id="cOvertimePay">________</td>
           <td>연장근로 해당분</td>
         </tr>
+
         <tr>
           <td>직무수당</td>
-          <td id="cDutyPay">________원</td>
+          <td id="cDutyPay">________</td>
           <td>직무 수행 수당</td>
         </tr>
+
         <tr>
           <td>직책수당</td>
-          <td id="cPositionPay">________원</td>
+          <td id="cPositionPay">________</td>
           <td>직책 수행 수당</td>
         </tr>
+
         <tr>
           <td>식대</td>
-          <td id="cMealPay">________원</td>
+          <td id="cMealPay">________</td>
           <td>식대 보조</td>
         </tr>
-        <tr>
-          <td><strong>월급총액</strong></td>
-          <td><strong id="cTotalPay">________원</strong></td>
+
+        <tr class="total-row">
+          <td colspan="2"><strong>월급총액</strong></td>
+          <td><strong id="cTotalPay">________</strong></td>
           <td>상기 금액의 합계</td>
         </tr>
       </table>
 
-      <p>
-        ② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.
-      </p>
-      <p>
-        ③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.
-      </p>
+      <p>② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.</p>
+      <p>③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.</p>
 
       <h3>제6조 제출서류</h3>
       <p>직원은 채용과 동시에 주민등록등본, 보건증, 통장사본, 신분증사본 등 회사가 요청하는 서류를 제출한다.</p>
@@ -248,18 +254,11 @@
         회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
         전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
       </p>
-      <p>
-        직원은 본 근로계약서의 내용을 충분히 확인하였으며 계약서 교부를 확인한다.
-      </p>
 
       <h3>제12조 기타사항</h3>
-      <p>
-        본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.
-      </p>
+      <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
 
-      <p class="confirm">
-        회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
-      </p>
+      <p class="confirm">회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.</p>
 
       <p class="date" id="cToday">________</p>
 
@@ -268,10 +267,12 @@
         <div>
           <h4>[회사]</h4>
           <p>상호 : 한국의집 롯데월드몰점</p>
-          <p>대표자 : 박병호 (인)</p>
+          <p>
+            대표자 : 박병호
+            <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="company-stamp-img" alt="회사직인">
+          </p>
           <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
           <p>연락처 : 070-5015-7233</p>
-          <div class="signature-line">전자서명 / 직인</div>
         </div>
 
         <div>
@@ -282,15 +283,39 @@
           <p>주소 : <span id="cAddress">________</span></p>
           <p>연락처 : <span id="cPhone">________</span></p>
           <p>급여계좌 : <span id="cBankAccount">________</span></p>
-          <div class="signature-line">전자서명</div>
+
+          <div class="final-sign-preview">
+            <p>근로자 전자서명</p>
+            <img id="workerSignatureImage" alt="근로자 전자서명">
+            <p id="signedTime"></p>
+          </div>
         </div>
 
       </div>
 
     </div>
 
+    <div class="electronic-sign-box no-print">
+      <h3>전자계약 확인 및 서명</h3>
+
+      <label class="agree-line">
+        <input type="checkbox" id="agreeCheck">
+        본인은 위 근로계약 내용을 충분히 확인하였으며 전자계약 체결에 동의합니다.
+      </label>
+
+      <div class="signature-pad-wrap">
+        <p>근로자 전자서명</p>
+        <canvas id="signaturePad" width="600" height="220"></canvas>
+      </div>
+
+      <div class="sign-buttons">
+        <button type="button" onclick="clearSignature()">다시 서명</button>
+        <button type="button" onclick="completeElectronicContract()">전자계약 완료</button>
+      </div>
+    </div>
+
     <div class="print-btn-area no-print">
-      <button class="print-btn" onclick="window.print()">인쇄하기</button>
+      <button class="print-btn" onclick="window.print()">인쇄하기 / PDF 저장</button>
     </div>
 
   </div>

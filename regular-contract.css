@@ -6,7 +6,7 @@ body{
 }
 
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:0 auto;
 }
 
@@ -36,24 +36,42 @@ body{
   margin-bottom:40px;
 }
 
+.form-box h2{
+  margin:34px 0 22px;
+  font-size:30px;
+  color:#1f3d68;
+  border-left:8px solid #1f3d68;
+  padding-left:16px;
+}
+
+.form-box h2:first-child{
+  margin-top:0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+
 .input-group{
-  margin-bottom:26px;
+  margin-bottom:24px;
 }
 
 .input-group label{
   display:block;
-  font-size:26px;
+  font-size:22px;
   font-weight:700;
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
 
 .input-group input{
   width:100%;
-  height:70px;
+  height:66px;
   border:2px solid #d9d9d9;
   border-radius:16px;
-  padding:0 22px;
-  font-size:24px;
+  padding:0 20px;
+  font-size:22px;
   box-sizing:border-box;
 }
 
@@ -81,49 +99,49 @@ button{
   min-height:297mm;
   background:white;
   margin:0 auto;
-  padding:22mm 18mm;
+  padding:20mm 17mm;
   box-sizing:border-box;
   box-shadow:0 4px 20px rgba(0,0,0,0.1);
-  font-size:14px;
-  line-height:1.65;
+  font-size:13px;
+  line-height:1.55;
 }
 
-.paper h2{
+.contract-title{
   text-align:center;
   font-size:32px;
   letter-spacing:10px;
-  margin:0 0 28px;
+  margin:0 0 24px;
+}
+
+.intro{
+  font-size:14px;
+  line-height:1.8;
 }
 
 .paper h3{
-  margin:20px 0 8px;
-  font-size:17px;
+  margin:17px 0 7px;
+  font-size:16px;
   color:#111;
   border-bottom:1px solid #333;
   padding-bottom:4px;
 }
 
-.intro{
-  font-size:15px;
-  line-height:1.8;
-}
-
 .small{
-  font-size:13px;
+  font-size:12px;
   color:#333;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  margin:10px 0 16px;
+  margin:8px 0 14px;
 }
 
 th, td{
   border:1px solid #333;
-  padding:9px;
+  padding:8px;
   text-align:center;
-  font-size:14px;
+  font-size:13px;
 }
 
 th{
@@ -131,28 +149,28 @@ th{
 }
 
 .confirm{
-  margin-top:24px;
+  margin-top:22px;
   font-weight:600;
   text-align:center;
 }
 
 .date{
   text-align:center;
-  margin:26px 0;
+  margin:24px 0;
   font-size:16px;
 }
 
 .sign-box{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:28px;
-  margin-top:22px;
+  gap:24px;
+  margin-top:20px;
 }
 
-.sign-box div{
+.sign-box > div{
   border:1px solid #333;
-  padding:16px;
-  min-height:130px;
+  padding:14px;
+  min-height:180px;
 }
 
 .sign-box h4{
@@ -162,6 +180,15 @@ th{
 
 .sign-box p{
   margin:7px 0;
+}
+
+.signature-line{
+  margin-top:22px;
+  padding-top:12px;
+  border-top:1px dashed #777;
+  text-align:center;
+  color:#555;
+  font-size:13px;
 }
 
 .print-btn-area{
@@ -174,6 +201,20 @@ th{
   height:70px;
   border-radius:16px;
   font-size:28px;
+}
+
+@media(max-width:768px){
+  body{
+    padding:20px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .top-area h1{
+    font-size:42px;
+  }
 }
 
 @media print{
@@ -196,39 +237,66 @@ th{
     width:210mm;
     min-height:297mm;
     margin:0;
-    padding:14mm 15mm;
+    padding:11mm 13mm;
     box-shadow:none;
-    font-size:10.5px;
-    line-height:1.45;
+    font-size:9.6px;
+    line-height:1.32;
   }
 
-  .paper h2{
-    font-size:24px;
-    margin-bottom:18px;
+  .contract-title{
+    font-size:22px;
+    margin-bottom:12px;
+  }
+
+  .intro{
+    font-size:10px;
   }
 
   .paper h3{
-    font-size:12px;
-    margin:10px 0 4px;
+    font-size:10.5px;
+    margin:6px 0 2px;
   }
 
   th, td{
-    padding:5px;
-    font-size:10.5px;
+    padding:3.5px;
+    font-size:9.5px;
   }
 
-  .intro,
+  .small{
+    font-size:9px;
+  }
+
   .date{
-    font-size:11px;
+    margin:10px 0;
+    font-size:10px;
+  }
+
+  .confirm{
+    margin-top:8px;
   }
 
   .sign-box{
-    gap:14px;
-    margin-top:14px;
+    gap:10px;
+    margin-top:8px;
   }
 
-  .sign-box div{
-    padding:10px;
-    min-height:95px;
+  .sign-box > div{
+    padding:7px;
+    min-height:92px;
+  }
+
+  .sign-box h4{
+    font-size:10px;
+    margin-bottom:4px;
+  }
+
+  .sign-box p{
+    margin:2px 0;
+  }
+
+  .signature-line{
+    margin-top:7px;
+    padding-top:5px;
+    font-size:9px;
   }
 }

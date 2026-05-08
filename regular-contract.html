@@ -17,14 +17,74 @@
 
   <div class="form-box no-print">
 
-    <div class="input-group">
-      <label>직원 이름</label>
-      <input type="text" id="name" placeholder="직원명 입력">
+    <h2>직원 기본정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>직원 성명</label>
+        <input type="text" id="empName" placeholder="예: 김OO">
+      </div>
+
+      <div class="input-group">
+        <label>주민등록번호 전체</label>
+        <input type="text" id="residentNo" placeholder="예: 900101-1234567">
+      </div>
+
+      <div class="input-group">
+        <label>생년월일</label>
+        <input type="text" id="birth" placeholder="예: 1990년 01월 01일">
+      </div>
+
+      <div class="input-group">
+        <label>연락처</label>
+        <input type="text" id="phone" placeholder="예: 010-0000-0000">
+      </div>
     </div>
 
     <div class="input-group">
-      <label>주민번호 뒤 7자리</label>
-      <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
+      <label>주소</label>
+      <input type="text" id="address" placeholder="직원 주소 입력">
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>은행명</label>
+        <input type="text" id="bank" placeholder="예: 국민은행">
+      </div>
+
+      <div class="input-group">
+        <label>계좌번호</label>
+        <input type="text" id="account" placeholder="급여 계좌번호">
+      </div>
+    </div>
+
+    <h2>근무 정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>입사일</label>
+        <input type="text" id="joinDate" placeholder="예: 2026년 01월 01일">
+      </div>
+
+      <div class="input-group">
+        <label>주 근무일수</label>
+        <input type="text" id="workDays" placeholder="예: 주 5일">
+      </div>
+
+      <div class="input-group">
+        <label>근무시간</label>
+        <input type="text" id="workTime" placeholder="예: 10:00 - 21:00">
+      </div>
+
+      <div class="input-group">
+        <label>휴게시간</label>
+        <input type="text" id="breakTime" placeholder="예: 14:00 - 15:00">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>근무장소</label>
+      <input type="text" id="workPlace" value="한국의집 롯데월드몰점">
     </div>
 
     <div class="input-group">
@@ -32,50 +92,71 @@
       <input type="text" id="jobDuty" placeholder="예: 홀 관리업무">
     </div>
 
-    <div class="input-group">
-      <label>근무시간</label>
-      <input type="text" id="workTime" placeholder="예: 10:00 - 21:00">
+    <h2>임금 정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>기본급</label>
+        <input type="text" id="basePay" placeholder="예: 2,156,880">
+      </div>
+
+      <div class="input-group">
+        <label>연장수당</label>
+        <input type="text" id="overtimePay" placeholder="예: 665,640">
+      </div>
+
+      <div class="input-group">
+        <label>직무수당</label>
+        <input type="text" id="dutyPay" placeholder="예: 27,480">
+      </div>
+
+      <div class="input-group">
+        <label>직책수당</label>
+        <input type="text" id="positionPay" placeholder="예: 0">
+      </div>
+
+      <div class="input-group">
+        <label>식대</label>
+        <input type="text" id="mealPay" placeholder="예: 0">
+      </div>
+
+      <div class="input-group">
+        <label>월급총액</label>
+        <input type="text" id="totalPay" placeholder="예: 2,850,000">
+      </div>
     </div>
 
-    <div class="input-group">
-      <label>휴게시간</label>
-      <input type="text" id="breakTime" placeholder="예: 14:00 - 15:00">
-    </div>
-
-    <div class="input-group">
-      <label>월급총액</label>
-      <input type="text" id="monthlyPay" placeholder="예: 2,850,000">
-    </div>
-
-    <button onclick="createRegularContract()">정규직 계약서 조회 및 생성</button>
+    <button onclick="createContract()">정규직 근로계약서 생성</button>
     <p id="message"></p>
+
   </div>
 
-  <div class="contract-wrap">
+  <div class="contract-wrap" id="contractWrap">
+
     <div class="paper">
 
-      <h2>근 로 계 약 서</h2>
+      <h1 class="contract-title">근 로 계 약 서</h1>
 
       <p class="intro">
         한국의집 롯데월드몰점(이하 “회사”라 한다)과 근로자
-        <strong id="contractName">________</strong>
+        <strong id="cEmpName">________</strong>
         (이하 “직원”이라 한다)은 다음과 같이 근로계약을 체결하고 이를 성실히 이행할 것을 약정한다.
       </p>
 
       <h3>제1조 계약기간</h3>
-      <p>입사일 : <span id="joinDate">____년 __월 __일</span></p>
+      <p>입사일 : <span id="cJoinDate">________</span></p>
       <p>입사일로부터 기간의 정함이 없는 근로계약을 체결한다. 수습기간은 3개월로 한다.</p>
       <p class="small">
-        수습기간 중 또는 만료 후 직원의 업무적응 및 적격성이 회사와 맞지 않을 경우 관계 법령에 따라 계약을 해지할 수 있다.
+        수습기간 중의 임금은 월 급여의 100%로 하며, 업무 적격성 판단 결과 회사와 맞지 않을 경우 관계 법령에 따라 조치할 수 있다.
       </p>
 
       <h3>제2조 근무장소 및 업무내용</h3>
-      <p>① 근무장소 : <span id="department">한국의집 롯데월드몰점</span></p>
-      <p>② 업무내용 : <span id="jobDutyText">________</span></p>
+      <p>① 근무장소 : <span id="cWorkPlace">________</span></p>
+      <p>② 업무내용 : <span id="cJobDuty">________</span></p>
       <p>③ 회사는 필요한 경우 직원의 의견을 들어 업무내용을 변경할 수 있다.</p>
 
       <h3>제3조 근로시간 및 휴게</h3>
-      <p>① 근무시간 및 휴게시간은 아래와 같다.</p>
+      <p>① 근무시간 및 휴게시간은 아래와 같다. (<span id="cWorkDays">주 5일</span> 근무)</p>
 
       <table>
         <tr>
@@ -83,8 +164,8 @@
           <th>휴게시간</th>
         </tr>
         <tr>
-          <td id="workTimeText">________</td>
-          <td id="breakTimeText">________</td>
+          <td id="cWorkTime">________</td>
+          <td id="cBreakTime">________</td>
         </tr>
       </table>
 
@@ -95,6 +176,8 @@
       <p>② 근로기준법이 정하는 바에 따라 연차휴가를 부여한다.</p>
 
       <h3>제5조 임금</h3>
+      <p>① 임금은 기본급, 연장수당, 직무수당, 직책수당, 식대 등으로 구성된다.</p>
+
       <table>
         <tr>
           <th>구분</th>
@@ -102,15 +185,42 @@
           <th>산정 기준</th>
         </tr>
         <tr>
-          <td>월급총액</td>
-          <td id="monthlyPayText">________원</td>
-          <td>기본급, 수당 등 합계</td>
+          <td>기본급</td>
+          <td id="cBasePay">________원</td>
+          <td>월 소정근로시간 기준 임금</td>
+        </tr>
+        <tr>
+          <td>연장수당</td>
+          <td id="cOvertimePay">________원</td>
+          <td>연장근로 해당분</td>
+        </tr>
+        <tr>
+          <td>직무수당</td>
+          <td id="cDutyPay">________원</td>
+          <td>직무 수행 수당</td>
+        </tr>
+        <tr>
+          <td>직책수당</td>
+          <td id="cPositionPay">________원</td>
+          <td>직책 수행 수당</td>
+        </tr>
+        <tr>
+          <td>식대</td>
+          <td id="cMealPay">________원</td>
+          <td>식대 보조</td>
+        </tr>
+        <tr>
+          <td><strong>월급총액</strong></td>
+          <td><strong id="cTotalPay">________원</strong></td>
+          <td>상기 금액의 합계</td>
         </tr>
       </table>
 
       <p>
-        회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.
-        급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.
+        ② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.
+      </p>
+      <p>
+        ③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.
       </p>
 
       <h3>제6조 제출서류</h3>
@@ -133,7 +243,16 @@
         직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 이해 및 동의한다.
       </p>
 
-      <h3>제11조 기타사항</h3>
+      <h3>제11조 전자계약 및 계약서 교부 확인</h3>
+      <p>
+        회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
+        전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
+      </p>
+      <p>
+        직원은 본 근로계약서의 내용을 충분히 확인하였으며 계약서 교부를 확인한다.
+      </p>
+
+      <h3>제12조 기타사항</h3>
       <p>
         본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.
       </p>
@@ -142,24 +261,30 @@
         회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
       </p>
 
-      <p class="date" id="todayText">____년 __월 __일</p>
+      <p class="date" id="cToday">________</p>
 
       <div class="sign-box">
+
         <div>
           <h4>[회사]</h4>
           <p>상호 : 한국의집 롯데월드몰점</p>
           <p>대표자 : 박병호 (인)</p>
           <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
           <p>연락처 : 070-5015-7233</p>
+          <div class="signature-line">전자서명 / 직인</div>
         </div>
 
         <div>
           <h4>[직원]</h4>
-          <p>성명 : <span id="workerName">________</span> (인)</p>
-          <p>생년월일 : <span id="birth">________</span></p>
-          <p>주소 : <span id="address">________</span></p>
-          <p>연락처 : <span id="phone">________</span></p>
+          <p>성명 : <span id="cWorkerName">________</span> (인)</p>
+          <p>주민등록번호 : <span id="cResidentNo">________</span></p>
+          <p>생년월일 : <span id="cBirth">________</span></p>
+          <p>주소 : <span id="cAddress">________</span></p>
+          <p>연락처 : <span id="cPhone">________</span></p>
+          <p>급여계좌 : <span id="cBankAccount">________</span></p>
+          <div class="signature-line">전자서명</div>
         </div>
+
       </div>
 
     </div>
@@ -167,6 +292,7 @@
     <div class="print-btn-area no-print">
       <button class="print-btn" onclick="window.print()">인쇄하기</button>
     </div>
+
   </div>
 
 </div>

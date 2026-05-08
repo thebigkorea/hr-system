@@ -1,75 +1,95 @@
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
+function createContract() {
+  const data = {
+    empName: getValue("empName"),
+    residentNo: getValue("residentNo"),
+    birth: getValue("birth"),
+    phone: getValue("phone"),
+    address: getValue("address"),
+    bank: getValue("bank"),
+    account: getValue("account"),
 
-async function createRegularContract() {
-  const name = document.getElementById("name").value.trim();
-  const ssnBack = document.getElementById("ssnBack").value.trim();
-  const jobDuty = document.getElementById("jobDuty").value.trim();
-  const workTime = document.getElementById("workTime").value.trim();
-  const breakTime = document.getElementById("breakTime").value.trim();
-  const monthlyPay = document.getElementById("monthlyPay").value.trim();
-  const message = document.getElementById("message");
+    joinDate: getValue("joinDate"),
+    workDays: getValue("workDays"),
+    workTime: getValue("workTime"),
+    breakTime: getValue("breakTime"),
+    workPlace: getValue("workPlace"),
+    jobDuty: getValue("jobDuty"),
 
-  if (!name || !ssnBack || !jobDuty || !workTime || !breakTime || !monthlyPay) {
-    message.innerText = "모든 항목을 입력해주세요.";
-    return;
-  }
+    basePay: getValue("basePay"),
+    overtimePay: getValue("overtimePay"),
+    dutyPay: getValue("dutyPay"),
+    positionPay: getValue("positionPay"),
+    mealPay: getValue("mealPay"),
+    totalPay: getValue("totalPay")
+  };
 
-  if (ssnBack.length !== 7) {
-    message.innerText = "주민번호 뒤 7자리를 정확히 입력해주세요.";
-    return;
-  }
+  const required = [
+    "empName",
+    "residentNo",
+    "birth",
+    "phone",
+    "address",
+    "joinDate",
+    "workDays",
+    "workTime",
+    "breakTime",
+    "workPlace",
+    "jobDuty",
+    "totalPay"
+  ];
 
-  message.innerText = "직원 정보를 조회 중입니다...";
-
-  try {
-    const result = await postData({
-      action: "findEmployee",
-      name,
-      ssnBack
-    });
-
-    if (!result.success) {
-      message.innerText = result.message || "직원 정보를 찾을 수 없습니다.";
+  for (const key of required) {
+    if (!data[key]) {
+      setMessage("필수 항목을 모두 입력해주세요.");
       return;
     }
-
-    fillContract(result.employee, {
-      jobDuty,
-      workTime,
-      breakTime,
-      monthlyPay
-    });
-
-    message.innerText = "정규직 근로계약서가 생성되었습니다. 아래 인쇄하기 버튼을 눌러 출력하세요.";
-
-  } catch (err) {
-    message.innerText = "오류가 발생했습니다: " + err.message;
   }
+
+  fillContract(data);
+  setMessage("정규직 근로계약서가 생성되었습니다. 아래 인쇄하기 버튼을 눌러 출력하거나 PDF로 저장하세요.");
 }
 
-async function postData(data) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
-
-  return await response.json();
+function getValue(id) {
+  return document.getElementById(id).value.trim();
 }
 
-function fillContract(emp, input) {
-  document.getElementById("contractName").innerText = emp.name;
-  document.getElementById("workerName").innerText = emp.name;
-  document.getElementById("joinDate").innerText = emp.joinDate || "";
-  document.getElementById("department").innerText = emp.department || "한국의집 롯데월드몰점";
-  document.getElementById("jobDutyText").innerText = input.jobDuty;
-  document.getElementById("workTimeText").innerText = input.workTime;
-  document.getElementById("breakTimeText").innerText = input.breakTime;
-  document.getElementById("monthlyPayText").innerText = `${input.monthlyPay}원`;
-  document.getElementById("birth").innerText = emp.birth || "";
-  document.getElementById("address").innerText = emp.address || "";
-  document.getElementById("phone").innerText = emp.phone || "";
-  document.getElementById("todayText").innerText = getTodayKorean();
+function setText(id, value) {
+  document.getElementById(id).innerText = value || "";
+}
+
+function money(value) {
+  if (!value) return "0원";
+  return `${value}원`;
+}
+
+function setMessage(msg) {
+  document.getElementById("message").innerText = msg;
+}
+
+function fillContract(data) {
+  setText("cEmpName", data.empName);
+  setText("cWorkerName", data.empName);
+  setText("cResidentNo", data.residentNo);
+  setText("cBirth", data.birth);
+  setText("cPhone", data.phone);
+  setText("cAddress", data.address);
+  setText("cBankAccount", `${data.bank} ${data.account}`);
+
+  setText("cJoinDate", data.joinDate);
+  setText("cWorkDays", data.workDays);
+  setText("cWorkTime", data.workTime);
+  setText("cBreakTime", data.breakTime);
+  setText("cWorkPlace", data.workPlace);
+  setText("cJobDuty", data.jobDuty);
+
+  setText("cBasePay", money(data.basePay));
+  setText("cOvertimePay", money(data.overtimePay));
+  setText("cDutyPay", money(data.dutyPay));
+  setText("cPositionPay", money(data.positionPay));
+  setText("cMealPay", money(data.mealPay));
+  setText("cTotalPay", money(data.totalPay));
+
+  setText("cToday", getTodayKorean());
 }
 
 function getTodayKorean() {

@@ -21,8 +21,8 @@ async function createCertificate() {
   try {
     const findResult = await postData({
       action: "findEmployee",
-      name: name,
-      ssnBack: ssnBack
+      name,
+      ssnBack
     });
 
     if (!findResult.success) {
@@ -38,7 +38,7 @@ async function createCertificate() {
       name: emp.name,
       department: emp.department,
       position: emp.position,
-      purpose: purpose
+      purpose
     });
 
     if (!logResult.success) {
@@ -47,12 +47,7 @@ async function createCertificate() {
     }
 
     fillCertificate(emp, purpose, logResult.issueNo);
-
-    message.innerText = "재직증명서가 생성되었습니다.";
-
-    setTimeout(() => {
-      window.print();
-    }, 500);
+    message.innerText = "재직증명서가 생성되었습니다. 아래 인쇄하기 버튼을 눌러 출력하세요.";
 
   } catch (err) {
     message.innerText = "오류가 발생했습니다: " + err.message;

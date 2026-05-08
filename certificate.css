@@ -158,6 +158,27 @@ td{
   object-fit:contain;
 }
 
+.print-btn-area{
+  text-align:center;
+  margin:30px 0 60px;
+}
+
+.print-btn{
+  width:260px;
+  height:70px;
+  border:none;
+  border-radius:16px;
+  background:#1f3d68;
+  color:#fff;
+  font-size:28px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.print-btn:hover{
+  background:#294d82;
+}
+
 @media print{
 
   @page{
@@ -202,5 +223,4 @@ td{
     width:70px;
     height:70px;
   }
-
 }

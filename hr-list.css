@@ -36,6 +36,14 @@ body{
   align-items:center;
 }
 
+.search-area select{
+  width:240px;
+}
+
+.search-area input{
+  width:320px;
+}
+
 .search-area input,
 .search-area select{
   height:64px;
@@ -45,14 +53,6 @@ body{
   font-size:20px;
   background:#fff;
   box-sizing:border-box;
-}
-
-.search-area select{
-  width:220px;
-}
-
-.search-area input{
-  width:320px;
 }
 
 .search-btn,
@@ -150,38 +150,4 @@ td{
 
 .btn-card{
   background:#7c3aed;
-}
-
-@media(max-width:768px){
-  body{
-    padding:20px;
-  }
-
-  .top-area h1{
-    font-size:42px;
-  }
-
-  .top-area p{
-    font-size:20px;
-  }
-
-  .search-area{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .search-area input,
-  .search-area select,
-  .search-btn,
-  .reset-btn{
-    width:100%;
-  }
-
-  .table-wrap{
-    overflow-x:auto;
-  }
-
-  table{
-    min-width:1100px;
-  }
 }

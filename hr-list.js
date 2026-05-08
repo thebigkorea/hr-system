@@ -4,10 +4,10 @@ const API_URL =
 let allEmployees = [];
 
 window.onload = function () {
-  loadEmployees();
+  loadEmployeesOnly();
 };
 
-async function loadEmployees() {
+async function loadEmployeesOnly() {
   const tbody = document.getElementById("employeeTableBody");
 
   try {
@@ -25,9 +25,13 @@ async function loadEmployees() {
     }
 
     allEmployees = result.employees || [];
-
     createDepartmentFilter(allEmployees);
-    renderEmployees(allEmployees);
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9">조회 조건을 선택한 뒤 조회 버튼을 눌러주세요.</td>
+      </tr>
+    `;
 
   } catch (err) {
     tbody.innerHTML = `
@@ -45,6 +49,31 @@ async function postData(data) {
   });
 
   return await response.json();
+}
+
+function searchEmployee() {
+  const dept = document.getElementById("deptFilter").value;
+  const status = document.getElementById("statusFilter").value;
+  const keyword = document.getElementById("searchInput").value.trim();
+
+  const filtered = allEmployees.filter(emp => {
+    const department = emp.department || "";
+    const empStatus = emp.status || "";
+    const name = emp.name || "";
+
+    const matchDept =
+      dept === "all" || department === dept;
+
+    const matchStatus =
+      status === "all" || empStatus === status;
+
+    const matchKeyword =
+      keyword === "" || name.includes(keyword);
+
+    return matchDept && matchStatus && matchKeyword;
+  });
+
+  renderEmployees(filtered);
 }
 
 function renderEmployees(list) {
@@ -92,37 +121,16 @@ function renderEmployees(list) {
   });
 }
 
-function searchEmployee() {
-  const dept = document.getElementById("deptFilter").value;
-  const status = document.getElementById("statusFilter").value;
-  const keyword = document.getElementById("searchInput").value.trim();
-
-  const filtered = allEmployees.filter(emp => {
-    const department = emp.department || "";
-    const empStatus = emp.status || "";
-    const name = emp.name || "";
-
-    const matchDept =
-      dept === "all" || department === dept;
-
-    const matchStatus =
-      status === "all" || empStatus === status;
-
-    const matchKeyword =
-      keyword === "" || name.includes(keyword);
-
-    return matchDept && matchStatus && matchKeyword;
-  });
-
-  renderEmployees(filtered);
-}
-
 function resetSearch() {
   document.getElementById("deptFilter").value = "all";
   document.getElementById("statusFilter").value = "all";
   document.getElementById("searchInput").value = "";
 
-  renderEmployees(allEmployees);
+  document.getElementById("employeeTableBody").innerHTML = `
+    <tr>
+      <td colspan="9">조회 조건을 선택한 뒤 조회 버튼을 눌러주세요.</td>
+    </tr>
+  `;
 }
 
 function createDepartmentFilter(list) {

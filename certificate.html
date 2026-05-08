@@ -1,262 +1,111 @@
-body{
-  margin:0;
-  padding:0;
-  background:#f3f4f6;
-  font-family:'Pretendard','Noto Sans KR',sans-serif;
-}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>재직증명서</title>
+  <link rel="stylesheet" href="certificate.css">
+</head>
 
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:30px 20px;
-}
+<body>
+  <div class="container">
 
-.top-area{
-  text-align:center;
-  margin-bottom:30px;
-}
+    <div class="top-area no-print">
+      <h1>재직증명서</h1>
+      <p>Certificate of Employment</p>
+    </div>
 
-.top-area h1{
-  margin:0;
-  font-size:48px;
-  color:#1e3a5f;
-}
+    <div class="form-box no-print">
+      <label>직원 이름</label>
+      <input type="text" id="name" placeholder="직원명 입력">
 
-.top-area p{
-  color:#666;
-  font-size:20px;
-}
+      <label>주민번호 뒤 7자리</label>
+      <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
 
-.form-box{
-  background:white;
-  padding:30px;
-  border-radius:20px;
-  margin-bottom:30px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
+      <label>제출 용도</label>
+      <input type="text" id="purpose" placeholder="예: 금융기관 제출용">
 
-.form-box label{
-  display:block;
-  margin-top:20px;
-  margin-bottom:10px;
-  font-weight:bold;
-  font-size:18px;
-}
+      <button onclick="createCertificate()">재직증명서 조회 및 출력</button>
 
-.form-box input{
-  width:100%;
-  padding:16px;
-  border-radius:12px;
-  border:1px solid #ccc;
-  font-size:18px;
-  box-sizing:border-box;
-}
+      <p id="message"></p>
+    </div>
 
-.form-box button{
-  width:100%;
-  margin-top:30px;
-  padding:22px;
-  border:none;
-  border-radius:14px;
-  background:#1e3a5f;
-  color:white;
-  font-size:24px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    <div class="preview-box" id="previewBox">
+      <div class="paper">
 
-.form-box button:hover{
-  background:#274b78;
-}
+        <div class="issue-no">
+          발급번호 : <span id="issueNo">-</span>
+        </div>
 
-#message{
-  margin-top:20px;
-  font-size:16px;
-  color:#333;
-}
+        <h2>재 직 증 명 서</h2>
 
-.preview-box{
-  margin-top:40px;
-}
+        <table>
+          <tr>
+            <th>성 명</th>
+            <td id="certName"></td>
+          </tr>
+          <tr>
+            <th>주민등록번호</th>
+            <td id="certSsn"></td>
+          </tr>
+          <tr>
+            <th>현 주 소</th>
+            <td id="certAddress"></td>
+          </tr>
+          <tr>
+            <th>소 속</th>
+            <td id="certDepartment"></td>
+          </tr>
+          <tr>
+            <th>직 위</th>
+            <td id="certPosition"></td>
+          </tr>
+          <tr>
+            <th>근무기간</th>
+            <td id="certPeriod"></td>
+          </tr>
+          <tr>
+            <th>용 도</th>
+            <td id="certPurpose"></td>
+          </tr>
+        </table>
 
-.paper{
-  background:white;
-  padding:60px;
-  border-radius:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
+        <div class="bottom-text">
+          위와 같이 증명합니다.<br><br>
+          <span id="certToday"></span>
+          <br><br><br>
 
-.issue-no{
-  font-size:16px;
-  margin-bottom:50px;
-}
+          <div class="sign-area">
+            <div>대전광역시 유성구 테크노4로 29 (관평동) 201호</div>
+            <div>주식회사 더큰코리아</div>
 
-.paper h2{
-  text-align:center;
-  font-size:42px;
-  letter-spacing:14px;
-  margin-bottom:50px;
-}
+            <div class="ceo-line">
+              <span>대표이사 박병호</span>
 
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+              <span class="corp-seal" aria-label="법인인감">
+                <svg viewBox="0 0 200 200">
+                  <circle cx="100" cy="100" r="92"></circle>
+                  <circle cx="100" cy="100" r="74"></circle>
 
-th, td{
-  border:1px solid #333;
-  padding:16px;
-  font-size:18px;
-}
+                  <path d="M55 100 Q100 48 145 100 Q100 152 55 100"></path>
+                  <path d="M100 55 Q152 100 100 145 Q48 100 100 55"></path>
+                  <circle cx="100" cy="100" r="27"></circle>
 
-th{
-  width:180px;
-  background:#f9fafb;
-  text-align:center;
-}
+                  <text x="100" y="31" text-anchor="middle">株式會社</text>
+                  <text x="100" y="185" text-anchor="middle">더큰코리아</text>
+                  <text x="23" y="106" text-anchor="middle" transform="rotate(-90 23 106)">代表理事</text>
+                  <text x="177" y="96" text-anchor="middle" transform="rotate(90 177 96)">之印</text>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
 
-td{
-  text-align:left;
-}
+      </div>
+    </div>
 
-.bottom-text{
-  margin-top:60px;
-  text-align:center;
-  line-height:2;
-  font-size:20px;
-}
+  </div>
 
-.sign-area{
-  text-align:center;
-}
-
-.ceo-line{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:12px;
-  margin-top:10px;
-}
-
-.corp-seal{
-  width:72px;
-  height:72px;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  transform:rotate(-5deg);
-  opacity:0.92;
-}
-
-.corp-seal svg{
-  width:100%;
-  height:100%;
-}
-
-.corp-seal circle{
-  fill:none;
-  stroke:#b00000;
-  stroke-width:4;
-}
-
-.corp-seal circle:nth-child(2){
-  stroke-width:1.8;
-  opacity:0.75;
-}
-
-.corp-seal text{
-  fill:#b00000;
-  font-family:'Noto Serif KR','Batang','serif';
-  font-size:14px;
-  font-weight:800;
-  letter-spacing:0.8px;
-}
-
-@media print {
-
-  @page{
-    size:A4;
-    margin:0;
-  }
-
-  html, body{
-    width:210mm;
-    height:297mm;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-    background:white;
-  }
-
-  .no-print{
-    display:none !important;
-  }
-
-  .container{
-    width:210mm;
-    height:297mm;
-    max-width:none;
-    margin:0;
-    padding:0;
-    overflow:hidden;
-  }
-
-  .preview-box{
-    margin:0;
-    padding:0;
-    width:210mm;
-    height:297mm;
-    overflow:hidden;
-  }
-
-  .paper{
-    width:210mm;
-    height:297mm;
-    max-height:297mm;
-    margin:0;
-    padding:22mm 18mm !important;
-    box-shadow:none;
-    border-radius:0;
-    box-sizing:border-box;
-    overflow:hidden;
-  }
-
-  .issue-no{
-    font-size:11pt;
-    margin-bottom:26mm;
-  }
-
-  .paper h2{
-    font-size:27pt;
-    letter-spacing:10pt;
-    margin-bottom:24mm;
-  }
-
-  table{
-    width:100%;
-  }
-
-  th, td{
-    font-size:11pt;
-    padding:8pt;
-  }
-
-  th{
-    width:40mm;
-  }
-
-  .bottom-text{
-    margin-top:22mm !important;
-    font-size:12pt;
-    line-height:1.9;
-  }
-
-  .corp-seal{
-    width:64px;
-    height:64px;
-  }
-
-  .corp-seal text{
-    font-size:13px;
-  }
-}
+  <script src="certificate.js"></script>
+</body>
+</html>

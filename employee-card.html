@@ -3,25 +3,150 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>인사카드</title>
-  <link rel="stylesheet" href="certificate.css">
+  <title>인사기록카드</title>
+  <link rel="stylesheet" href="employee-card.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="top-area">
-      <h1>인사카드</h1>
-      <p>Employee Card</p>
+<div class="container">
+
+  <div class="top-area no-print">
+    <h1>인사기록카드</h1>
+    <p>Employee HR Record Card</p>
+  </div>
+
+  <div class="form-box no-print">
+    <div class="input-group">
+      <label>직원 이름</label>
+      <input type="text" id="name" placeholder="직원명 입력">
     </div>
 
-    <div class="form-box">
-      <label>직원 이름</label>
-      <input type="text" placeholder="이름 입력">
+    <div class="input-group">
+      <label>주민번호 뒤 7자리</label>
+      <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
+    </div>
 
-      <label>주민번호 뒤 4자리</label>
-      <input type="password" placeholder="뒤 4자리 입력">
+    <button onclick="createEmployeeCard()">인사기록카드 조회 및 생성</button>
+    <p id="message"></p>
+  </div>
 
-      <button onclick="window.print()">인사카드 출력</button>
+  <div class="card-wrap" id="cardWrap">
+    <div class="paper">
+
+      <div class="card-header">
+        <div>
+          <h2>인 사 기 록 카 드</h2>
+          <p>한국의집 롯데월드몰 · Human Resources</p>
+        </div>
+
+        <div class="photo-box">
+          사진
+        </div>
+      </div>
+
+      <div class="section-title">1. 기본 인적사항</div>
+      <table>
+        <tr>
+          <th>사번</th><td id="employeeNo"></td>
+          <th>성명</th><td id="empName"></td>
+        </tr>
+        <tr>
+          <th>주민등록번호</th><td id="empSsn"></td>
+          <th>생년월일</th><td id="empBirth"></td>
+        </tr>
+        <tr>
+          <th>성별</th><td id="empGender"></td>
+          <th>상태</th><td id="empStatus"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">2. 근무 정보</div>
+      <table>
+        <tr>
+          <th>소속</th><td id="empDepartment"></td>
+          <th>직위</th><td id="empPosition"></td>
+        </tr>
+        <tr>
+          <th>입사일</th><td id="empJoinDate"></td>
+          <th>퇴사일</th><td id="empLeaveDate"></td>
+        </tr>
+        <tr>
+          <th>급여형태</th><td id="empPayType"></td>
+          <th>기본급</th><td id="empBasePay"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">3. 연락처 및 주소</div>
+      <table>
+        <tr>
+          <th>연락처</th><td id="empPhone"></td>
+          <th>이메일</th><td id="empEmail"></td>
+        </tr>
+        <tr>
+          <th>주소</th><td colspan="3" id="empAddress"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">4. 급여 계좌</div>
+      <table>
+        <tr>
+          <th>은행명</th><td id="empBank"></td>
+          <th>계좌번호</th><td id="empAccount"></td>
+        </tr>
+        <tr>
+          <th>예금주</th><td colspan="3" id="empAccountHolder"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">5. 비상연락망</div>
+      <table>
+        <tr>
+          <th>비상연락인</th><td id="empEmergencyName"></td>
+          <th>관계</th><td id="empEmergencyRelation"></td>
+        </tr>
+        <tr>
+          <th>비상연락처</th><td colspan="3" id="empEmergencyPhone"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">6. 학력 / 경력 / 자격사항</div>
+      <table>
+        <tr>
+          <th>최종학력</th><td id="empEducation"></td>
+          <th>전공</th><td id="empMajor"></td>
+        </tr>
+        <tr>
+          <th>주요경력</th><td colspan="3" id="empCareer"></td>
+        </tr>
+        <tr>
+          <th>자격증</th><td colspan="3" id="empLicense"></td>
+        </tr>
+      </table>
+
+      <div class="section-title">7. 입사경로 및 인사메모</div>
+      <table>
+        <tr>
+          <th>입사경로</th><td colspan="3" id="empHiringPath"></td>
+        </tr>
+        <tr>
+          <th>인사메모</th><td colspan="3" id="empHrMemo"></td>
+        </tr>
+      </table>
+
+      <div class="approval-box">
+        <div>작성일자 : <span id="today"></span></div>
+        <div>관리자 확인 : ____________________</div>
+      </div>
+
+    </div>
+
+    <div class="print-btn-area no-print">
+      <button class="print-btn" onclick="window.print()">인쇄하기</button>
     </div>
   </div>
+
+</div>
+
+<script src="employee-card.js"></script>
 </body>
 </html>

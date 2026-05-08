@@ -2,7 +2,7 @@ body{
   margin:0;
   padding:0;
   background:#f3f4f6;
-  font-family:'Pretendard', sans-serif;
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
 }
 
 .container{
@@ -18,12 +18,13 @@ body{
 
 .top-area h1{
   margin:0;
-  font-size:42px;
+  font-size:48px;
   color:#1e3a5f;
 }
 
 .top-area p{
   color:#666;
+  font-size:20px;
 }
 
 .form-box{
@@ -39,6 +40,7 @@ body{
   margin-top:20px;
   margin-bottom:10px;
   font-weight:bold;
+  font-size:18px;
 }
 
 .form-box input{
@@ -53,14 +55,24 @@ body{
 .form-box button{
   width:100%;
   margin-top:30px;
-  padding:20px;
+  padding:22px;
   border:none;
   border-radius:14px;
   background:#1e3a5f;
   color:white;
-  font-size:22px;
+  font-size:24px;
   font-weight:bold;
   cursor:pointer;
+}
+
+.form-box button:hover{
+  background:#274b78;
+}
+
+#message{
+  margin-top:20px;
+  font-size:16px;
+  color:#333;
 }
 
 .preview-box{
@@ -74,10 +86,15 @@ body{
   box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
+.issue-no{
+  font-size:16px;
+  margin-bottom:50px;
+}
+
 .paper h2{
   text-align:center;
   font-size:42px;
-  letter-spacing:10px;
+  letter-spacing:14px;
   margin-bottom:50px;
 }
 
@@ -95,6 +112,11 @@ th, td{
 th{
   width:180px;
   background:#f9fafb;
+  text-align:center;
+}
+
+td{
+  text-align:left;
 }
 
 .bottom-text{
@@ -102,4 +124,75 @@ th{
   text-align:center;
   line-height:2;
   font-size:20px;
+}
+
+@media print {
+
+  body{
+    background:white;
+    margin:0;
+    padding:0;
+  }
+
+  .no-print{
+    display:none !important;
+  }
+
+  .container{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding:0;
+  }
+
+  .preview-box{
+    margin:0;
+    padding:0;
+  }
+
+  .paper{
+    width:210mm;
+    height:297mm;
+    margin:0 auto;
+    padding:25mm 20mm;
+    box-shadow:none;
+    border-radius:0;
+    box-sizing:border-box;
+    page-break-after:avoid;
+  }
+
+  .issue-no{
+    font-size:12pt;
+    margin-bottom:28mm;
+  }
+
+  .paper h2{
+    font-size:28pt;
+    letter-spacing:10pt;
+    margin-bottom:25mm;
+  }
+
+  table{
+    width:100%;
+  }
+
+  th, td{
+    font-size:12pt;
+    padding:10pt;
+  }
+
+  th{
+    width:42mm;
+  }
+
+  .bottom-text{
+    margin-top:28mm;
+    font-size:13pt;
+    line-height:2;
+  }
+
+  @page{
+    size:A4;
+    margin:0;
+  }
 }

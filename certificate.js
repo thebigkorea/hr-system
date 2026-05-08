@@ -2,12 +2,17 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw5
 
 async function createCertificate() {
   const name = document.getElementById("name").value.trim();
-  const ssnLastFirst = document.getElementById("ssnLastFirst").value.trim();
+  const ssnBack = document.getElementById("ssnBack").value.trim();
   const purpose = document.getElementById("purpose").value.trim();
   const message = document.getElementById("message");
 
-  if (!name || !ssnLastFirst || !purpose) {
-    message.innerText = "이름, 주민번호 뒤 첫 자리, 제출 용도를 모두 입력해주세요.";
+  if (!name || !ssnBack || !purpose) {
+    message.innerText = "이름, 주민번호 뒤 7자리, 제출 용도를 모두 입력해주세요.";
+    return;
+  }
+
+  if (ssnBack.length !== 7) {
+    message.innerText = "주민번호 뒤 7자리를 정확히 입력해주세요.";
     return;
   }
 
@@ -16,8 +21,8 @@ async function createCertificate() {
   try {
     const findResult = await postData({
       action: "findEmployee",
-      name,
-      ssnLastFirst
+      name: name,
+      ssnBack: ssnBack
     });
 
     if (!findResult.success) {
@@ -33,11 +38,11 @@ async function createCertificate() {
       name: emp.name,
       department: emp.department,
       position: emp.position,
-      purpose
+      purpose: purpose
     });
 
     if (!logResult.success) {
-      message.innerText = "발급이력 저장 중 오류가 발생했습니다.";
+      message.innerText = logResult.message || "발급이력 저장 중 오류가 발생했습니다.";
       return;
     }
 
@@ -66,7 +71,7 @@ async function postData(data) {
 function fillCertificate(emp, purpose, issueNo) {
   document.getElementById("issueNo").innerText = issueNo;
   document.getElementById("certName").innerText = emp.name;
-  document.getElementById("certSsn").innerText = `${emp.ssnFront}-${emp.ssnLastFirst}******`;
+  document.getElementById("certSsn").innerText = `${emp.ssnFront}-${String(emp.ssnBack).substring(0, 1)}******`;
   document.getElementById("certAddress").innerText = emp.address;
   document.getElementById("certDepartment").innerText = emp.department;
   document.getElementById("certPosition").innerText = emp.position;

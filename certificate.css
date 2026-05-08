@@ -8,31 +8,30 @@ body{
 .container{
   max-width:900px;
   margin:0 auto;
-  padding:30px 20px;
-}
-
-.top-area{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.top-area h1{
-  margin:0;
-  font-size:48px;
-  color:#1e3a5f;
-}
-
-.top-area p{
-  color:#666;
-  font-size:20px;
+  padding:30px;
 }
 
 .form-box{
   background:white;
-  padding:30px;
+  padding:40px;
   border-radius:20px;
-  margin-bottom:30px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom:30px;
+}
+
+.form-box h1{
+  margin:0;
+  font-size:48px;
+  color:#1e3a5f;
+  text-align:center;
+}
+
+.sub-title{
+  text-align:center;
+  color:#666;
+  margin-top:10px;
+  margin-bottom:40px;
+  font-size:20px;
 }
 
 .form-box label{
@@ -45,9 +44,9 @@ body{
 
 .form-box input{
   width:100%;
-  padding:16px;
-  border-radius:12px;
+  padding:18px;
   border:1px solid #ccc;
+  border-radius:12px;
   font-size:18px;
   box-sizing:border-box;
 }
@@ -91,32 +90,29 @@ body{
   margin-bottom:50px;
 }
 
-.paper h2{
+.paper-title{
   text-align:center;
   font-size:42px;
   letter-spacing:14px;
   margin-bottom:50px;
 }
 
-table{
+.cert-table{
   width:100%;
   border-collapse:collapse;
 }
 
-th, td{
+.cert-table th,
+.cert-table td{
   border:1px solid #333;
   padding:16px;
   font-size:18px;
 }
 
-th{
+.cert-table th{
   width:180px;
   background:#f9fafb;
   text-align:center;
-}
-
-td{
-  text-align:left;
 }
 
 .bottom-text{
@@ -126,7 +122,12 @@ td{
   font-size:20px;
 }
 
+.today{
+  margin-top:30px;
+}
+
 .sign-area{
+  margin-top:50px;
   text-align:center;
 }
 
@@ -139,27 +140,26 @@ td{
 }
 
 .ceo-name{
-  display:inline-block;
+  font-size:24px;
 }
 
 .stamp-img{
-  width:82px;
-  height:82px;
+  width:80px;
+  height:80px;
   object-fit:contain;
   display:inline-block;
-  opacity:0.95;
-  transform:rotate(-5deg);
 }
 
-/* 인쇄 */
-@media print {
+/* 인쇄용 */
+@media print{
 
   @page{
     size:A4;
     margin:0;
   }
 
-  html, body{
+  html,
+  body{
     width:210mm;
     height:297mm;
     margin:0;
@@ -178,7 +178,6 @@ td{
     max-width:none;
     margin:0;
     padding:0;
-    overflow:hidden;
   }
 
   .preview-box{
@@ -186,16 +185,15 @@ td{
     padding:0;
     width:210mm;
     height:297mm;
-    overflow:hidden;
   }
 
   .paper{
     width:210mm;
     height:297mm;
     margin:0;
-    padding:22mm 18mm;
-    box-shadow:none;
+    padding:22mm 18mm !important;
     border-radius:0;
+    box-shadow:none;
     overflow:hidden;
     box-sizing:border-box;
   }
@@ -205,18 +203,23 @@ td{
     margin-bottom:26mm;
   }
 
-  .paper h2{
+  .paper-title{
     font-size:27pt;
     letter-spacing:10pt;
     margin-bottom:24mm;
   }
 
-  th, td{
+  .cert-table{
+    width:100%;
+  }
+
+  .cert-table th,
+  .cert-table td{
     font-size:11pt;
     padding:8pt;
   }
 
-  th{
+  .cert-table th{
     width:40mm;
   }
 
@@ -227,7 +230,8 @@ td{
   }
 
   .stamp-img{
-    width:72px;
-    height:72px;
+    width:70px;
+    height:70px;
   }
+
 }

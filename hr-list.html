@@ -4,21 +4,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>인사관리대장</title>
-  <link rel="stylesheet" href="certificate.css">
+
+  <link rel="stylesheet" href="hr-list.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="top-area">
-      <h1>인사관리대장</h1>
-      <p>HR Management List</p>
-    </div>
 
-    <div class="form-box">
-      <label>직원 검색</label>
-      <input type="text" placeholder="이름 또는 소속 입력">
+<div class="container">
 
-      <button onclick="alert('직원DB 연결 후 조회됩니다.')">조회하기</button>
-    </div>
+  <div class="top-area">
+    <h1>인사관리대장</h1>
+    <p>HR Employee Management</p>
   </div>
+
+  <div class="filter-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="직원명 검색"
+      onkeyup="filterEmployees()"
+    >
+
+    <select id="statusFilter" onchange="filterEmployees()">
+      <option value="">전체 상태</option>
+      <option value="재직">재직</option>
+      <option value="퇴사">퇴사</option>
+    </select>
+
+    <select id="departmentFilter" onchange="filterEmployees()">
+      <option value="">전체 매장</option>
+    </select>
+
+  </div>
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>사번</th>
+          <th>이름</th>
+          <th>소속</th>
+          <th>직위</th>
+          <th>연락처</th>
+          <th>입사일</th>
+          <th>퇴사일</th>
+          <th>상태</th>
+          <th>문서</th>
+        </tr>
+      </thead>
+
+      <tbody id="employeeTableBody">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<script src="hr-list.js"></script>
+
 </body>
 </html>

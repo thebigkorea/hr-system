@@ -100,9 +100,31 @@ function renderEmployees(list) {
       </td>
       <td>
         <div class="doc-buttons">
-          <button class="btn-cert" onclick="openCertificate()">재직증명</button>
-          <button class="btn-career" onclick="openCareer()">경력증명</button>
-          <button class="btn-card" onclick="openCard()">인사카드</button>
+
+          <button class="btn-cert" onclick="openCertificate()">
+            재직증명
+          </button>
+
+          <button class="btn-career" onclick="openCareer()">
+            경력증명
+          </button>
+
+          <button class="btn-card" onclick="openCard()">
+            인사카드
+          </button>
+
+          <button class="btn-regular" onclick="openRegularContract()">
+            정규계약
+          </button>
+
+          <button class="btn-part" onclick="openPartContract()">
+            파트계약
+          </button>
+
+          <button class="btn-service" onclick="openServiceContract()">
+            용역계약
+          </button>
+
         </div>
       </td>
     `;
@@ -156,4 +178,16 @@ function openCareer() {
 
 function openCard() {
   window.open("employee-card.html", "_blank");
+}
+
+function openRegularContract() {
+  window.open("regular-contract.html", "_blank");
+}
+
+function openPartContract() {
+  window.open("part-contract.html", "_blank");
+}
+
+function openServiceContract() {
+  window.open("service-contract.html", "_blank");
 }

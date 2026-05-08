@@ -23,6 +23,7 @@ body{
 }
 
 .top-area p{
+  margin-top:12px;
   color:#666;
   font-size:20px;
 }
@@ -70,7 +71,7 @@ body{
 }
 
 #message{
-  margin-top:20px;
+  margin-top:18px;
   font-size:16px;
   color:#333;
 }
@@ -126,65 +127,31 @@ td{
   font-size:20px;
 }
 
+.today{
+  margin-top:30px;
+}
+
 .sign-area{
-  text-align:center;
+  margin-top:40px;
 }
 
 .ceo-line{
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:14px;
-  margin-top:10px;
+  gap:10px;
+  margin-top:14px;
 }
 
-.corp-seal{
-  width:88px;
-  height:88px;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  transform:rotate(-8deg);
-  opacity:0.92;
+.stamp-img{
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  opacity:0.94;
+  transform:rotate(-6deg);
 }
 
-.corp-seal svg{
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-
-.corp-seal circle,
-.corp-seal path{
-  fill:none;
-  stroke:#b30000;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.corp-seal circle:nth-child(1){
-  stroke-width:6;
-}
-
-.corp-seal circle:nth-child(2){
-  stroke-width:3;
-}
-
-.corp-seal path{
-  stroke-width:5;
-}
-
-.corp-seal circle:nth-of-type(3){
-  stroke-width:5;
-}
-
-.corp-seal text{
-  fill:#b30000;
-  font-family:'Batang','Noto Serif KR',serif;
-  font-size:15px;
-  font-weight:800;
-  letter-spacing:0.8px;
-}
+/* 인쇄 */
 
 @media print {
 
@@ -212,7 +179,6 @@ td{
     max-width:none;
     margin:0;
     padding:0;
-    overflow:hidden;
   }
 
   .preview-box{
@@ -220,30 +186,32 @@ td{
     padding:0;
     width:210mm;
     height:297mm;
-    overflow:hidden;
   }
 
   .paper{
     width:210mm;
     height:297mm;
-    max-height:297mm;
     margin:0;
-    padding:22mm 18mm !important;
+    padding:22mm 18mm;
     box-shadow:none;
     border-radius:0;
-    box-sizing:border-box;
     overflow:hidden;
+    box-sizing:border-box;
   }
 
   .issue-no{
     font-size:11pt;
-    margin-bottom:24mm;
+    margin-bottom:26mm;
   }
 
   .paper h2{
     font-size:27pt;
     letter-spacing:10pt;
-    margin-bottom:22mm;
+    margin-bottom:24mm;
+  }
+
+  table{
+    width:100%;
   }
 
   th, td{
@@ -256,17 +224,13 @@ td{
   }
 
   .bottom-text{
-    margin-top:20mm !important;
+    margin-top:22mm;
     font-size:12pt;
-    line-height:1.8;
+    line-height:1.9;
   }
 
-  .corp-seal{
-    width:76px;
-    height:76px;
-  }
-
-  .corp-seal text{
-    font-size:14px;
+  .stamp-img{
+    width:70px;
+    height:70px;
   }
 }

@@ -4,108 +4,126 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>재직증명서</title>
+
   <link rel="stylesheet" href="certificate.css">
 </head>
 
 <body>
-  <div class="container">
 
-    <div class="top-area no-print">
-      <h1>재직증명서</h1>
-      <p>Certificate of Employment</p>
-    </div>
+<div class="container">
 
-    <div class="form-box no-print">
-      <label>직원 이름</label>
-      <input type="text" id="name" placeholder="직원명 입력">
+  <!-- 입력영역 -->
+  <div class="top-area no-print">
+    <h1>재직증명서</h1>
+    <p>Certificate of Employment</p>
+  </div>
 
-      <label>주민번호 뒤 7자리</label>
-      <input type="password" id="ssnBack" placeholder="예: 1234567" maxlength="7">
+  <div class="form-box no-print">
 
-      <label>제출 용도</label>
-      <input type="text" id="purpose" placeholder="예: 금융기관 제출용">
+    <label>직원 이름</label>
+    <input type="text" id="name" placeholder="직원명 입력">
 
-      <button onclick="createCertificate()">재직증명서 조회 및 출력</button>
+    <label>주민번호 뒤 7자리</label>
+    <input type="password"
+           id="ssnBack"
+           maxlength="7"
+           placeholder="예: 1234567">
 
-      <p id="message"></p>
-    </div>
+    <label>제출 용도</label>
+    <input type="text"
+           id="purpose"
+           placeholder="예: 금융기관 제출용">
 
-    <div class="preview-box" id="previewBox">
-      <div class="paper">
+    <button onclick="createCertificate()">
+      재직증명서 조회 및 출력
+    </button>
 
-        <div class="issue-no">
-          발급번호 : <span id="issueNo">-</span>
-        </div>
+    <p id="message"></p>
 
-        <h2>재 직 증 명 서</h2>
+  </div>
 
-        <table>
-          <tr>
-            <th>성 명</th>
-            <td id="certName"></td>
-          </tr>
-          <tr>
-            <th>주민등록번호</th>
-            <td id="certSsn"></td>
-          </tr>
-          <tr>
-            <th>현 주 소</th>
-            <td id="certAddress"></td>
-          </tr>
-          <tr>
-            <th>소 속</th>
-            <td id="certDepartment"></td>
-          </tr>
-          <tr>
-            <th>직 위</th>
-            <td id="certPosition"></td>
-          </tr>
-          <tr>
-            <th>근무기간</th>
-            <td id="certPeriod"></td>
-          </tr>
-          <tr>
-            <th>용 도</th>
-            <td id="certPurpose"></td>
-          </tr>
-        </table>
+  <!-- 출력영역 -->
+  <div class="preview-box" id="previewBox">
 
-        <div class="bottom-text">
-          위와 같이 증명합니다.<br><br>
-          <span id="certToday"></span>
-          <br><br><br>
+    <div class="paper">
 
-          <div class="sign-area">
-            <div>대전광역시 유성구 테크노4로 29 (관평동) 201호</div>
-            <div>주식회사 더큰코리아</div>
+      <div class="issue-no">
+        발급번호 : <span id="issueNo">-</span>
+      </div>
 
-            <div class="ceo-line">
-              <span>대표이사 박병호</span>
+      <h2>재 직 증 명 서</h2>
 
-              <span class="corp-seal" aria-label="법인인감">
-                <svg viewBox="0 0 200 200">
-                  <circle cx="100" cy="100" r="92"></circle>
-                  <circle cx="100" cy="100" r="74"></circle>
+      <table>
 
-                  <path d="M55 100 Q100 48 145 100 Q100 152 55 100"></path>
-                  <path d="M100 55 Q152 100 100 145 Q48 100 100 55"></path>
-                  <circle cx="100" cy="100" r="27"></circle>
+        <tr>
+          <th>성 명</th>
+          <td id="certName"></td>
+        </tr>
 
-                  <text x="100" y="31" text-anchor="middle">株式會社</text>
-                  <text x="100" y="185" text-anchor="middle">더큰코리아</text>
-                  <text x="23" y="106" text-anchor="middle" transform="rotate(-90 23 106)">代表理事</text>
-                  <text x="177" y="96" text-anchor="middle" transform="rotate(90 177 96)">之印</text>
-                </svg>
-              </span>
-            </div>
+        <tr>
+          <th>주민등록번호</th>
+          <td id="certSsn"></td>
+        </tr>
+
+        <tr>
+          <th>현 주 소</th>
+          <td id="certAddress"></td>
+        </tr>
+
+        <tr>
+          <th>소 속</th>
+          <td id="certDepartment"></td>
+        </tr>
+
+        <tr>
+          <th>직 위</th>
+          <td id="certPosition"></td>
+        </tr>
+
+        <tr>
+          <th>근무기간</th>
+          <td id="certPeriod"></td>
+        </tr>
+
+        <tr>
+          <th>용 도</th>
+          <td id="certPurpose"></td>
+        </tr>
+
+      </table>
+
+      <div class="bottom-text">
+
+        <p>위와 같이 증명합니다.</p>
+
+        <p class="today" id="certToday"></p>
+
+        <div class="sign-area">
+
+          <div>대전광역시 유성구 테크노4로 29 (관평동) 201호</div>
+          <div>주식회사 더큰코리아</div>
+
+          <div class="ceo-line">
+
+            <span>대표이사 박병호</span>
+
+            <img src="./stamp.png"
+                 class="stamp-img"
+                 alt="법인인감">
+
           </div>
+
         </div>
 
       </div>
+
     </div>
 
   </div>
 
-  <script src="certificate.js"></script>
+</div>
+
+<script src="certificate.js"></script>
+
 </body>
 </html>

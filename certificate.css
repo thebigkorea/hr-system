@@ -126,12 +126,49 @@ td{
   font-size:20px;
 }
 
+.sign-area{
+  text-align:center;
+}
+
+.ceo-line{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+}
+
+.stamp-css{
+  width:54px;
+  height:54px;
+  border:3px solid #d60000;
+  border-radius:50%;
+  color:#d60000;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.1;
+  letter-spacing:1px;
+  transform:rotate(-8deg);
+}
+
 @media print {
 
-  body{
-    background:white;
+  @page{
+    size:A4;
+    margin:0;
+  }
+
+  html, body{
+    width:210mm;
+    height:297mm;
     margin:0;
     padding:0;
+    overflow:hidden;
+    background:white;
   }
 
   .no-print{
@@ -139,37 +176,43 @@ td{
   }
 
   .container{
-    width:100%;
+    width:210mm;
+    height:297mm;
     max-width:none;
     margin:0;
     padding:0;
+    overflow:hidden;
   }
 
   .preview-box{
     margin:0;
     padding:0;
+    width:210mm;
+    height:297mm;
+    overflow:hidden;
   }
 
   .paper{
     width:210mm;
     height:297mm;
-    margin:0 auto;
-    padding:25mm 20mm;
+    max-height:297mm;
+    margin:0;
+    padding:22mm 18mm !important;
     box-shadow:none;
     border-radius:0;
     box-sizing:border-box;
-    page-break-after:avoid;
+    overflow:hidden;
   }
 
   .issue-no{
-    font-size:12pt;
-    margin-bottom:28mm;
+    font-size:11pt;
+    margin-bottom:26mm;
   }
 
   .paper h2{
-    font-size:28pt;
+    font-size:27pt;
     letter-spacing:10pt;
-    margin-bottom:25mm;
+    margin-bottom:24mm;
   }
 
   table{
@@ -177,35 +220,24 @@ td{
   }
 
   th, td{
-    font-size:12pt;
-    padding:10pt;
+    font-size:11pt;
+    padding:8pt;
   }
 
   th{
-    width:42mm;
+    width:40mm;
   }
 
   .bottom-text{
-    margin-top:28mm;
-    font-size:13pt;
-    line-height:2;
+    margin-top:22mm !important;
+    font-size:12pt;
+    line-height:1.9;
   }
 
-  @page{
-    size:A4;
-    margin:0;
+  .stamp-css{
+    width:46px;
+    height:46px;
+    font-size:10px;
+    border-width:2px;
   }
-}
-.ceo-line{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:12px;
-  margin-top:10px;
-}
-
-.stamp{
-  width:70px;
-  height:70px;
-  object-fit:contain;
 }

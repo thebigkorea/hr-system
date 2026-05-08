@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>재직증명서</title>
-
   <link rel="stylesheet" href="certificate.css">
 </head>
 
 <body>
-
   <div class="container">
 
-    <!-- 상단 제목 -->
     <div class="top-area no-print">
       <h1>재직증명서</h1>
       <p>Certificate of Employment</p>
     </div>
 
-    <!-- 입력 영역 -->
     <div class="form-box no-print">
-
       <label>직원 이름</label>
       <input
         type="text"
         id="name"
-        placeholder="예: 직원명 입력"
+        placeholder="직원명 입력"
       >
 
       <label>주민번호 뒤 7자리</label>
@@ -49,23 +43,18 @@
       </button>
 
       <p id="message"></p>
-
     </div>
 
-    <!-- 출력 문서 -->
     <div class="preview-box" id="previewBox">
-
       <div class="paper">
 
         <div class="issue-no">
-          발급번호 :
-          <span id="issueNo">-</span>
+          발급번호 : <span id="issueNo">-</span>
         </div>
 
         <h2>재 직 증 명 서</h2>
 
         <table>
-
           <tr>
             <th>성 명</th>
             <td id="certName"></td>
@@ -100,11 +89,9 @@
             <th>용 도</th>
             <td id="certPurpose"></td>
           </tr>
-
         </table>
 
         <div class="bottom-text">
-
           위와 같이 증명합니다.
 
           <br><br>
@@ -113,23 +100,23 @@
 
           <br><br><br>
 
-          대전광역시 유성구 테크노4로 29 (관평동) 201호
-          <br>
+          <div class="sign-area">
+            <div>
+                 유성구 테크노4로 29 (관평동) 201호</div>
+            <div>주식회사 더큰코리아</div>
 
-          주식회사 더큰코리아
-          <br>
-
-          대표이사 박병호
-
+            <div class="ceo-line">
+              <span>대표이사 박병호</span>
+              <img src="./stamp.png" class="stamp" alt="대표이사 직인">
+            </div>
+          </div>
         </div>
 
       </div>
-
     </div>
 
   </div>
 
   <script src="certificate.js"></script>
-
 </body>
 </html>

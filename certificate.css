@@ -1,77 +1,84 @@
 body{
   margin:0;
-  padding:0;
+  padding:40px;
   background:#f3f4f6;
   font-family:'Pretendard','Noto Sans KR',sans-serif;
 }
 
 .container{
-  max-width:900px;
+  max-width:1000px;
   margin:0 auto;
-  padding:30px;
+}
+
+.top-area{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.top-area h1{
+  margin:0;
+  font-size:64px;
+  color:#1f3d68;
+  font-weight:800;
+}
+
+.top-area p{
+  margin-top:14px;
+  font-size:28px;
+  color:#666;
 }
 
 .form-box{
-  background:white;
-  padding:40px;
-  border-radius:20px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  background:#fff;
+  padding:50px;
+  border-radius:24px;
+  box-shadow:0 6px 24px rgba(0,0,0,0.08);
+  margin-bottom:40px;
+}
+
+.input-group{
   margin-bottom:30px;
 }
 
-.form-box h1{
-  margin:0;
-  font-size:48px;
-  color:#1e3a5f;
-  text-align:center;
-}
-
-.sub-title{
-  text-align:center;
-  color:#666;
-  margin-top:10px;
-  margin-bottom:40px;
-  font-size:20px;
-}
-
-.form-box label{
+.input-group label{
   display:block;
-  margin-top:20px;
-  margin-bottom:10px;
-  font-weight:bold;
-  font-size:18px;
+  font-size:30px;
+  font-weight:700;
+  margin-bottom:14px;
 }
 
-.form-box input{
+.input-group input{
   width:100%;
-  padding:18px;
-  border:1px solid #ccc;
-  border-radius:12px;
-  font-size:18px;
+  height:78px;
+  border:2px solid #d9d9d9;
+  border-radius:18px;
+  padding:0 24px;
+  font-size:26px;
   box-sizing:border-box;
 }
 
-.form-box button{
+button{
   width:100%;
-  margin-top:30px;
-  padding:22px;
+  margin-top:20px;
+  height:90px;
   border:none;
-  border-radius:14px;
-  background:#1e3a5f;
-  color:white;
-  font-size:24px;
-  font-weight:bold;
+  border-radius:20px;
+  background:#1f3d68;
+  color:#fff;
+  font-size:34px;
+  font-weight:700;
   cursor:pointer;
 }
 
-.form-box button:hover{
-  background:#274b78;
+button:hover{
+  background:#274b7d;
 }
 
 #message{
-  margin-top:20px;
-  font-size:16px;
-  color:#333;
+  margin-top:24px;
+  text-align:center;
+  color:#d40000;
+  font-size:20px;
 }
 
 .preview-box{
@@ -79,64 +86,66 @@ body{
 }
 
 .paper{
-  background:white;
-  padding:60px;
-  border-radius:10px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  width:210mm;
+  min-height:297mm;
+  background:#fff;
+  margin:0 auto;
+  padding:25mm 22mm;
+  box-sizing:border-box;
+  box-shadow:0 4px 20px rgba(0,0,0,0.1);
 }
 
 .issue-no{
-  font-size:16px;
+  font-size:15px;
   margin-bottom:50px;
 }
 
-.paper-title{
+.paper h2{
   text-align:center;
   font-size:42px;
   letter-spacing:14px;
-  margin-bottom:50px;
+  margin-bottom:55px;
 }
 
-.cert-table{
+table{
   width:100%;
   border-collapse:collapse;
 }
 
-.cert-table th,
-.cert-table td{
+th,
+td{
   border:1px solid #333;
   padding:16px;
   font-size:18px;
 }
 
-.cert-table th{
+th{
   width:180px;
-  background:#f9fafb;
+  background:#f7f7f7;
   text-align:center;
 }
 
+td{
+  text-align:left;
+}
+
 .bottom-text{
-  margin-top:60px;
+  margin-top:70px;
   text-align:center;
   line-height:2;
   font-size:20px;
 }
 
-.today{
-  margin-top:30px;
-}
-
 .sign-area{
-  margin-top:50px;
-  text-align:center;
+  margin-top:40px;
 }
 
 .ceo-line{
+  margin-top:22px;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:8px;
-  margin-top:10px;
+  gap:18px;
 }
 
 .ceo-name{
@@ -144,13 +153,11 @@ body{
 }
 
 .stamp-img{
-  width:80px;
-  height:80px;
+  width:92px;
+  height:92px;
   object-fit:contain;
-  display:inline-block;
 }
 
-/* 인쇄용 */
 @media print{
 
   @page{
@@ -158,75 +165,37 @@ body{
     margin:0;
   }
 
-  html,
   body{
-    width:210mm;
-    height:297mm;
-    margin:0;
+    background:#fff;
     padding:0;
-    overflow:hidden;
-    background:white;
+    margin:0;
   }
 
   .no-print{
     display:none !important;
   }
 
-  .container{
-    width:210mm;
-    height:297mm;
-    max-width:none;
-    margin:0;
-    padding:0;
-  }
-
-  .preview-box{
-    margin:0;
-    padding:0;
-    width:210mm;
-    height:297mm;
-  }
-
   .paper{
     width:210mm;
     height:297mm;
     margin:0;
-    padding:22mm 18mm !important;
-    border-radius:0;
     box-shadow:none;
-    overflow:hidden;
-    box-sizing:border-box;
+    padding:22mm 18mm;
   }
 
-  .issue-no{
-    font-size:11pt;
-    margin-bottom:26mm;
+  .paper h2{
+    font-size:30px;
   }
 
-  .paper-title{
-    font-size:27pt;
-    letter-spacing:10pt;
-    margin-bottom:24mm;
-  }
-
-  .cert-table{
-    width:100%;
-  }
-
-  .cert-table th,
-  .cert-table td{
-    font-size:11pt;
-    padding:8pt;
-  }
-
-  .cert-table th{
-    width:40mm;
+  th,
+  td{
+    font-size:12px;
+    padding:10px;
   }
 
   .bottom-text{
-    margin-top:22mm;
-    font-size:12pt;
-    line-height:1.9;
+    font-size:14px;
+    margin-top:45px;
   }
 
   .stamp-img{

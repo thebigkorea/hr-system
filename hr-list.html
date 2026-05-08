@@ -16,22 +16,28 @@
   </div>
 
   <div class="search-area">
-    <input type="text" id="searchInput" placeholder="직원명 검색">
-
-    <select id="statusFilter">
-      <option value="all">전체 상태</option>
-      <option value="재직">재직</option>
-      <option value="재직중">재직중</option>
-      <option value="퇴사">퇴사</option>
-      <option value="퇴사자">퇴사자</option>
-    </select>
 
     <select id="deptFilter">
       <option value="all">전체 매장</option>
     </select>
 
+    <select id="statusFilter">
+      <option value="all">전체 상태</option>
+      <option value="재직중">재직중</option>
+      <option value="재직">재직</option>
+      <option value="퇴사">퇴사</option>
+      <option value="퇴사자">퇴사자</option>
+    </select>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="특정 직원명 검색"
+    >
+
     <button class="search-btn" onclick="searchEmployee()">조회</button>
     <button class="reset-btn" onclick="resetSearch()">초기화</button>
+
   </div>
 
   <div class="table-wrap">

@@ -47,12 +47,12 @@ body{
   box-sizing:border-box;
 }
 
-.search-area input{
-  width:360px;
+.search-area select{
+  width:220px;
 }
 
-.search-area select{
-  width:180px;
+.search-area input{
+  width:320px;
 }
 
 .search-btn,
@@ -73,14 +73,6 @@ body{
 
 .reset-btn{
   background:#64748b;
-}
-
-.search-btn:hover{
-  background:#294d82;
-}
-
-.reset-btn:hover{
-  background:#475569;
 }
 
 .table-wrap{
@@ -111,10 +103,6 @@ td{
   text-align:center;
   border-bottom:1px solid #eee;
   font-size:16px;
-}
-
-tbody tr:hover{
-  background:#f8fafc;
 }
 
 .badge{

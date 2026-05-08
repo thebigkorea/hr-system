@@ -26,8 +26,8 @@ async function loadEmployees() {
 
     allEmployees = result.employees || [];
 
-    renderEmployees(allEmployees);
     createDepartmentFilter(allEmployees);
+    renderEmployees(allEmployees);
 
   } catch (err) {
     tbody.innerHTML = `
@@ -93,40 +93,42 @@ function renderEmployees(list) {
 }
 
 function searchEmployee() {
-  const keyword = document.getElementById("searchInput").value.trim();
-  const status = document.getElementById("statusFilter").value;
   const dept = document.getElementById("deptFilter").value;
+  const status = document.getElementById("statusFilter").value;
+  const keyword = document.getElementById("searchInput").value.trim();
 
   const filtered = allEmployees.filter(emp => {
-    const name = emp.name || "";
-    const empStatus = emp.status || "";
     const department = emp.department || "";
-
-    const matchKeyword =
-      !keyword || name.includes(keyword);
-
-    const matchStatus =
-      status === "all" || empStatus === status;
+    const empStatus = emp.status || "";
+    const name = emp.name || "";
 
     const matchDept =
       dept === "all" || department === dept;
 
-    return matchKeyword && matchStatus && matchDept;
+    const matchStatus =
+      status === "all" || empStatus === status;
+
+    const matchKeyword =
+      keyword === "" || name.includes(keyword);
+
+    return matchDept && matchStatus && matchKeyword;
   });
 
   renderEmployees(filtered);
 }
 
 function resetSearch() {
-  document.getElementById("searchInput").value = "";
-  document.getElementById("statusFilter").value = "all";
   document.getElementById("deptFilter").value = "all";
+  document.getElementById("statusFilter").value = "all";
+  document.getElementById("searchInput").value = "";
 
   renderEmployees(allEmployees);
 }
 
 function createDepartmentFilter(list) {
   const select = document.getElementById("deptFilter");
+
+  select.innerHTML = `<option value="all">전체 매장</option>`;
 
   const departments = [...new Set(
     list

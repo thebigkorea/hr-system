@@ -3,93 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>재직증명서</title>
-
   <link rel="stylesheet" href="certificate.css">
 </head>
 
 <body>
-
   <div class="container">
 
-    <div class="top-area">
+    <div class="top-area no-print">
       <h1>재직증명서</h1>
       <p>Certificate of Employment</p>
     </div>
 
-    <div class="form-box">
-
+    <div class="form-box no-print">
       <label>직원 이름</label>
-      <input type="text" id="name" placeholder="이름 입력">
+      <input type="text" id="name" placeholder="예: 박상신">
 
-      <label>주민번호 뒤 4자리</label>
-      <input type="password" id="ssn" placeholder="뒤 4자리 입력">
+      <label>주민번호 뒤 첫 자리</label>
+      <input type="password" id="ssnLastFirst" placeholder="예: 1">
 
       <label>제출 용도</label>
       <input type="text" id="purpose" placeholder="예: 통신사 제출용">
 
-      <button onclick="createCertificate()">
-        재직증명서 출력
-      </button>
-
+      <button onclick="createCertificate()">재직증명서 조회 및 출력</button>
+      <p id="message"></p>
     </div>
 
-    <div class="preview-box" id="preview">
-
+    <div class="preview-box" id="previewBox">
       <div class="paper">
+
+        <div class="issue-no">
+          발급번호 : <span id="issueNo">-</span>
+        </div>
 
         <h2>재 직 증 명 서</h2>
 
         <table>
-
           <tr>
             <th>성 명</th>
-            <td id="previewName">박상신</td>
+            <td id="certName"></td>
           </tr>
-
+          <tr>
+            <th>주민등록번호</th>
+            <td id="certSsn"></td>
+          </tr>
+          <tr>
+            <th>현 주 소</th>
+            <td id="certAddress"></td>
+          </tr>
           <tr>
             <th>소 속</th>
-            <td>한국의집 롯데월드몰점</td>
+            <td id="certDepartment"></td>
           </tr>
-
           <tr>
             <th>직 위</th>
-            <td>이사</td>
+            <td id="certPosition"></td>
           </tr>
-
           <tr>
             <th>근무기간</th>
-            <td>2025-04-01 ~ 현재</td>
+            <td id="certPeriod"></td>
           </tr>
-
           <tr>
             <th>용 도</th>
-            <td id="previewPurpose">통신사 제출용</td>
+            <td id="certPurpose"></td>
           </tr>
-
         </table>
 
         <div class="bottom-text">
-
           위와 같이 증명합니다.<br><br>
-
-          2026년 05월 08일
-
+          <span id="certToday"></span>
           <br><br><br>
-
+          대전광역시 유성구 테크노4로 29 (관평동) 201호<br>
           주식회사 더큰코리아<br>
           대표이사 박병호
-
         </div>
 
       </div>
-
     </div>
 
   </div>
 
   <script src="certificate.js"></script>
-
 </body>
 </html>

@@ -10,6 +10,7 @@ window.onload = function () {
 
 async function loadContracts() {
   const tbody = document.getElementById("contractTableBody");
+
   tbody.innerHTML = `
     <tr>
       <td colspan="9">계약 목록을 불러오는 중입니다...</td>
@@ -62,7 +63,6 @@ function resetSearch() {
   document.getElementById("searchName").value = "";
   document.getElementById("statusFilter").value = "all";
   document.getElementById("typeFilter").value = "all";
-
   renderContracts(allContracts);
 }
 
@@ -99,7 +99,7 @@ function renderContracts(list) {
       <td>
         <div class="action-buttons">
           <button onclick="openContract('${c.contractId}')">원본보기</button>
-          <button class="green" onclick="copyLink('${c.workerLink || ""}')">링크복사</button>
+          <button class="green" onclick="copyViewLink('${c.workerLink || ""}')">완료본 링크복사</button>
         </div>
       </td>
     `;
@@ -144,6 +144,7 @@ function renderContractDetail(result) {
     <h3>제2조 근무장소 및 업무내용</h3>
     <p>① 근무장소 : ${c.workPlace || ""}</p>
     <p>② 업무내용 : ${c.jobDuty || ""}</p>
+    <p>③ 회사는 필요한 경우 직원의 의견을 들어 업무내용을 변경할 수 있다.</p>
 
     <h3>제3조 근로시간 및 휴게</h3>
     <table class="detail-table">
@@ -161,7 +162,11 @@ function renderContractDetail(result) {
       </tr>
     </table>
 
-    <h3>제4조 임금</h3>
+    <h3>제4조 휴일 및 휴가</h3>
+    <p>① 법정유급휴일은 주휴일 및 근로자의 날로 한다.</p>
+    <p>② 근로기준법이 정하는 바에 따라 연차휴가를 부여한다.</p>
+
+    <h3>제5조 임금</h3>
     <table class="detail-table">
       <tr>
         <th>기본급</th>
@@ -180,6 +185,39 @@ function renderContractDetail(result) {
         <td><strong>${c.totalPay || ""}</strong></td>
       </tr>
     </table>
+
+    <p>② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.</p>
+    <p>③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.</p>
+
+    <h3>제6조 제출서류</h3>
+    <p>직원은 채용과 동시에 주민등록등본, 보건증, 통장사본, 신분증사본 등 회사가 요청하는 서류를 제출한다.</p>
+
+    <h3>제7조 퇴직급여</h3>
+    <p>회사는 근로자퇴직급여보장법이 정한 바에 따라 퇴직급여를 지급한다.</p>
+
+    <h3>제8조 퇴직절차</h3>
+    <p>직원은 퇴직하고자 할 경우 사직원을 사전 제출하여야 한다.</p>
+
+    <h3>제9조 신의성실의무</h3>
+    <p>
+      직원은 회사의 경영방침에 따라 신의와 성실로 근무하여야 하며,
+      회사의 영업기밀사항을 외부에 누설하여서는 아니 된다.
+    </p>
+
+    <h3>제10조 CCTV 설치 동의</h3>
+    <p>
+      직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해
+      충분히 설명을 듣고 이해 및 동의한다.
+    </p>
+
+    <h3>제11조 전자계약 및 계약서 교부 확인</h3>
+    <p>
+      회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
+      전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
+    </p>
+
+    <h3>제12조 기타사항</h3>
+    <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
 
     <h3>직원 기본정보</h3>
     <table class="detail-table">
@@ -210,19 +248,27 @@ function renderContractDetail(result) {
     <p>계약상태 : ${result.status || ""}</p>
     <p>서명일시 : ${result.signedAt || "-"}</p>
 
-    <div>
-      <p><strong>근로자 전자서명</strong></p>
-      ${
-        signature
-          ? `<img class="signature-img" src="${signature}" alt="근로자 전자서명">`
-          : `<p>아직 서명 이미지가 없습니다.</p>`
-      }
-    </div>
+    <div class="sign-admin-box">
+      <div>
+        <h3>[회사]</h3>
+        <p>상호 : 한국의집 롯데월드몰점</p>
+        <p>대표 : 박병호</p>
+        <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+        <p>연락처 : 070-5015-7233</p>
+        <img class="company-stamp" src="https://thebigkorea.github.io/hr-system/stamp.png">
+      </div>
 
-    <h3>회사 확인</h3>
-    <p>상호 : 한국의집 롯데월드몰점</p>
-    <p>대표자 : 박병호</p>
-    <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+      <div>
+        <h3>[근로자]</h3>
+        <p>성명 : ${c.empName || ""}</p>
+        <p>근로자 전자서명</p>
+        ${
+          signature
+            ? `<img class="signature-img" src="${signature}" alt="근로자 전자서명">`
+            : `<p>아직 서명 이미지가 없습니다.</p>`
+        }
+      </div>
+    </div>
   `;
 
   document.getElementById("contractDetail").innerHTML = html;
@@ -242,18 +288,28 @@ function copyWorkerLink() {
     return;
   }
 
-  copyText(selectedContract.workerLink);
-  alert("직원 링크가 복사되었습니다.");
+  const viewLink = selectedContract.workerLink.replace(
+    "regular-contract.html",
+    "contract-view.html"
+  );
+
+  copyText(viewLink);
+  alert("완료된 계약서 열람 링크가 복사되었습니다.");
 }
 
-function copyLink(link) {
+function copyViewLink(link) {
   if (!link) {
     alert("복사할 링크가 없습니다.");
     return;
   }
 
-  copyText(link);
-  alert("직원 링크가 복사되었습니다.");
+  const viewLink = link.replace(
+    "regular-contract.html",
+    "contract-view.html"
+  );
+
+  copyText(viewLink);
+  alert("완료된 계약서 열람 링크가 복사되었습니다.");
 }
 
 function copyText(text) {

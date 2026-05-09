@@ -6,16 +6,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contractId = params.get("id");
 
   if (!contractId) {
-    setStatus("계약번호가 없습니다.");
+    showError("계약번호가 없습니다.");
     return;
   }
 
-  await loadContractView(contractId);
+  await loadContract(contractId);
 });
 
-async function loadContractView(contractId) {
-  setStatus("계약서를 불러오는 중입니다...");
-
+async function loadContract(contractId) {
   try {
     const result = await postData({
       action: "getContractById",
@@ -23,57 +21,139 @@ async function loadContractView(contractId) {
     });
 
     if (!result.success) {
-      setStatus(result.message || "계약서를 불러오지 못했습니다.");
+      showError(result.message || "계약서를 불러오지 못했습니다.");
       return;
     }
 
-    fillContract(result.contract);
+    renderContract(result);
 
-    if (result.signature) {
-      const img = document.getElementById("workerSignatureImage");
-      img.src = result.signature;
-      img.style.display = "block";
-    }
-
-    document.getElementById("signedTime").innerText =
-      result.signedAt ? result.signedAt + " 전자서명 완료" : "";
-
-    if (result.status === "서명완료") {
-      setStatus("전자서명이 완료된 근로계약서입니다.");
-    } else {
-      setStatus("아직 전자서명이 완료되지 않은 계약서입니다.");
-    }
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("contractWrap").style.display = "block";
 
   } catch (err) {
-    setStatus("계약서 조회 중 오류가 발생했습니다.");
+    showError("계약서 조회 중 오류가 발생했습니다.");
   }
 }
 
-function fillContract(data) {
-  text("cEmpName", data.empName);
-  text("cWorkerName", data.empName);
-  text("cResidentNo", data.residentNo);
-  text("cBirth", data.birth);
-  text("cPhone", data.phone);
-  text("cAddress", data.address);
-  text("cBankAccount", `${data.bank || ""} ${data.account || ""}`);
+function renderContract(result) {
+  const c = result.contract || {};
+  const signature = result.signature || "";
 
-  text("cJoinDate", data.joinDate);
-  text("cWorkPlace", data.workPlace);
-  text("cJobDuty", data.jobDuty);
-  text("cWorkDays", data.workDays);
-  text("cWorkTime", data.workTime);
-  text("cBreakTime", data.breakTime);
-  text("cMonthHour", data.monthHour);
+  document.getElementById("contractContent").innerHTML = `
+    <p>
+      한국의집 롯데월드몰점(이하 “회사”라 한다)과 근로자
+      <strong>${c.empName || ""}</strong>
+      (이하 “직원”이라 한다)은 다음과 같이 근로계약을 체결하고 이를 성실히 이행할 것을 약정한다.
+    </p>
 
-  text("cBasePay", withWon(data.basePay));
-  text("cOvertimePay", withWon(data.overtimePay));
-  text("cDutyPay", withWon(data.dutyPay));
-  text("cPositionPay", withWon(data.positionPay));
-  text("cMealPay", withWon(data.mealPay));
-  text("cTotalPay", withWon(data.totalPay));
+    <div class="section-title">제1조 계약기간</div>
+    <p>입사일 : ${c.joinDate || ""}</p>
+    <p>입사일로부터 기간의 정함이 없는 근로계약을 체결한다. 수습기간은 3개월로 한다.</p>
 
-  text("cToday", getTodayKorean());
+    <div class="section-title">제2조 근무장소 및 업무내용</div>
+    <p>① 근무장소 : ${c.workPlace || ""}</p>
+    <p>② 업무내용 : ${c.jobDuty || ""}</p>
+    <p>③ 회사는 필요한 경우 직원의 의견을 들어 업무내용을 변경할 수 있다.</p>
+
+    <div class="section-title">제3조 근로시간 및 휴게</div>
+    <table class="contract-table">
+      <tr>
+        <th>근무일수</th>
+        <th>월 기준시간</th>
+        <th>근무시간</th>
+        <th>휴게시간</th>
+      </tr>
+      <tr>
+        <td>${c.workDays || ""}</td>
+        <td>${c.monthHour || ""}</td>
+        <td>${c.workTime || ""}</td>
+        <td>${c.breakTime || ""}</td>
+      </tr>
+    </table>
+
+    <div class="section-title">제4조 휴일 및 휴가</div>
+    <p>① 법정유급휴일은 주휴일 및 근로자의 날로 한다.</p>
+    <p>② 근로기준법이 정하는 바에 따라 연차휴가를 부여한다.</p>
+
+    <div class="section-title">제5조 임금</div>
+    <table class="contract-table">
+      <tr>
+        <th>항목</th>
+        <th>금액</th>
+      </tr>
+      <tr><td>기본급</td><td>${won(c.basePay)}</td></tr>
+      <tr><td>연장수당</td><td>${won(c.overtimePay)}</td></tr>
+      <tr><td>직무수당</td><td>${won(c.dutyPay)}</td></tr>
+      <tr><td>직책수당</td><td>${won(c.positionPay)}</td></tr>
+      <tr><td>식대</td><td>${won(c.mealPay)}</td></tr>
+      <tr class="total-row"><td>월급총액</td><td>${won(c.totalPay)}</td></tr>
+    </table>
+
+    <p>② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.</p>
+    <p>③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.</p>
+
+    <div class="section-title">제6조 제출서류</div>
+    <p>직원은 채용과 동시에 주민등록등본, 보건증, 통장사본, 신분증사본 등 회사가 요청하는 서류를 제출한다.</p>
+
+    <div class="section-title">제7조 퇴직급여</div>
+    <p>회사는 근로자퇴직급여보장법이 정한 바에 따라 퇴직급여를 지급한다.</p>
+
+    <div class="section-title">제8조 퇴직절차</div>
+    <p>직원은 퇴직하고자 할 경우 사직원을 사전 제출하여야 한다.</p>
+
+    <div class="section-title">제9조 신의성실의무</div>
+    <p>직원은 회사의 경영방침에 따라 신의와 성실로 근무하여야 하며, 회사의 영업기밀사항을 외부에 누설하여서는 아니 된다.</p>
+
+    <div class="section-title">제10조 CCTV 설치 동의</div>
+    <p>직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 이해 및 동의한다.</p>
+
+    <div class="section-title">제11조 전자계약 및 계약서 교부 확인</div>
+    <p>회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
+
+    <div class="section-title">제12조 기타사항</div>
+    <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
+
+    <p style="text-align:center;font-weight:900;margin-top:50px;">
+      회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
+    </p>
+
+    <p style="text-align:center;font-weight:900;font-size:24px;">
+      ${todayKorean()}
+    </p>
+
+    <div class="sign-area">
+      <div class="sign-box">
+        <h3>[회사]</h3>
+        <p>상호 : 한국의집 롯데월드몰점</p>
+        <p>대표 : 박병호</p>
+        <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+        <p>연락처 : 070-5015-7233</p>
+        <img class="company-seal" src="https://thebigkorea.github.io/hr-system/stamp.png">
+      </div>
+
+      <div class="sign-box">
+        <h3>[근로자]</h3>
+        <p>성명 : ${c.empName || ""}</p>
+        <p>주민등록번호 : ${c.residentNo || ""}</p>
+        <p>생년월일 : ${c.birth || ""}</p>
+        <p>주소 : ${c.address || ""}</p>
+        <p>연락처 : ${c.phone || ""}</p>
+        <p>급여계좌 : ${c.bank || ""} ${c.account || ""}</p>
+        <p>근로자 전자서명</p>
+        ${signature ? `<img class="signature-img" src="${signature}">` : `<p>서명 정보 없음</p>`}
+        <p>${result.signedAt || ""} 전자서명 완료</p>
+      </div>
+    </div>
+
+    <div class="bottom-buttons">
+      <button class="btn btn-print" onclick="window.print()">PDF 저장 / 인쇄</button>
+    </div>
+  `;
+}
+
+function showError(msg) {
+  const loading = document.getElementById("loading");
+  loading.innerText = msg;
 }
 
 async function postData(data) {
@@ -85,25 +165,12 @@ async function postData(data) {
   return await response.json();
 }
 
-function text(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = val || "";
-}
-
-function setStatus(msg) {
-  const el = document.getElementById("statusBox");
-  if (el) el.innerText = msg;
-}
-
-function withWon(v) {
+function won(v) {
   if (!v) return "0원";
-  return `${v}원`;
+  return String(v).includes("원") ? v : `${v}원`;
 }
 
-function getTodayKorean() {
+function todayKorean() {
   const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth() + 1).padStart(2, "0");
-  const d = String(today.getDate()).padStart(2, "0");
-  return `${y}년 ${m}월 ${d}일`;
+  return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
 }

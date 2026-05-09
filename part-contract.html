@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>계약직 근로계약서</title>
+
+  <meta property="og:title" content="계약직 근로계약서 서명본">
+  <meta property="og:description" content="더큰코리아 전자근로계약 시스템">
+  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/contract-sign-thumb.jpg">
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="part-contract.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="top-area no-print">
+    <h1>계약직 근로계약서</h1>
+    <p>Part-time Employment Contract</p>
+  </div>
+
+  <div class="form-box no-print">
+
+    <h2>직원 기본정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>직원 성명</label>
+        <input type="text" id="empName">
+      </div>
+
+      <div class="input-group">
+        <label>주민등록번호</label>
+        <input type="text" id="residentNo">
+      </div>
+
+      <div class="input-group">
+        <label>생년월일</label>
+        <input type="text" id="birth">
+      </div>
+
+      <div class="input-group">
+        <label>연락처</label>
+        <input type="text" id="phone">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>주소</label>
+      <input type="text" id="address">
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>계약 시작일</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="input-group">
+        <label>계약 종료일</label>
+        <input type="date" id="endDate">
+      </div>
+
+      <div class="input-group">
+        <label>주 근무일수</label>
+        <select id="workDays">
+          <option>주2일</option>
+          <option>주3일</option>
+          <option>주4일</option>
+          <option>주5일</option>
+          <option>주6일</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>주휴일</label>
+        <select id="holiday">
+          <option>월요일</option>
+          <option>화요일</option>
+          <option>수요일</option>
+          <option>목요일</option>
+          <option>금요일</option>
+          <option>토요일</option>
+          <option>일요일</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>출근시간</label>
+        <select id="startTime"></select>
+      </div>
+
+      <div class="input-group">
+        <label>퇴근시간</label>
+        <select id="endTime"></select>
+      </div>
+
+      <div class="input-group">
+        <label>휴게시간</label>
+        <select id="breakTime">
+          <option>30분</option>
+          <option>1시간</option>
+          <option>1시간30분</option>
+          <option>2시간</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>업무내용</label>
+        <select id="jobDuty">
+          <option>홀서빙</option>
+          <option>주방보조</option>
+          <option>조리보조</option>
+          <option>설거지</option>
+          <option>매장업무</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>시급</label>
+        <input type="text" id="hourPay">
+      </div>
+
+      <div class="input-group">
+        <label>4대보험</label>
+        <select id="insurance">
+          <option>희망</option>
+          <option>미희망</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="createContract()">
+      계약직 근로계약서 생성
+    </button>
+
+    <button onclick="saveContractAndCreateLink(event)" class="green-btn">
+      계약 저장 및 직원 링크 생성
+    </button>
+
+    <div id="contractLinkBox" class="contract-link-box" style="display:none;">
+      <input type="text" id="contractLink" readonly>
+      <button onclick="copyContractLink()">링크 복사</button>
+    </div>
+
+  </div>
+
+  <div class="paper" id="contractPaper">
+
+    <h1 class="contract-title">근 로 계 약 서</h1>
+
+    <p>
+      한국의집 롯데월드몰점(이하 “사업주”라 함)과
+      <strong id="cEmpName"></strong>
+      (이하 “근로자”라 함)은 다음과 같이 근로계약을 체결한다.
+    </p>
+
+    <h3>1. 근로계약기간</h3>
+    <p>
+      <span id="cStartDate"></span>
+      부터
+      <span id="cEndDate"></span>
+      까지
+    </p>
+
+    <h3>2. 근무장소</h3>
+    <p>한국의집 롯데월드몰점</p>
+
+    <h3>3. 업무내용</h3>
+    <p id="cJobDuty"></p>
+
+    <h3>4. 근로시간</h3>
+
+    <table>
+      <tr>
+        <th>출근시간</th>
+        <th>퇴근시간</th>
+        <th>휴게시간</th>
+      </tr>
+      <tr>
+        <td id="cStartTime"></td>
+        <td id="cEndTime"></td>
+        <td id="cBreakTime"></td>
+      </tr>
+    </table>
+
+    <h3>5. 근무일 / 휴일</h3>
+    <p>
+      <span id="cWorkDays"></span> 근무 /
+      주휴일 :
+      <span id="cHoliday"></span>
+    </p>
+
+    <h3>6. 임금</h3>
+
+    <table>
+      <tr>
+        <th>시급</th>
+        <th>4대보험</th>
+      </tr>
+      <tr>
+        <td id="cHourPay"></td>
+        <td id="cInsurance"></td>
+      </tr>
+    </table>
+
+    <p>
+      회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 5일에 지급한다.
+    </p>
+
+    <h3>7. CCTV 설치 동의</h3>
+
+    <p>
+      방범 및 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 동의한다.
+    </p>
+
+    <div class="sign-area">
+
+      <div class="sign-box">
+        <h4>[사업주]</h4>
+
+        <p>사업체명 : 한국의집 롯데월드몰점</p>
+        <p>대표자 : 박병호</p>
+
+        <img
+          src="https://thebigkorea.github.io/hr-system/stamp.png"
+          class="stamp-img"
+        >
+      </div>
+
+      <div class="sign-box">
+        <h4>[근로자]</h4>
+
+        <p>성명 : <span id="cWorkerName"></span></p>
+        <p>주민번호 : <span id="cResidentNo"></span></p>
+        <p>주소 : <span id="cAddress"></span></p>
+
+        <p class="sign-label">전자서명</p>
+
+        <img id="workerSignatureImage" class="worker-sign">
+
+        <p id="signedTime"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="electronic-sign-box no-print">
+
+    <h3>전자서명</h3>
+
+    <label class="agree-line">
+      <input type="checkbox" id="agreeCheck">
+      근로계약 내용을 확인하였으며 전자계약에 동의합니다.
+    </label>
+
+    <canvas id="signaturePad" width="600" height="220"></canvas>
+
+    <div class="sign-buttons">
+      <button onclick="clearSignature()">다시서명</button>
+
+      <button onclick="completeElectronicContract(event)" class="green-btn">
+        전자계약 완료
+      </button>
+    </div>
+
+    <div id="completeBox" class="complete-box">
+      전자계약이 완료되었습니다.
+    </div>
+
+  </div>
+
+</div>
+
+<script src="part-contract.js"></script>
+
+</body>
+</html>

@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>정규직 근로계약서</title>
+  <title>계약직(아르바이트) 근로계약서</title>
 
-  <!-- 카카오톡 / SNS 썸네일: 직원 서명용 -->
-  <meta property="og:title" content="정규직 근로계약서 서명본">
+  <meta property="og:title" content="아르바이트 근로계약서 서명요청">
   <meta property="og:description" content="더큰코리아 전자근로계약 시스템">
-  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/contract-sign-thumb.jpg">
+  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/part-contract-sign-thumb.jpg">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://thebigkorea.github.io/hr-system/regular-contract.html">
+  <meta property="og:url" content="https://thebigkorea.github.io/hr-system/part-contract.html">
 
-  <link rel="stylesheet" href="regular-contract.css"/>
+  <link rel="stylesheet" href="part-contract.css">
 </head>
 
 <body>
 <div class="container">
 
   <div class="top-area no-print">
-    <h1>정규직 근로계약서</h1>
-    <p>Electronic Employment Contract</p>
+    <h1>계약직(아르바이트) 근로계약서</h1>
+    <p>Part-time Employment Contract</p>
   </div>
 
   <div class="form-box no-print">
@@ -55,24 +54,17 @@
       <input type="text" id="address" placeholder="직원 주소 입력">
     </div>
 
-    <div class="grid">
-      <div class="input-group">
-        <label>은행명</label>
-        <input type="text" id="bank" placeholder="예: 국민은행">
-      </div>
-
-      <div class="input-group">
-        <label>계좌번호</label>
-        <input type="text" id="account" placeholder="급여계좌번호">
-      </div>
-    </div>
-
-    <h2>근무 정보</h2>
+    <h2>계약 및 근무 정보</h2>
 
     <div class="grid">
       <div class="input-group">
-        <label>입사일</label>
-        <input type="date" id="joinDate">
+        <label>계약 시작일</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="input-group">
+        <label>계약 종료일</label>
+        <input type="date" id="endDate">
       </div>
 
       <div class="input-group">
@@ -88,22 +80,27 @@
       </div>
 
       <div class="input-group">
-        <label>월 기준시간</label>
-        <input type="number" id="monthHour" value="209">
+        <label>주휴일</label>
+        <select id="holiday">
+          <option value="">선택 안함</option>
+          <option>월요일</option>
+          <option>화요일</option>
+          <option>수요일</option>
+          <option>목요일</option>
+          <option>금요일</option>
+          <option>토요일</option>
+          <option>일요일</option>
+        </select>
       </div>
 
       <div class="input-group">
         <label>출근시간</label>
-        <select id="startTime">
-          <option value="">출근시간 선택</option>
-        </select>
+        <select id="startTime"></select>
       </div>
 
       <div class="input-group">
         <label>퇴근시간</label>
-        <select id="endTime">
-          <option value="">퇴근시간 선택</option>
-        </select>
+        <select id="endTime"></select>
       </div>
 
       <div class="input-group">
@@ -120,51 +117,37 @@
       </div>
 
       <div class="input-group">
-        <label>근무장소</label>
-        <input type="text" id="workPlace" value="한국의집 롯데월드몰점">
+        <label>업무내용</label>
+        <select id="jobDuty">
+          <option value="">선택</option>
+          <option>홀서빙</option>
+          <option>주방보조</option>
+          <option>조리보조</option>
+          <option>설거지</option>
+          <option>매장업무</option>
+        </select>
       </div>
     </div>
 
-    <div class="input-group">
-      <label>업무내용</label>
-      <input type="text" id="jobDuty" placeholder="예: 주방조리업무 / 홀서빙 / 매장관리">
-    </div>
-
-    <h2>임금 정보</h2>
+    <h2>임금 및 보험</h2>
 
     <div class="grid">
       <div class="input-group">
-        <label>기본급</label>
-        <input type="text" id="basePay" class="money-input" placeholder="예: 2,000,000">
+        <label>시급</label>
+        <input type="text" id="hourPay" placeholder="예: 13,500">
       </div>
 
       <div class="input-group">
-        <label>연장수당</label>
-        <input type="text" id="overtimePay" class="money-input" placeholder="예: 300,000">
-      </div>
-
-      <div class="input-group">
-        <label>직무수당</label>
-        <input type="text" id="dutyPay" class="money-input" placeholder="예: 200,000">
-      </div>
-
-      <div class="input-group">
-        <label>직책수당</label>
-        <input type="text" id="positionPay" class="money-input" placeholder="예: 0">
-      </div>
-
-      <div class="input-group">
-        <label>식대</label>
-        <input type="text" id="mealPay" class="money-input" placeholder="예: 100,000">
-      </div>
-
-      <div class="input-group total-box">
-        <label>월급총액</label>
-        <input type="text" id="totalPay" readonly>
+        <label>4대보험</label>
+        <select id="insurance">
+          <option value="">선택</option>
+          <option>희망</option>
+          <option>미희망</option>
+        </select>
       </div>
     </div>
 
-    <button onclick="createContract()">정규직 근로계약서 생성</button>
+    <button onclick="createContract()">계약직(아르바이트) 근로계약서 생성</button>
 
     <button onclick="saveContractAndCreateLink(event)" class="green-btn">
       계약 저장 및 직원 링크 생성
@@ -179,151 +162,96 @@
     <div id="message"></div>
   </div>
 
-  <div class="paper">
+  <div class="paper" id="contractPaper">
 
-    <h1 class="contract-title">근 로 계 약 서</h1>
+    <h1 class="contract-title">계약직(아르바이트) 근로계약서</h1>
 
     <p>
-      한국의집 롯데월드몰점(이하 “회사”라 한다)과 근로자
+      한국의집 롯데월드몰점(이하 “사업주”라 함)과 근로자
       <strong id="cEmpName"></strong>
-      (이하 “직원”이라 한다)은 다음과 같이 근로계약을 체결하고 이를 성실히 이행할 것을 약정한다.
+      (이하 “근로자”라 함)은 다음과 같이 근로계약을 체결한다.
     </p>
 
-    <h3>제1조 계약기간</h3>
-    <p>입사일 : <span id="cJoinDate"></span></p>
-    <p>입사일로부터 기간의 정함이 없는 근로계약을 체결한다. 수습기간은 3개월로 한다.</p>
+    <h3>1. 근로계약기간</h3>
+    <p><span id="cStartDate"></span>부터 <span id="cEndDate"></span>까지</p>
 
-    <h3>제2조 근무장소 및 업무내용</h3>
-    <p>① 근무장소 : <span id="cWorkPlace"></span></p>
-    <p>② 업무내용 : <span id="cJobDuty"></span></p>
-    <p>③ 회사는 필요한 경우 직원의 의견을 들어 업무내용을 변경할 수 있다.</p>
+    <h3>2. 근무장소</h3>
+    <p>한국의집 롯데월드몰점</p>
 
-    <h3>제3조 근로시간 및 휴게</h3>
-    <p>① 근무시간 및 휴게시간은 아래와 같다. (<span id="cWorkDays"></span> 근무)</p>
+    <h3>3. 업무내용</h3>
+    <p id="cJobDuty"></p>
 
+    <h3>4. 근로시간</h3>
     <table>
       <tr>
-        <th>근무시간</th>
+        <th>출근시간</th>
+        <th>퇴근시간</th>
         <th>휴게시간</th>
       </tr>
       <tr>
-        <td id="cWorkTime"></td>
+        <td id="cStartTime"></td>
+        <td id="cEndTime"></td>
         <td id="cBreakTime"></td>
       </tr>
     </table>
 
-    <h3>제4조 휴일 및 휴가</h3>
-    <p>① 법정유급휴일은 주휴일 및 근로자의 날로 한다.</p>
-    <p>② 근로기준법이 정하는 바에 따라 연차휴가를 부여한다.</p>
-
-    <h3>제5조 임금</h3>
+    <h3>5. 근무일 / 휴일</h3>
     <p>
-      ① 임금은 주휴포함 월 <strong id="cMonthHour"></strong>시간에 해당하는 기본급 및 식대,
-      연장수당, 연차수당 등으로 구성된다.
+      <span id="cWorkDays"></span> 근무 /
+      주휴일 : <span id="cHoliday"></span>
     </p>
 
-    <table class="salary-table">
+    <h3>6. 임금</h3>
+    <table>
       <tr>
-        <th colspan="2">구분</th>
-        <th>금액 (단위:원)</th>
-        <th>산정 기준</th>
+        <th>시급</th>
+        <th>4대보험</th>
       </tr>
       <tr>
-        <td rowspan="5" class="vertical-cell">구<br>성<br>항<br>목</td>
-        <td>기본급</td>
-        <td id="cBasePay"></td>
-        <td>월 기준시간 분의 임금</td>
-      </tr>
-      <tr>
-        <td>연장수당</td>
-        <td id="cOvertimePay"></td>
-        <td>연장근로 해당분</td>
-      </tr>
-      <tr>
-        <td>직무수당</td>
-        <td id="cDutyPay"></td>
-        <td>직무 수행 수당</td>
-      </tr>
-      <tr>
-        <td>직책수당</td>
-        <td id="cPositionPay"></td>
-        <td>직책 수행 수당</td>
-      </tr>
-      <tr>
-        <td>식대</td>
-        <td id="cMealPay"></td>
-        <td>식대 보조</td>
-      </tr>
-      <tr class="total-row">
-        <td colspan="2"><strong>월급총액</strong></td>
-        <td><strong id="cTotalPay"></strong></td>
-        <td>상기 금액의 합계</td>
+        <td id="cHourPay"></td>
+        <td id="cInsurance"></td>
       </tr>
     </table>
 
-    <p>② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.</p>
-    <p>③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.</p>
+    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 5일에 근로자 명의의 은행계좌로 송금한다.</p>
+    <p>급여 지급 시 갑근세, 사회보험료 등 법정공제액은 공제 후 지급한다.</p>
 
-    <h3>제6조 제출서류</h3>
-    <p>직원은 채용과 동시에 주민등록등본, 보건증, 통장사본, 신분증사본 등 회사가 요청하는 서류를 제출한다.</p>
+    <h3>7. 4대보험 가입유무</h3>
+    <p>근로자는 4대보험 가입 여부에 대하여 <strong id="cInsuranceText"></strong> 의사를 표시한다.</p>
 
-    <h3>제7조 퇴직급여</h3>
-    <p>회사는 근로자퇴직급여보장법이 정한 바에 따라 퇴직급여를 지급한다.</p>
+    <h3>8. 근로계약서 교부</h3>
+    <p>근로자는 본 근로계약서를 전자문서 방식으로 교부받았음을 확인한다.</p>
 
-    <h3>제8조 퇴직절차</h3>
-    <p>직원은 퇴직하고자 할 경우 사직원을 사전 제출하여야 한다.</p>
+    <h3>9. CCTV 설치 동의</h3>
+    <p>근로자는 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 동의한다.</p>
 
-    <h3>제9조 신의성실의무</h3>
-    <p>
-      직원은 회사의 경영방침에 따라 신의와 성실로 근무하여야 하며,
-      회사의 영업기밀사항을 외부에 누설하여서는 아니 된다.
-    </p>
-
-    <h3>제10조 CCTV 설치 동의</h3>
-    <p>
-      직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 이해 및 동의한다.
-    </p>
-
-    <h3>제11조 전자계약 및 계약서 교부 확인</h3>
-    <p>
-      회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
-      전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
-    </p>
-
-    <h3>제12조 기타사항</h3>
-    <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
-
-    <p class="confirm">
-      회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
-    </p>
+    <h3>10. 전자계약 및 전자서명</h3>
+    <p>사업주와 근로자는 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
 
     <p class="date" id="cToday"></p>
 
     <div class="sign-area">
-      <div class="company-box">
-        <h4>[회사]</h4>
-        <p>상호 : 한국의집 롯데월드몰점</p>
-        <p>대표 : 박병호</p>
+      <div class="sign-box">
+        <h4>[사업주]</h4>
+        <p>사업체명 : 한국의집 롯데월드몰점</p>
+        <p>대표자 : 박병호</p>
         <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
-        <p>연락처 : 070-5015-7233</p>
         <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="stamp-img">
       </div>
 
-      <div class="worker-box">
+      <div class="sign-box">
         <h4>[근로자]</h4>
         <p>성명 : <span id="cWorkerName"></span></p>
-        <p>주민등록번호 : <span id="cResidentNo"></span></p>
+        <p>주민번호 : <span id="cResidentNo"></span></p>
         <p>생년월일 : <span id="cBirth"></span></p>
         <p>주소 : <span id="cAddress"></span></p>
         <p>연락처 : <span id="cPhone"></span></p>
-        <p>급여계좌 : <span id="cBankAccount"></span></p>
 
-        <p>근로자 전자서명</p>
+        <p class="sign-label">근로자 전자서명</p>
         <img id="workerSignatureImage" class="worker-sign">
         <p id="signedTime"></p>
       </div>
     </div>
-
   </div>
 
   <div class="electronic-sign-box no-print">
@@ -338,15 +266,11 @@
       본인은 근로계약 내용을 확인하였으며 전자계약에 동의합니다.
     </label>
 
-    <div class="signature-pad-wrap">
-      <canvas id="signaturePad" width="600" height="220"></canvas>
-    </div>
+    <canvas id="signaturePad" width="600" height="220"></canvas>
 
     <div class="sign-buttons">
-      <button onclick="clearSignature()">다시 서명</button>
-      <button onclick="completeElectronicContract(event)" id="completeBtn" class="green-btn">
-        전자계약 완료
-      </button>
+      <button onclick="clearSignature()">다시서명</button>
+      <button onclick="completeElectronicContract(event)" class="green-btn">전자계약 완료</button>
     </div>
 
     <div id="completeBox" class="complete-box">
@@ -356,6 +280,6 @@
 
 </div>
 
-<script src="regular-contract.js"></script>
+<script src="part-contract.js"></script>
 </body>
 </html>

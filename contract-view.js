@@ -38,8 +38,26 @@ async function loadContract(contractId) {
 function renderContract(result) {
   const c = result.contract || {};
   const signature = result.signature || "";
+  const contractType = c.contractType || result.contractType || "";
+  const isPart = contractType.includes("계약직") || contractType.includes("아르바이트");
 
-  document.getElementById("contractContent").innerHTML = `
+  if (isPart) {
+    document.title = "아르바이트 근로계약서 완료본";
+    document.getElementById("viewTitle").innerText = "계약직(아르바이트) 근로계약서";
+    document.getElementById("ogTitle")?.setAttribute("content", "아르바이트 근로계약서 완료본");
+    document.getElementById("ogImage")?.setAttribute("content", "https://thebigkorea.github.io/hr-system/part-contract-view-thumb.jpg");
+  } else {
+    document.title = "전자근로계약 완료본";
+    document.getElementById("viewTitle").innerText = "근 로 계 약 서";
+  }
+
+  document.getElementById("contractContent").innerHTML = isPart
+    ? renderPartContract(c, signature, result)
+    : renderRegularContract(c, signature, result);
+}
+
+function renderRegularContract(c, signature, result) {
+  return `
     <p>
       한국의집 롯데월드몰점(이하 “회사”라 한다)과 근로자
       <strong>${c.empName || ""}</strong>
@@ -53,16 +71,10 @@ function renderContract(result) {
     <div class="section-title">제2조 근무장소 및 업무내용</div>
     <p>① 근무장소 : ${c.workPlace || ""}</p>
     <p>② 업무내용 : ${c.jobDuty || ""}</p>
-    <p>③ 회사는 필요한 경우 직원의 의견을 들어 업무내용을 변경할 수 있다.</p>
 
     <div class="section-title">제3조 근로시간 및 휴게</div>
     <table class="contract-table">
-      <tr>
-        <th>근무일수</th>
-        <th>월 기준시간</th>
-        <th>근무시간</th>
-        <th>휴게시간</th>
-      </tr>
+      <tr><th>근무일수</th><th>월 기준시간</th><th>근무시간</th><th>휴게시간</th></tr>
       <tr>
         <td>${c.workDays || ""}</td>
         <td>${c.monthHour || ""}</td>
@@ -77,10 +89,7 @@ function renderContract(result) {
 
     <div class="section-title">제5조 임금</div>
     <table class="contract-table">
-      <tr>
-        <th>항목</th>
-        <th>금액</th>
-      </tr>
+      <tr><th>항목</th><th>금액</th></tr>
       <tr><td>기본급</td><td>${won(c.basePay)}</td></tr>
       <tr><td>연장수당</td><td>${won(c.overtimePay)}</td></tr>
       <tr><td>직무수당</td><td>${won(c.dutyPay)}</td></tr>
@@ -89,9 +98,70 @@ function renderContract(result) {
       <tr class="total-row"><td>월급총액</td><td>${won(c.totalPay)}</td></tr>
     </table>
 
-    <p>② 회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 직원 명의의 은행계좌로 송금한다.</p>
-    <p>③ 급여 지급 시 갑근세, 사회보험료 등 법정 공제액은 공제 후 지급한다.</p>
+    ${commonClauses()}
+    ${signBox(c, signature, result, "회사", "직원")}
+  `;
+}
 
+function renderPartContract(c, signature, result) {
+  return `
+    <p>
+      한국의집 롯데월드몰점(이하 “사업주”라 한다)과 근로자
+      <strong>${c.empName || ""}</strong>
+      (이하 “근로자”라 한다)은 다음과 같이 근로계약을 체결한다.
+    </p>
+
+    <div class="section-title">1. 근로계약기간</div>
+    <p>${c.startDate || c.joinDate || ""}부터 ${c.endDate || ""}까지</p>
+
+    <div class="section-title">2. 근무장소</div>
+    <p>${c.workPlace || "한국의집 롯데월드몰점"}</p>
+
+    <div class="section-title">3. 업무내용</div>
+    <p>${c.jobDuty || ""}</p>
+
+    <div class="section-title">4. 근로시간</div>
+    <table class="contract-table">
+      <tr><th>근무일수</th><th>출근시간</th><th>퇴근시간</th><th>휴게시간</th></tr>
+      <tr>
+        <td>${c.workDays || ""}</td>
+        <td>${c.startTime || ""}</td>
+        <td>${c.endTime || ""}</td>
+        <td>${c.breakTime || ""}</td>
+      </tr>
+    </table>
+
+    <div class="section-title">5. 근무일 / 휴일</div>
+    <p>${c.workDays || ""} 근무 / 주휴일 : ${c.holiday || "선택 안함"}</p>
+
+    <div class="section-title">6. 임금</div>
+    <table class="contract-table">
+      <tr><th>구분</th><th>내용</th></tr>
+      <tr><td>시급</td><td>${won(c.hourPay || c.totalPay)}</td></tr>
+      <tr><td>4대보험</td><td>${c.insurance || ""}</td></tr>
+    </table>
+
+    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 5일에 근로자 명의의 은행계좌로 송금한다.</p>
+    <p>급여 지급 시 갑근세, 사회보험료 등 법정공제액은 공제 후 지급한다.</p>
+
+    <div class="section-title">7. 4대보험 가입유무</div>
+    <p>근로자는 4대보험 가입 여부에 대하여 <strong>${c.insurance || ""}</strong> 의사를 표시한다.</p>
+
+    <div class="section-title">8. 근로계약서 교부</div>
+    <p>근로자는 본 근로계약서를 전자문서 방식으로 교부받았음을 확인한다.</p>
+
+    <div class="section-title">9. CCTV 설치 동의</div>
+    <p>근로자는 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 동의한다.</p>
+
+    <div class="section-title">10. 전자계약 및 전자서명</div>
+    <p>사업주와 근로자는 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
+
+    ${signBox(c, signature, result, "사업주", "근로자")}
+  `;
+}
+
+function commonClauses() {
+  return `
     <div class="section-title">제6조 제출서류</div>
     <p>직원은 채용과 동시에 주민등록등본, 보건증, 통장사본, 신분증사본 등 회사가 요청하는 서류를 제출한다.</p>
 
@@ -112,18 +182,20 @@ function renderContract(result) {
 
     <div class="section-title">제12조 기타사항</div>
     <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
+  `;
+}
 
+function signBox(c, signature, result, companyLabel, workerLabel) {
+  return `
     <p style="text-align:center;font-weight:900;margin-top:50px;">
-      회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
+      회사와 근로자는 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
     </p>
 
-    <p style="text-align:center;font-weight:900;font-size:24px;">
-      ${todayKorean()}
-    </p>
+    <p style="text-align:center;font-weight:900;font-size:24px;">${todayKorean()}</p>
 
     <div class="sign-area">
       <div class="sign-box">
-        <h3>[회사]</h3>
+        <h3>[${companyLabel}]</h3>
         <p>상호 : 한국의집 롯데월드몰점</p>
         <p>대표 : 박병호</p>
         <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
@@ -132,13 +204,12 @@ function renderContract(result) {
       </div>
 
       <div class="sign-box">
-        <h3>[근로자]</h3>
+        <h3>[${workerLabel}]</h3>
         <p>성명 : ${c.empName || ""}</p>
         <p>주민등록번호 : ${c.residentNo || ""}</p>
         <p>생년월일 : ${c.birth || ""}</p>
         <p>주소 : ${c.address || ""}</p>
         <p>연락처 : ${c.phone || ""}</p>
-        <p>급여계좌 : ${c.bank || ""} ${c.account || ""}</p>
         <p>근로자 전자서명</p>
         ${signature ? `<img class="signature-img" src="${signature}">` : `<p>서명 정보 없음</p>`}
         <p>${result.signedAt || ""} 전자서명 완료</p>
@@ -152,8 +223,7 @@ function renderContract(result) {
 }
 
 function showError(msg) {
-  const loading = document.getElementById("loading");
-  loading.innerText = msg;
+  document.getElementById("loading").innerText = msg;
 }
 
 async function postData(data) {
@@ -161,7 +231,6 @@ async function postData(data) {
     method: "POST",
     body: JSON.stringify(data)
   });
-
   return await response.json();
 }
 

@@ -4,23 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>계약직 근로계약서</title>
+  <title>계약직(아르바이트) 근로계약서</title>
 
-  <meta property="og:title" content="계약직 근로계약서 서명본">
+  <meta property="og:title" content="아르바이트 근로계약서 전자서명 요청">
   <meta property="og:description" content="더큰코리아 전자근로계약 시스템">
-  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/contract-sign-thumb.jpg">
+  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/part-contract-sign-thumb.jpg">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thebigkorea.github.io/hr-system/part-contract.html">
 
   <link rel="stylesheet" href="part-contract.css">
 </head>
 
 <body>
-
 <div class="container">
 
   <div class="top-area no-print">
-    <h1>계약직 근로계약서</h1>
-    <p>Part-time Employment Contract</p>
+    <h1>계약직(아르바이트) 근로계약서</h1>
+    <p>Electronic Employment Contract</p>
   </div>
 
   <div class="form-box no-print">
@@ -30,29 +30,31 @@
     <div class="grid">
       <div class="input-group">
         <label>직원 성명</label>
-        <input type="text" id="empName">
+        <input type="text" id="empName" placeholder="직원의 이름을 입력하세요">
       </div>
 
       <div class="input-group">
         <label>주민등록번호</label>
-        <input type="text" id="residentNo">
+        <input type="text" id="residentNo" placeholder="예: 900101-1234567">
       </div>
 
       <div class="input-group">
         <label>생년월일</label>
-        <input type="text" id="birth">
+        <input type="text" id="birth" placeholder="주민번호 입력 시 자동 입력">
       </div>
 
       <div class="input-group">
         <label>연락처</label>
-        <input type="text" id="phone">
+        <input type="text" id="phone" placeholder="예: 010-0000-0000">
       </div>
     </div>
 
     <div class="input-group">
       <label>주소</label>
-      <input type="text" id="address">
+      <input type="text" id="address" placeholder="직원 주소 입력">
     </div>
+
+    <h2>계약 및 근무 정보</h2>
 
     <div class="grid">
       <div class="input-group">
@@ -68,6 +70,7 @@
       <div class="input-group">
         <label>주 근무일수</label>
         <select id="workDays">
+          <option value="">선택</option>
           <option>주2일</option>
           <option>주3일</option>
           <option>주4일</option>
@@ -79,6 +82,7 @@
       <div class="input-group">
         <label>주휴일</label>
         <select id="holiday">
+          <option value="">선택 안함</option>
           <option>월요일</option>
           <option>화요일</option>
           <option>수요일</option>
@@ -88,9 +92,7 @@
           <option>일요일</option>
         </select>
       </div>
-    </div>
 
-    <div class="grid">
       <div class="input-group">
         <label>출근시간</label>
         <select id="startTime"></select>
@@ -104,16 +106,20 @@
       <div class="input-group">
         <label>휴게시간</label>
         <select id="breakTime">
+          <option value="">선택</option>
           <option>30분</option>
           <option>1시간</option>
-          <option>1시간30분</option>
+          <option>1시간 30분</option>
           <option>2시간</option>
+          <option>14:00 ~ 15:00</option>
+          <option>14:00 ~ 16:00</option>
         </select>
       </div>
 
       <div class="input-group">
         <label>업무내용</label>
         <select id="jobDuty">
+          <option value="">선택</option>
           <option>홀서빙</option>
           <option>주방보조</option>
           <option>조리보조</option>
@@ -123,53 +129,51 @@
       </div>
     </div>
 
+    <h2>임금 및 보험</h2>
+
     <div class="grid">
       <div class="input-group">
         <label>시급</label>
-        <input type="text" id="hourPay">
+        <input type="text" id="hourPay" placeholder="예: 13,500">
       </div>
 
       <div class="input-group">
         <label>4대보험</label>
         <select id="insurance">
+          <option value="">선택</option>
           <option>희망</option>
           <option>미희망</option>
         </select>
       </div>
     </div>
 
-    <button onclick="createContract()">
-      계약직 근로계약서 생성
-    </button>
+    <button onclick="createContract()">계약직(아르바이트) 근로계약서 생성</button>
 
     <button onclick="saveContractAndCreateLink(event)" class="green-btn">
       계약 저장 및 직원 링크 생성
     </button>
 
     <div id="contractLinkBox" class="contract-link-box" style="display:none;">
+      <label>직원 전용 링크</label>
       <input type="text" id="contractLink" readonly>
       <button onclick="copyContractLink()">링크 복사</button>
     </div>
 
+    <div id="message"></div>
   </div>
 
   <div class="paper" id="contractPaper">
 
-    <h1 class="contract-title">근 로 계 약 서</h1>
+    <h1 class="contract-title">계약직(아르바이트) 근로계약서</h1>
 
     <p>
-      한국의집 롯데월드몰점(이하 “사업주”라 함)과
+      한국의집 롯데월드몰점(이하 “사업주”라 함)과 근로자
       <strong id="cEmpName"></strong>
       (이하 “근로자”라 함)은 다음과 같이 근로계약을 체결한다.
     </p>
 
     <h3>1. 근로계약기간</h3>
-    <p>
-      <span id="cStartDate"></span>
-      부터
-      <span id="cEndDate"></span>
-      까지
-    </p>
+    <p><span id="cStartDate"></span>부터 <span id="cEndDate"></span>까지</p>
 
     <h3>2. 근무장소</h3>
     <p>한국의집 롯데월드몰점</p>
@@ -195,8 +199,7 @@
     <h3>5. 근무일 / 휴일</h3>
     <p>
       <span id="cWorkDays"></span> 근무 /
-      주휴일 :
-      <span id="cHoliday"></span>
+      주휴일 : <span id="cHoliday"></span>
     </p>
 
     <h3>6. 임금</h3>
@@ -212,76 +215,76 @@
       </tr>
     </table>
 
-    <p>
-      회사는 매월 1일부터 말일까지의 기간 동안 산정한 월 급여를 익월 10일에 지급한다.
-    </p>
+    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 5일에 근로자 명의의 은행계좌로 송금한다.</p>
+    <p>급여 지급 시 갑근세, 사회보험료 등 법정공제액은 공제 후 지급한다.</p>
 
-    <h3>7. CCTV 설치 동의</h3>
+    <h3>7. 4대보험 가입유무</h3>
+    <p>근로자는 4대보험 가입 여부에 대하여 <strong id="cInsuranceText"></strong> 의사를 표시한다.</p>
 
-    <p>
-      방범 및 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 동의한다.
-    </p>
+    <h3>8. 근로계약서 교부</h3>
+    <p>근로자는 본 근로계약서를 전자문서 방식으로 교부받았음을 확인한다.</p>
+
+    <h3>9. CCTV 설치 동의</h3>
+    <p>근로자는 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 동의한다.</p>
+
+    <h3>10. 전자계약 및 전자서명</h3>
+    <p>사업주와 근로자는 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
+
+    <p class="date" id="cToday"></p>
 
     <div class="sign-area">
-
       <div class="sign-box">
         <h4>[사업주]</h4>
-
         <p>사업체명 : 한국의집 롯데월드몰점</p>
         <p>대표자 : 박병호</p>
-
-        <img
-          src="https://thebigkorea.github.io/hr-system/stamp.png"
-          class="stamp-img"
-        >
+        <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+        <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="stamp-img">
       </div>
 
       <div class="sign-box">
         <h4>[근로자]</h4>
-
         <p>성명 : <span id="cWorkerName"></span></p>
         <p>주민번호 : <span id="cResidentNo"></span></p>
+        <p>생년월일 : <span id="cBirth"></span></p>
         <p>주소 : <span id="cAddress"></span></p>
+        <p>연락처 : <span id="cPhone"></span></p>
 
-        <p class="sign-label">전자서명</p>
-
+        <p class="sign-label">근로자 전자서명</p>
         <img id="workerSignatureImage" class="worker-sign">
-
         <p id="signedTime"></p>
       </div>
-
     </div>
 
   </div>
 
   <div class="electronic-sign-box no-print">
+    <h3>전자계약 확인 및 서명</h3>
 
-    <h3>전자서명</h3>
+    <div class="worker-guide">
+      반드시 서명 후 <b>전자계약 완료</b> 버튼을 눌러야 계약이 저장됩니다.
+    </div>
 
     <label class="agree-line">
       <input type="checkbox" id="agreeCheck">
-      근로계약 내용을 확인하였으며 전자계약에 동의합니다.
+      본인은 근로계약 내용을 확인하였으며 전자계약에 동의합니다.
     </label>
 
     <canvas id="signaturePad" width="600" height="220"></canvas>
 
     <div class="sign-buttons">
       <button onclick="clearSignature()">다시서명</button>
-
       <button onclick="completeElectronicContract(event)" class="green-btn">
         전자계약 완료
       </button>
     </div>
 
     <div id="completeBox" class="complete-box">
-      전자계약이 완료되었습니다.
+      전자계약이 정상 완료되었습니다.
     </div>
-
   </div>
 
 </div>
 
 <script src="part-contract.js"></script>
-
 </body>
 </html>

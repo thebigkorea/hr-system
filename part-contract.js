@@ -88,7 +88,7 @@ function initMoneyInput() {
 /* 데이터 수집 */
 function collectData() {
   return {
-    contractType: "계약직 근로계약서",
+    contractType: "계약직(아르바이트) 근로계약서",
 
     empName: value("empName"),
     residentNo: value("residentNo"),

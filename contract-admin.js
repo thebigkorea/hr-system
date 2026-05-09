@@ -52,7 +52,6 @@ function searchContracts() {
     const matchName = !name || String(c.employeeName || "").includes(name);
     const matchStatus = status === "all" || c.status === status;
     const matchType = type === "all" || c.contractType === type;
-
     return matchName && matchStatus && matchType;
   });
 
@@ -99,7 +98,9 @@ function renderContracts(list) {
       <td>
         <div class="action-buttons">
           <button onclick="openContract('${c.contractId}')">원본보기</button>
-          <button class="green" onclick="copyViewLink('${c.workerLink || ""}')">완료본 링크복사</button>
+          <button class="green" onclick="copyViewLink('${c.workerLink || ""}', '${c.contractId || ""}')">
+            완료본 링크복사
+          </button>
         </div>
       </td>
     `;
@@ -288,28 +289,35 @@ function copyWorkerLink() {
     return;
   }
 
-  const viewLink = selectedContract.workerLink.replace(
-    "regular-contract.html",
-    "contract-view.html"
-  );
+  const viewLink = makeViewLink(selectedContract.workerLink, selectedContract.contractId);
 
   copyText(viewLink);
   alert("완료된 계약서 열람 링크가 복사되었습니다.");
 }
 
-function copyViewLink(link) {
-  if (!link) {
+function copyViewLink(link, contractId) {
+  const viewLink = makeViewLink(link, contractId);
+
+  if (!viewLink) {
     alert("복사할 링크가 없습니다.");
     return;
   }
 
-  const viewLink = link.replace(
-    "regular-contract.html",
-    "contract-view.html"
-  );
-
   copyText(viewLink);
   alert("완료된 계약서 열람 링크가 복사되었습니다.");
+}
+
+function makeViewLink(link, contractId) {
+  let id = contractId || "";
+
+  if (!id && link) {
+    const match = link.match(/[?&]id=([^&]+)/);
+    if (match) id = decodeURIComponent(match[1]);
+  }
+
+  if (!id) return "";
+
+  return `https://thebigkorea.github.io/hr-system/contract-view.html?id=${encodeURIComponent(id)}&v=${Date.now()}`;
 }
 
 function copyText(text) {

@@ -16,7 +16,8 @@ function normalizeTypeFilter() {
   typeFilter.innerHTML = `
     <option value="all">전체 계약</option>
     <option value="정규직">정규직 근로계약서</option>
-    <option value="계약직">계약직/아르바이트 근로계약서</option>
+    <option value="아르바이트">아르바이트 근로계약서</option>
+    <option value="용역">사업소득자 용역계약서</option>
   `;
 }
 
@@ -69,12 +70,27 @@ function searchContracts() {
     const matchStatus =
       status === "all" || c.status === status;
 
-    const matchType =
-      type === "all" ||
-      contractType.includes(type) ||
-      (type === "계약직" && contractType.includes("아르바이트")) ||
-      (type === "계약직" && contractType.includes("계약직")) ||
-      (type === "정규직" && contractType.includes("정규직"));
+    let matchType = false;
+
+    if (type === "all") {
+      matchType = true;
+    } else if (type === "정규직") {
+      matchType = contractType.includes("정규직");
+    } else if (type === "아르바이트") {
+      matchType =
+        contractType.includes("아르바이트") ||
+        contractType.includes("계약직");
+    } else if (type === "계약직") {
+      matchType =
+        contractType.includes("계약직") ||
+        contractType.includes("아르바이트");
+    } else if (type === "용역") {
+      matchType =
+        contractType.includes("용역") ||
+        contractType.includes("사업소득");
+    } else {
+      matchType = contractType.includes(type);
+    }
 
     return matchName && matchStatus && matchType;
   });
@@ -144,6 +160,10 @@ function displayContractType(type) {
     return "정규직 근로계약서";
   }
 
+  if (t.includes("용역") || t.includes("사업소득")) {
+    return "사업소득자 용역계약서";
+  }
+
   return t;
 }
 
@@ -169,18 +189,28 @@ async function openContract(contractId) {
     String(contractType).includes("계약직") ||
     String(contractType).includes("아르바이트");
 
-  renderContractDetail(result, isPart);
+  const isService =
+    String(contractType).includes("용역") ||
+    String(contractType).includes("사업소득");
+
+  renderContractDetail(result, isPart, isService);
 
   document.getElementById("modal").style.display = "block";
 }
 
-function renderContractDetail(result, isPart) {
+function renderContractDetail(result, isPart, isService) {
   const c = result.contract || {};
   const signature = result.signature || "";
 
-  const html = isPart
-    ? renderPartContractDetail(c, signature, result)
-    : renderRegularContractDetail(c, signature, result);
+  let html = "";
+
+  if (isService) {
+    html = renderServiceContractDetail(c, signature, result);
+  } else if (isPart) {
+    html = renderPartContractDetail(c, signature, result);
+  } else {
+    html = renderRegularContractDetail(c, signature, result);
+  }
 
   document.getElementById("contractDetail").innerHTML = html;
 }
@@ -334,6 +364,42 @@ function renderRegularContractDetail(c, signature, result) {
     <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
 
     ${signAdminBox(c, signature, result, "회사", "근로자")}
+  `;
+}
+
+function renderServiceContractDetail(c, signature, result) {
+  return `
+    <h1>사업소득자 용역계약서</h1>
+
+    <p>
+      한국의집 롯데월드몰점(이하 “사업자”라 한다)과 용역제공자
+      <strong>${c.empName || ""}</strong>
+      (이하 “제공자”라 한다)은 다음과 같이 용역계약을 체결한다.
+    </p>
+
+    <h3>제1조 계약기간</h3>
+    <p>${c.startDate || c.joinDate || ""}부터 ${c.endDate || ""}까지</p>
+
+    <h3>제2조 용역장소 및 업무내용</h3>
+    <p>① 용역장소 : ${c.workPlace || "한국의집 롯데월드몰점"}</p>
+    <p>② 업무내용 : ${c.jobDuty || ""}</p>
+
+    <h3>제3조 용역비</h3>
+    <table class="detail-table">
+      <tr>
+        <th>지급기준</th>
+        <th>금액</th>
+      </tr>
+      <tr>
+        <td>${c.payType || "건별/시간별"}</td>
+        <td>${won(c.totalPay || c.hourPay)}</td>
+      </tr>
+    </table>
+
+    <h3>제4조 전자계약 및 전자서명</h3>
+    <p>본 계약은 전자문서 및 전자서명 방식으로 체결될 수 있으며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
+
+    ${signAdminBox(c, signature, result, "사업자", "제공자")}
   `;
 }
 

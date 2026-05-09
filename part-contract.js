@@ -123,8 +123,7 @@ function validateData(d) {
     "address",
     "startDate",
     "endDate",
-    "workDays",
-    "holiday",
+    "workDays",    
     "startTime",
     "endTime",
     "breakTime",
@@ -233,7 +232,7 @@ function fillContract(d) {
   text("cEndTime", d.endTime);
   text("cBreakTime", d.breakTime);
   text("cWorkDays", d.workDays);
-  text("cHoliday", d.holiday);
+  text("cHoliday", d.holiday || "선택 안함");
   text("cHourPay", d.hourPay ? `${d.hourPay}원` : "");
   text("cInsurance", d.insurance);
 }

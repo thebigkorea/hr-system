@@ -141,7 +141,7 @@ function renderPartContract(c, signature, result) {
       <tr><td>4대보험</td><td>${c.insurance || ""}</td></tr>
     </table>
 
-    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 5일에 근로자 명의의 은행계좌로 송금한다.</p>
+    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 10일에 근로자 명의의 은행계좌로 송금한다.</p>
     <p>급여 지급 시 갑근세, 사회보험료 등 법정공제액은 공제 후 지급한다.</p>
 
     <div class="section-title">7. 4대보험 가입유무</div>

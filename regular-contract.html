@@ -22,7 +22,7 @@
     <div class="grid">
       <div class="input-group">
         <label>직원 성명</label>
-        <input type="text" id="empName" placeholder="예: 박요셉">
+        <input type="text" id="empName" placeholder="직원의 이름을 입력하세요">
       </div>
 
       <div class="input-group">
@@ -70,6 +70,9 @@
         <label>주 근무일수</label>
         <select id="workDays">
           <option value="">선택</option>
+          <option>주2일</option>
+          <option>주3일</option>
+          <option>주4일</option>
           <option>주5일</option>
           <option>주6일</option>
         </select>
@@ -212,38 +215,32 @@
         <th>금액 (단위:원)</th>
         <th>산정 기준</th>
       </tr>
-
       <tr>
         <td rowspan="5" class="vertical-cell">구<br>성<br>항<br>목</td>
         <td>기본급</td>
         <td id="cBasePay"></td>
         <td>월 기준시간 분의 임금</td>
       </tr>
-
       <tr>
         <td>연장수당</td>
         <td id="cOvertimePay"></td>
         <td>연장근로 해당분</td>
       </tr>
-
       <tr>
         <td>직무수당</td>
         <td id="cDutyPay"></td>
         <td>직무 수행 수당</td>
       </tr>
-
       <tr>
         <td>직책수당</td>
         <td id="cPositionPay"></td>
         <td>직책 수행 수당</td>
       </tr>
-
       <tr>
         <td>식대</td>
         <td id="cMealPay"></td>
         <td>식대 보조</td>
       </tr>
-
       <tr class="total-row">
         <td colspan="2"><strong>월급총액</strong></td>
         <td><strong id="cTotalPay"></strong></td>
@@ -264,36 +261,28 @@
     <p>직원은 퇴직하고자 할 경우 사직원을 사전 제출하여야 한다.</p>
 
     <h3>제9조 신의성실의무</h3>
-    <p>
-      직원은 회사의 경영방침에 따라 신의와 성실로 근무하여야 하며,
-      회사의 영업기밀사항을 외부에 누설하여서는 아니 된다.
-    </p>
+    <p>직원은 회사의 경영방침에 따라 신의와 성실로 근무하여야 하며, 회사의 영업기밀사항을 외부에 누설하여서는 아니 된다.</p>
 
     <h3>제10조 CCTV 설치 동의</h3>
-    <p>
-      직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 이해 및 동의한다.
-    </p>
+    <p>직원은 방범, 화재예방, 시설안전관리 목적의 CCTV 설치 및 운영에 대해 충분히 설명을 듣고 이해 및 동의한다.</p>
 
     <h3>제11조 전자계약 및 계약서 교부 확인</h3>
-    <p>
-      회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
-      전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
-    </p>
+    <p>회사와 직원은 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며, 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.</p>
 
     <h3>제12조 기타사항</h3>
     <p>본 계약서에 명시되지 않은 사항은 근로기준법, 관계 법령, 취업규칙 및 판례가 정하는 바에 따른다.</p>
 
-    <p class="confirm">
-      회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
-    </p>
+    <p class="confirm">회사와 직원은 상기 근로계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.</p>
 
     <p class="date" id="cToday"></p>
 
     <div class="sign-area">
       <div class="company-box">
         <h4>[회사]</h4>
-        <p>한국의집 롯데월드몰점</p>
+        <p>상호 : 한국의집 롯데월드몰점</p>
         <p>대표 : 박병호</p>
+        <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+        <p>연락처 : 070-5015-7233</p>
         <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="stamp-img">
       </div>
 

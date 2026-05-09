@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전자근로계약 관리대장</title>
+  <link rel="stylesheet" href="contract-admin.css">
+</head>
+
+<body>
+<div class="container">
+
+  <header>
+    <h1>전자근로계약 관리대장</h1>
+    <p>Electronic Employment Contract Management</p>
+  </header>
+
+  <section class="search-box">
+    <input type="text" id="searchName" placeholder="직원명 검색">
+
+    <select id="statusFilter">
+      <option value="all">전체 상태</option>
+      <option value="서명대기">서명대기</option>
+      <option value="서명완료">서명완료</option>
+    </select>
+
+    <select id="typeFilter">
+      <option value="all">전체 계약</option>
+      <option value="정규직 근로계약서">정규직 근로계약서</option>
+      <option value="아르바이트 근로계약서">아르바이트 근로계약서</option>
+      <option value="사업소득자 용역계약서">사업소득자 용역계약서</option>
+    </select>
+
+    <button onclick="searchContracts()">조회</button>
+    <button onclick="resetSearch()" class="gray">초기화</button>
+  </section>
+
+  <section class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>계약번호</th>
+          <th>계약종류</th>
+          <th>상태</th>
+          <th>직원명</th>
+          <th>연락처</th>
+          <th>입사일</th>
+          <th>생성일시</th>
+          <th>서명일시</th>
+          <th>관리</th>
+        </tr>
+      </thead>
+      <tbody id="contractTableBody">
+        <tr>
+          <td colspan="9">조회 버튼을 눌러주세요.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>전자근로계약 원본 보기</h2>
+      <button onclick="closeModal()">닫기</button>
+    </div>
+
+    <div id="contractDetail" class="contract-detail"></div>
+
+    <div class="modal-buttons">
+      <button onclick="printContract()">계약서 인쇄 / PDF 저장</button>
+      <button onclick="copyWorkerLink()" class="green">직원 링크 복사</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="contract-admin.js"></script>
+</body>
+</html>

@@ -132,6 +132,19 @@
     </div>
 
     <button onclick="createContract()">정규직 근로계약서 생성</button>
+
+    <button onclick="saveContractAndCreateLink()" class="sub-btn">
+      계약 저장 및 직원 링크 생성
+    </button>
+
+    <div id="contractLinkBox" class="contract-link-box" style="display:none;">
+      <label>직원 전용 계약 링크</label>
+      <input type="text" id="contractLink" readonly>
+      <button onclick="copyContractLink()" class="sub-btn">
+        링크 복사
+      </button>
+    </div>
+
     <p id="message"></p>
 
   </div>

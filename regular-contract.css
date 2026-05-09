@@ -83,11 +83,41 @@ button{
   cursor:pointer;
 }
 
+.sub-btn{
+  margin-top:16px;
+  background:#0f766e;
+}
+
 #message{
   margin-top:22px;
   text-align:center;
   color:#d40000;
   font-size:18px;
+}
+
+.contract-link-box{
+  margin-top:24px;
+  padding:24px;
+  background:#f8fafc;
+  border:2px solid #d9e2ec;
+  border-radius:18px;
+}
+
+.contract-link-box label{
+  display:block;
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.contract-link-box input{
+  width:100%;
+  height:58px;
+  border:1px solid #ccc;
+  border-radius:12px;
+  padding:0 14px;
+  font-size:16px;
+  box-sizing:border-box;
 }
 
 .paper{
@@ -283,6 +313,24 @@ th{
   height:70px;
   border-radius:16px;
   font-size:26px;
+}
+
+@media(max-width:768px){
+  body{
+    padding:20px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .top-area h1{
+    font-size:42px;
+  }
+
+  .sign-buttons{
+    flex-direction:column;
+  }
 }
 
 @media print{

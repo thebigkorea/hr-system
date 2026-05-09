@@ -427,3 +427,40 @@ th{
     font-size:8px;
   }
 }
+#signaturePad{
+  touch-action:none;
+  overscroll-behavior:contain;
+}
+
+body.signing-lock{
+  overflow:hidden;
+}
+
+.loading-btn{
+  opacity:0.75;
+  pointer-events:none;
+}
+
+.complete-box{
+  margin-top:24px;
+  padding:24px;
+  border-radius:18px;
+  background:#ecfdf5;
+  border:2px solid #10b981;
+  color:#065f46;
+  font-size:22px;
+  font-weight:800;
+  text-align:center;
+  display:none;
+}
+
+.worker-guide{
+  margin-top:18px;
+  padding:18px;
+  border-radius:14px;
+  background:#eff6ff;
+  color:#1e3a8a;
+  font-size:18px;
+  font-weight:700;
+  line-height:1.6;
+}

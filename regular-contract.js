@@ -5,7 +5,6 @@ let canvas;
 let ctx;
 let drawing = false;
 let currentContractId = null;
-let isWorkerMode = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   applyMoneyComma();
@@ -15,7 +14,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contractId = params.get("id");
 
   if (contractId) {
-    isWorkerMode = true;
     currentContractId = contractId;
     await loadContractForWorker(contractId);
   }
@@ -24,73 +22,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadContractForWorker(contractId) {
   setMessage("계약서를 불러오는 중입니다...");
 
-  const result = await postData({
-    action: "getContractById",
-    contractId
-  });
+  try {
+    const result = await postData({
+      action: "getContractById",
+      contractId
+    });
 
-  if (!result.success) {
-    setMessage(result.message || "계약서를 불러오지 못했습니다.");
-    return;
-  }
-
-  fillContract(result.contract);
-
-  document.querySelector(".form-box").style.display = "none";
-  setMessage("계약 내용을 확인한 뒤 전자서명을 진행해주세요.");
-}
-
-function createContract() {
-  const data = collectContractData();
-
-  const required = [
-    "empName", "residentNo", "birth", "phone", "address",
-    "joinDate", "workDays", "workTime", "breakTime",
-    "workPlace", "jobDuty", "basePay", "totalPay"
-  ];
-
-  for (const key of required) {
-    if (!data[key]) {
-      setMessage("필수 항목을 모두 입력해주세요.");
+    if (!result.success) {
+      setMessage(result.message || "계약서를 불러오지 못했습니다.");
       return;
     }
+
+    fillContract(result.contract);
+
+    const formBox = document.querySelector(".form-box");
+    if (formBox) formBox.style.display = "none";
+
+    setMessage("계약 내용을 확인한 뒤 전자서명을 진행해주세요.");
+
+  } catch (err) {
+    setMessage("계약서 조회 중 오류가 발생했습니다: " + err.message);
   }
-
-  fillContract(data);
-  saveEmployeeFromContract(data);
-
-  setMessage("계약서가 생성되었습니다. 아래에서 계약 저장 및 직원 링크 생성을 누르세요.");
-}
-
-async function saveContractAndCreateLink() {
-  const data = collectContractData();
-
-  if (!data.empName || !data.residentNo) {
-    setMessage("직원명과 주민등록번호는 반드시 입력해야 합니다.");
-    return;
-  }
-
-  const result = await postData({
-    action: "saveContractDraft",
-    contract: data
-  });
-
-  if (!result.success) {
-    setMessage(result.message || "계약 저장 실패");
-    return;
-  }
-
-  currentContractId = result.contractId;
-
-  const linkBox = document.getElementById("contractLinkBox");
-  const linkInput = document.getElementById("contractLink");
-
-  if (linkBox && linkInput) {
-    linkBox.style.display = "block";
-    linkInput.value = result.link;
-  }
-
-  setMessage("직원 전용 계약 링크가 생성되었습니다. 링크를 복사해 직원에게 보내세요.");
 }
 
 function collectContractData() {
@@ -120,6 +72,81 @@ function collectContractData() {
   };
 }
 
+function createContract() {
+  const data = collectContractData();
+
+  if (!validateContract(data)) return;
+
+  fillContract(data);
+  saveEmployeeFromContract(data);
+
+  setMessage("근로계약서가 생성되었습니다. 이제 초록색 ‘계약 저장 및 직원 링크 생성’을 누르세요.");
+}
+
+async function saveContractAndCreateLink() {
+  const data = collectContractData();
+
+  if (!validateContract(data)) return;
+
+  fillContract(data);
+
+  const box = document.getElementById("contractLinkBox");
+  const input = document.getElementById("contractLink");
+
+  setMessage("계약을 저장하고 직원 링크를 생성 중입니다...");
+
+  try {
+    const result = await postData({
+      action: "saveContractDraft",
+      contract: data
+    });
+
+    if (!result.success) {
+      setMessage(result.message || "계약 저장에 실패했습니다.");
+      return;
+    }
+
+    currentContractId = result.contractId;
+
+    if (box && input) {
+      box.style.display = "block";
+      input.value = result.link;
+    }
+
+    setMessage("계약이 Contracts 시트에 저장되었고 직원 링크가 생성되었습니다.");
+
+  } catch (err) {
+    setMessage("계약 저장 중 오류가 발생했습니다: " + err.message);
+  }
+}
+
+function validateContract(data) {
+  const required = [
+    "empName",
+    "residentNo",
+    "birth",
+    "phone",
+    "address",
+    "joinDate",
+    "workDays",
+    "workTime",
+    "breakTime",
+    "workPlace",
+    "jobDuty",
+    "basePay",
+    "totalPay"
+  ];
+
+  for (const key of required) {
+    if (!data[key]) {
+      setMessage("필수 항목을 모두 입력해주세요.");
+      return false;
+    }
+  }
+
+  return true;
+}
+
 async function saveEmployeeFromContract(data) {
   try {
     await postData({
@@ -129,6 +156,99 @@ async function saveEmployeeFromContract(data) {
   } catch (err) {
     console.log(err);
   }
+}
+
+async function completeElectronicContract(event) {
+  const agree = document.getElementById("agreeCheck");
+  const completeBtn = event ? event.target : null;
+
+  if (!agree || !agree.checked) {
+    setMessage("전자계약 동의 체크를 먼저 해주세요.");
+    alert("전자계약 동의 체크를 먼저 해주세요.");
+    return;
+  }
+
+  if (!canvas || isSignatureEmpty()) {
+    setMessage("근로자 전자서명을 입력해주세요.");
+    alert("근로자 전자서명을 입력해주세요.");
+    return;
+  }
+
+  if (!currentContractId) {
+    setMessage("계약번호가 없습니다. 직원 전용 링크로 다시 접속해주세요.");
+    alert("계약번호가 없습니다. 직원 전용 링크로 다시 접속해주세요.");
+    return;
+  }
+
+  if (completeBtn) {
+    completeBtn.classList.add("loading-btn");
+    completeBtn.innerText = "저장 중입니다...";
+  }
+
+  const signatureData = canvas.toDataURL("image/png");
+
+  const img = document.getElementById("workerSignatureImage");
+  if (img) {
+    img.src = signatureData;
+    img.style.display = "block";
+  }
+
+  const signedTime = document.getElementById("signedTime");
+  if (signedTime) {
+    signedTime.innerText = getTodayKorean() + " 전자서명 완료";
+  }
+
+  try {
+    const result = await postData({
+      action: "signContract",
+      contractId: currentContractId,
+      signature: signatureData
+    });
+
+    if (result.success) {
+      setMessage("전자계약이 완료되었습니다. 회사에 정상 저장되었습니다.");
+
+      const box = document.getElementById("completeBox");
+      if (box) box.style.display = "block";
+
+      if (completeBtn) {
+        completeBtn.innerText = "전자계약 완료됨";
+        completeBtn.style.background = "#059669";
+      }
+
+      alert("전자계약이 완료되었습니다. 회사에 정상 저장되었습니다.");
+    } else {
+      setMessage(result.message || "전자서명 저장에 실패했습니다.");
+      alert(result.message || "전자서명 저장에 실패했습니다.");
+
+      if (completeBtn) {
+        completeBtn.innerText = "전자계약 완료";
+        completeBtn.classList.remove("loading-btn");
+      }
+    }
+
+  } catch (err) {
+    setMessage("전자서명 저장 중 오류가 발생했습니다: " + err.message);
+    alert("전자서명 저장 중 오류가 발생했습니다.");
+
+    if (completeBtn) {
+      completeBtn.innerText = "전자계약 완료";
+      completeBtn.classList.remove("loading-btn");
+    }
+  }
+}
+
+function copyContractLink() {
+  const input = document.getElementById("contractLink");
+
+  if (!input || !input.value) {
+    setMessage("복사할 링크가 없습니다.");
+    return;
+  }
+
+  input.select();
+  document.execCommand("copy");
+  setMessage("직원 링크가 복사되었습니다. 카톡이나 문자로 직원에게 보내세요.");
 }
 
 async function postData(data) {
@@ -167,51 +287,6 @@ function fillContract(data) {
   setText("cToday", getTodayKorean());
 }
 
-async function completeElectronicContract() {
-  const agree = document.getElementById("agreeCheck");
-
-  if (!agree || !agree.checked) {
-    setMessage("전자계약 동의 체크를 먼저 해주세요.");
-    return;
-  }
-
-  if (!canvas || isSignatureEmpty()) {
-    setMessage("근로자 전자서명을 입력해주세요.");
-    return;
-  }
-
-  const signatureData = canvas.toDataURL("image/png");
-
-  const img = document.getElementById("workerSignatureImage");
-  img.src = signatureData;
-  img.style.display = "block";
-
-  const now = getTodayKorean() + " 전자서명 완료";
-  document.getElementById("signedTime").innerText = now;
-
-  if (currentContractId) {
-    const result = await postData({
-      action: "signContract",
-      contractId: currentContractId,
-      signature: signatureData
-    });
-
-    if (!result.success) {
-      setMessage(result.message || "서명 저장 실패");
-      return;
-    }
-  }
-
-  setMessage("전자계약이 완료되었습니다. 인쇄 또는 PDF 저장을 진행하세요.");
-}
-
-function copyContractLink() {
-  const input = document.getElementById("contractLink");
-  input.select();
-  document.execCommand("copy");
-  setMessage("직원 링크가 복사되었습니다.");
-}
-
 function getValue(id) {
   const el = document.getElementById(id);
   return el ? el.value.trim() : "";
@@ -233,17 +308,16 @@ function money(value) {
 }
 
 function applyMoneyComma() {
-  const moneyInputs = ["basePay", "overtimePay", "dutyPay", "positionPay", "mealPay", "totalPay"];
+  ["basePay", "overtimePay", "dutyPay", "positionPay", "mealPay", "totalPay"]
+    .forEach(id => {
+      const input = document.getElementById(id);
+      if (!input) return;
 
-  moneyInputs.forEach(id => {
-    const input = document.getElementById(id);
-    if (!input) return;
-
-    input.addEventListener("input", function () {
-      const onlyNumber = this.value.replace(/[^0-9]/g, "");
-      this.value = onlyNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      input.addEventListener("input", function () {
+        const onlyNumber = this.value.replace(/[^0-9]/g, "");
+        this.value = onlyNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      });
     });
-  });
 }
 
 function initSignaturePad() {
@@ -275,6 +349,8 @@ function getCanvasPos(e) {
 
 function startDraw(e) {
   drawing = true;
+  document.body.classList.add("signing-lock");
+
   const pos = getCanvasPos(e);
   ctx.beginPath();
   ctx.moveTo(pos.x, pos.y);
@@ -282,6 +358,7 @@ function startDraw(e) {
 
 function draw(e) {
   if (!drawing) return;
+
   const pos = getCanvasPos(e);
   ctx.lineTo(pos.x, pos.y);
   ctx.stroke();
@@ -289,6 +366,7 @@ function draw(e) {
 
 function endDraw() {
   drawing = false;
+  document.body.classList.remove("signing-lock");
 }
 
 function startDrawTouch(e) {
@@ -303,6 +381,7 @@ function drawTouch(e) {
 
 function clearSignature() {
   if (!ctx || !canvas) return;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const img = document.getElementById("workerSignatureImage");
@@ -313,6 +392,9 @@ function clearSignature() {
 
   const signedTime = document.getElementById("signedTime");
   if (signedTime) signedTime.innerText = "";
+
+  const completeBox = document.getElementById("completeBox");
+  if (completeBox) completeBox.style.display = "none";
 }
 
 function isSignatureEmpty() {

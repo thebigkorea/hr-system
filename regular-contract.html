@@ -78,12 +78,12 @@
 
       <div class="input-group">
         <label>근무시간</label>
-        <input type="text" id="workTime" placeholder="예: 10:00 - 21:00">
+        <input type="text" id="workTime" placeholder="예: 09:00 ~ 21:00">
       </div>
 
       <div class="input-group">
         <label>휴게시간</label>
-        <input type="text" id="breakTime" placeholder="예: 14:00 - 15:00">
+        <input type="text" id="breakTime" placeholder="예: 14:00 ~ 15:00">
       </div>
 
       <div class="input-group">
@@ -94,7 +94,7 @@
 
     <div class="input-group">
       <label>업무내용</label>
-      <input type="text" id="jobDuty" placeholder="예: 홀 관리업무">
+      <input type="text" id="jobDuty" placeholder="예: 주방 / 홀 / 매장관리">
     </div>
 
     <h2>임금 정보</h2>
@@ -122,12 +122,12 @@
 
       <div class="input-group">
         <label>식대</label>
-        <input type="text" id="mealPay" placeholder="예: 0">
+        <input type="text" id="mealPay" placeholder="예: 100,000">
       </div>
 
       <div class="input-group">
         <label>월급총액</label>
-        <input type="text" id="totalPay" placeholder="예: 2,850,000">
+        <input type="text" id="totalPay" placeholder="예: 2,949,700">
       </div>
     </div>
 
@@ -313,6 +313,10 @@
     <div class="electronic-sign-box no-print">
       <h3>전자계약 확인 및 서명</h3>
 
+      <div class="worker-guide">
+        서명 후 반드시 <b>전자계약 완료</b> 버튼을 눌러야 계약이 저장됩니다.
+      </div>
+
       <label class="agree-line">
         <input type="checkbox" id="agreeCheck">
         본인은 위 근로계약 내용을 충분히 확인하였으며 전자계약 체결에 동의합니다.
@@ -325,7 +329,12 @@
 
       <div class="sign-buttons">
         <button type="button" onclick="clearSignature()">다시 서명</button>
-        <button type="button" onclick="completeElectronicContract()">전자계약 완료</button>
+        <button type="button" onclick="completeElectronicContract(event)">전자계약 완료</button>
+      </div>
+
+      <div id="completeBox" class="complete-box">
+        전자계약이 완료되었습니다.<br>
+        회사에 서명이 정상 저장되었습니다.
       </div>
     </div>
 

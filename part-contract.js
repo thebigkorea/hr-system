@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-/* 시간 선택 */
 function initTimeSelect() {
   const start = document.getElementById("startTime");
   const end = document.getElementById("endTime");
@@ -38,7 +37,6 @@ function initTimeSelect() {
   }
 }
 
-/* 주민번호 → 생년월일 자동 */
 function initResidentNoAutoBirth() {
   const resident = document.getElementById("residentNo");
   const birth = document.getElementById("birth");
@@ -74,7 +72,6 @@ function getBirth(no) {
   return `${c}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
 }
 
-/* 시급 천단위 콤마 */
 function initMoneyInput() {
   const input = document.getElementById("hourPay");
   if (!input) return;
@@ -85,7 +82,6 @@ function initMoneyInput() {
   });
 }
 
-/* 데이터 수집 */
 function collectData() {
   return {
     contractType: "계약직(아르바이트) 근로계약서",
@@ -113,7 +109,6 @@ function collectData() {
   };
 }
 
-/* 필수값 확인 */
 function validateData(d) {
   const required = [
     "empName",
@@ -123,7 +118,7 @@ function validateData(d) {
     "address",
     "startDate",
     "endDate",
-    "workDays",    
+    "workDays",
     "startTime",
     "endTime",
     "breakTime",
@@ -141,17 +136,16 @@ function validateData(d) {
   return true;
 }
 
-/* 계약서 화면 생성 */
 function createContract() {
   const d = collectData();
 
   if (!validateData(d)) return;
 
   fillContract(d);
-  alert("계약직 근로계약서가 생성되었습니다.");
+  setMessage("계약직(아르바이트) 근로계약서가 생성되었습니다.");
+  alert("계약직(아르바이트) 근로계약서가 생성되었습니다.");
 }
 
-/* 계약 저장 및 직원 링크 생성 */
 async function saveContractAndCreateLink(event) {
   const btn = event.target;
   const d = collectData();
@@ -162,6 +156,7 @@ async function saveContractAndCreateLink(event) {
 
   btn.disabled = true;
   btn.innerText = "처리중...";
+  setMessage("계약 저장 및 직원 링크 생성 중입니다...");
 
   try {
     const result = await postData({
@@ -173,6 +168,7 @@ async function saveContractAndCreateLink(event) {
 
     if (!result || !result.success) {
       alert((result && result.message) ? result.message : "계약 저장 실패");
+      setMessage((result && result.message) ? result.message : "계약 저장 실패");
       return;
     }
 
@@ -184,18 +180,19 @@ async function saveContractAndCreateLink(event) {
     document.getElementById("contractLinkBox").style.display = "block";
     document.getElementById("contractLink").value = link;
 
+    setMessage("계약 저장 완료. 직원 링크가 생성되었습니다.");
     alert("계약 저장 및 직원 링크 생성이 완료되었습니다.");
 
   } catch (e) {
     console.error(e);
     alert("저장 중 오류가 발생했습니다. Apps Script 배포 또는 인터넷 연결을 확인해주세요.");
+    setMessage("저장 중 오류가 발생했습니다.");
   } finally {
     btn.disabled = false;
     btn.innerText = "계약 저장 및 직원 링크 생성";
   }
 }
 
-/* 직원 링크로 계약 불러오기 */
 async function loadContract(id) {
   try {
     const result = await postData({
@@ -208,22 +205,27 @@ async function loadContract(id) {
       return;
     }
 
-    fillContract(result.contract);
+    currentContractId = id;
+
+    fillContract(result.contract || {});
 
     const form = document.querySelector(".form-box");
     if (form) form.style.display = "none";
+
+    setMessage("계약 내용을 확인한 뒤 전자서명을 진행해주세요.");
 
   } catch (e) {
     alert("계약서를 불러오는 중 오류가 발생했습니다.");
   }
 }
 
-/* 계약서 본문 채우기 */
 function fillContract(d) {
   text("cEmpName", d.empName);
   text("cWorkerName", d.empName);
   text("cResidentNo", d.residentNo);
+  text("cBirth", d.birth);
   text("cAddress", d.address);
+  text("cPhone", d.phone);
 
   text("cStartDate", d.startDate);
   text("cEndDate", d.endDate);
@@ -235,9 +237,10 @@ function fillContract(d) {
   text("cHoliday", d.holiday || "선택 안함");
   text("cHourPay", d.hourPay ? `${d.hourPay}원` : "");
   text("cInsurance", d.insurance);
+  text("cInsuranceText", d.insurance || "");
+  text("cToday", getTodayKorean());
 }
 
-/* 전자서명 */
 function initSignaturePad() {
   canvas = document.getElementById("signaturePad");
   if (!canvas) return;
@@ -304,7 +307,10 @@ function clearSignature() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const img = document.getElementById("workerSignatureImage");
-  if (img) img.src = "";
+  if (img) {
+    img.src = "";
+    img.style.display = "none";
+  }
 
   const completeBox = document.getElementById("completeBox");
   if (completeBox) completeBox.style.display = "none";
@@ -314,7 +320,9 @@ function clearSignature() {
 }
 
 async function completeElectronicContract(event) {
-  if (!document.getElementById("agreeCheck").checked) {
+  const agree = document.getElementById("agreeCheck");
+
+  if (!agree || !agree.checked) {
     alert("전자계약 동의 체크를 해주세요.");
     return;
   }
@@ -336,11 +344,15 @@ async function completeElectronicContract(event) {
   const signature = canvas.toDataURL("image/png");
 
   const img = document.getElementById("workerSignatureImage");
-  img.src = signature;
-  img.style.display = "block";
+  if (img) {
+    img.src = signature;
+    img.style.display = "block";
+  }
 
-  document.getElementById("signedTime").innerText =
-    new Date().toLocaleString() + " 전자서명 완료";
+  const signedTime = document.getElementById("signedTime");
+  if (signedTime) {
+    signedTime.innerText = new Date().toLocaleString() + " 전자서명 완료";
+  }
 
   try {
     const result = await postData({
@@ -350,8 +362,11 @@ async function completeElectronicContract(event) {
     });
 
     if (result.success) {
-      document.getElementById("completeBox").style.display = "block";
+      const completeBox = document.getElementById("completeBox");
+      if (completeBox) completeBox.style.display = "block";
+
       btn.innerText = "전자계약 완료됨";
+      setMessage("전자계약이 정상 완료되었습니다.");
       alert("전자계약이 정상 완료되었습니다.");
     } else {
       alert(result.message || "서명 저장 실패");
@@ -365,7 +380,6 @@ async function completeElectronicContract(event) {
   }
 }
 
-/* 링크 복사 */
 function copyContractLink() {
   const input = document.getElementById("contractLink");
 
@@ -379,7 +393,6 @@ function copyContractLink() {
   alert("직원 링크가 복사되었습니다.");
 }
 
-/* 통신 */
 async function postData(data) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -389,7 +402,6 @@ async function postData(data) {
   return await res.json();
 }
 
-/* 공통 */
 function value(id) {
   const el = document.getElementById(id);
   return el ? el.value.trim() : "";
@@ -400,10 +412,20 @@ function text(id, val) {
   if (el) el.innerText = val || "";
 }
 
+function setMessage(msg) {
+  const el = document.getElementById("message");
+  if (el) el.innerText = msg;
+}
+
 function formatDate(v) {
   if (!v) return "";
   const [y, m, d] = v.split("-");
   return `${y}년 ${Number(m)}월 ${Number(d)}일`;
+}
+
+function getTodayKorean() {
+  const today = new Date();
+  return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
 }
 
 function isCanvasEmpty() {

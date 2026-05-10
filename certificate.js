@@ -1,8 +1,3 @@
-/* =========================
-   certificate.js
-   재직증명서 최종 전체본
-   ========================= */
-
 const API_URL =
 "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
 
@@ -12,24 +7,18 @@ document.getElementById("searchBtn");
 const message =
 document.getElementById("message");
 
-searchBtn.addEventListener(
-  "click",
-  searchCertificate
-);
+searchBtn.addEventListener("click", searchCertificate);
 
 async function searchCertificate() {
 
   const name =
-    document.getElementById("name")
-    .value.trim();
+    document.getElementById("name").value.trim();
 
   const ssn =
-    document.getElementById("ssn")
-    .value.trim();
+    document.getElementById("ssn").value.trim();
 
   const purpose =
-    document.getElementById("purpose")
-    .value.trim();
+    document.getElementById("purpose").value.trim();
 
   if (!name || !ssn) {
 
@@ -43,17 +32,19 @@ async function searchCertificate() {
 
   try {
 
-    const response =
-      await fetch(API_URL, {
+    const response = await fetch(API_URL, {
 
-        method: "POST",
+      method: "POST",
 
-        body: JSON.stringify({
-          action: "getCertificate",
-          name,
-          ssn
-        })
-      });
+      body: JSON.stringify({
+
+        action: "getCertificate",
+
+        name: name,
+
+        ssn: ssn
+      })
+    });
 
     const result =
       await response.json();
@@ -64,7 +55,7 @@ async function searchCertificate() {
 
       message.innerText =
         result.message ||
-        "직원을 찾을 수 없습니다.";
+        "직원 정보를 찾을 수 없습니다.";
 
       return;
     }
@@ -74,7 +65,7 @@ async function searchCertificate() {
       purpose
     );
 
-  } catch (err) {
+  } catch(err) {
 
     console.error(err);
 
@@ -130,8 +121,7 @@ function renderCertificate(emp, purpose) {
       </table>
 
       <div class="confirm-text">
-        위 사람은 상기와 같이
-        당사에 재직 중임을 증명합니다.
+        위 사람은 상기와 같이 당사에 재직 중임을 증명합니다.
       </div>
 
       <div class="date-text">
@@ -143,34 +133,30 @@ function renderCertificate(emp, purpose) {
         <p>한국의집 롯데월드몰점</p>
 
         <p class="representative-line">
-          <span>대표자 : 박병호</span>
+          대표자 : 박병호
 
           <img
             src="stamp.png"
             class="small-stamp"
-            alt="직인"
           >
         </p>
 
         <p>
-          주소 : 서울시 송파구
-          올림픽로 300, 5층
+          주소 : 서울시 송파구 올림픽로 300, 5층
         </p>
 
       </div>
 
       <button
         class="print-btn"
-        onclick="window.print()">
-
+        onclick="window.print()"
+      >
         인쇄 / PDF 저장
-
       </button>
 
     </div>
 
   </div>
-
   `;
 }
 
@@ -179,10 +165,8 @@ function todayKorean() {
   const d = new Date();
 
   return `
-  ${d.getFullYear()}년
-  ${String(d.getMonth()+1)
-    .padStart(2,"0")}월
-  ${String(d.getDate())
-    .padStart(2,"0")}일
+    ${d.getFullYear()}년
+    ${String(d.getMonth()+1).padStart(2,"0")}월
+    ${String(d.getDate()).padStart(2,"0")}일
   `;
 }

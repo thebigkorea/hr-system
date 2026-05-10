@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>사업소득자 용역계약서</title>
+
+  <meta property="og:title" content="사업소득자 용역계약서 전자서명 요청">
+  <meta property="og:description" content="더큰코리아 전자계약 시스템">
+  <meta property="og:image" content="https://thebigkorea.github.io/hr-system/service-sign-thumb.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thebigkorea.github.io/hr-system/service-contract.html">
+
+  <link rel="stylesheet" href="service-contract.css">
+</head>
+
+<body>
+<div class="container">
+
+  <div class="top-area no-print">
+    <h1>사업소득자 용역계약서</h1>
+    <p>Independent Contractor Service Agreement</p>
+  </div>
+
+  <div class="form-box no-print">
+    <h2>계약자 기본정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>성명</label>
+        <input type="text" id="empName" placeholder="성명을 입력하세요">
+      </div>
+
+      <div class="input-group">
+        <label>주민등록번호</label>
+        <input type="text" id="residentNo" placeholder="예: 900101-1234567">
+      </div>
+
+      <div class="input-group">
+        <label>생년월일</label>
+        <input type="text" id="birth" placeholder="주민번호 입력 시 자동입력">
+      </div>
+
+      <div class="input-group">
+        <label>연락처</label>
+        <input type="text" id="phone" placeholder="예: 010-0000-0000">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label>주소</label>
+      <input type="text" id="address" placeholder="주소 입력">
+    </div>
+
+    <h2>용역 정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>계약 시작일</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="input-group">
+        <label>계약 종료일</label>
+        <input type="date" id="endDate">
+      </div>
+
+      <div class="input-group">
+        <label>용역 장소</label>
+        <input type="text" id="workPlace" value="한국의집 롯데월드몰점">
+      </div>
+
+      <div class="input-group">
+        <label>용역 내용</label>
+        <select id="jobDuty">
+          <option value="">선택</option>
+          <option>행사 지원</option>
+          <option>홀 서비스 용역</option>
+          <option>주방 보조 용역</option>
+          <option>조리 용역</option>
+          <option>마케팅 용역</option>
+          <option>기타 용역</option>
+        </select>
+      </div>
+    </div>
+
+    <h2>용역비 정보</h2>
+
+    <div class="grid">
+      <div class="input-group">
+        <label>지급 기준</label>
+        <select id="payType">
+          <option value="">선택</option>
+          <option>시간당</option>
+          <option>일당</option>
+          <option>월정액</option>
+          <option>건별</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>용역비</label>
+        <input type="text" id="servicePay" placeholder="예: 150,000">
+      </div>
+
+      <div class="input-group">
+        <label>원천징수</label>
+        <select id="taxType">
+          <option>사업소득세 3.3% 원천징수</option>
+          <option>별도 협의</option>
+        </select>
+      </div>
+    </div>
+
+    <button onclick="createContract()">사업소득자 용역계약서 생성</button>
+
+    <button onclick="saveContractAndCreateLink(event)" class="green-btn">
+      계약 저장 및 전자서명 링크 생성
+    </button>
+
+    <div id="contractLinkBox" class="contract-link-box" style="display:none;">
+      <label>전자서명 전용 링크</label>
+      <input type="text" id="contractLink" readonly>
+      <button onclick="copyContractLink()">링크 복사</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <div class="paper" id="contractPaper">
+    <h1 class="contract-title">사업소득자 용역계약서</h1>
+
+    <p>
+      한국의집 롯데월드몰점(이하 “위탁자”라 함)과
+      <strong id="cEmpName"></strong>
+      (이하 “수탁자”라 함)은 다음과 같이 용역계약을 체결한다.
+    </p>
+
+    <h3>제1조 계약기간</h3>
+    <p><span id="cStartDate"></span>부터 <span id="cEndDate"></span>까지로 한다.</p>
+
+    <h3>제2조 용역 장소 및 내용</h3>
+    <p>① 용역장소 : <span id="cWorkPlace"></span></p>
+    <p>② 용역내용 : <span id="cJobDuty"></span></p>
+
+    <h3>제3조 용역비</h3>
+    <table>
+      <tr>
+        <th>지급 기준</th>
+        <th>용역비</th>
+        <th>원천징수</th>
+      </tr>
+      <tr>
+        <td id="cPayType"></td>
+        <td id="cServicePay"></td>
+        <td id="cTaxType"></td>
+      </tr>
+    </table>
+
+    <p>
+      위탁자는 수탁자에게 용역 수행 대가로 위 금액을 지급하며,
+      사업소득세 등 관련 법령에 따른 원천징수 대상 금액은 공제 후 지급한다.
+    </p>
+
+    <h3>제4조 독립사업자 지위</h3>
+    <p>
+      수탁자는 독립된 사업소득자로서 본 용역을 수행하며,
+      본 계약은 근로기준법상 근로계약이 아님을 상호 확인한다.
+    </p>
+
+    <h3>제5조 지휘·감독의 제한</h3>
+    <p>
+      위탁자는 용역의 목적과 결과에 필요한 범위에서 업무 내용을 협의할 수 있으나,
+      수탁자의 구체적인 업무수행 방법과 시간 배분에 대해 근로자와 같은 직접적 지휘·감독을 하지 않는다.
+    </p>
+
+    <h3>제6조 세금 및 4대보험</h3>
+    <p>
+      수탁자는 사업소득자로서 본인의 세무상 책임을 부담하며,
+      본 계약에 따라 발생하는 소득은 사업소득으로 처리한다.
+      4대보험 적용 여부는 관계 법령에 따른다.
+    </p>
+
+    <h3>제7조 비밀유지</h3>
+    <p>
+      수탁자는 용역 수행 과정에서 알게 된 위탁자의 영업정보, 고객정보, 운영정보를 외부에 누설하여서는 아니 된다.
+    </p>
+
+    <h3>제8조 계약 해지</h3>
+    <p>
+      당사자 일방이 본 계약을 위반하거나 용역 수행이 현저히 곤란한 경우,
+      상대방은 계약을 해지할 수 있다.
+    </p>
+
+    <h3>제9조 전자계약 및 전자서명</h3>
+    <p>
+      위탁자와 수탁자는 본 계약이 전자문서 및 전자서명 방식으로 체결될 수 있음을 확인하며,
+      전자서명은 자필서명 또는 날인과 동일한 효력을 가진다.
+    </p>
+
+    <p class="date" id="cToday"></p>
+
+    <div class="sign-area">
+      <div class="sign-box">
+        <h4>[위탁자]</h4>
+        <p>상호 : 한국의집 롯데월드몰점</p>
+        <p>대표자 : 박병호</p>
+        <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
+        <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="stamp-img">
+      </div>
+
+      <div class="sign-box">
+        <h4>[수탁자]</h4>
+        <p>성명 : <span id="cWorkerName"></span></p>
+        <p>주민번호 : <span id="cResidentNo"></span></p>
+        <p>생년월일 : <span id="cBirth"></span></p>
+        <p>주소 : <span id="cAddress"></span></p>
+        <p>연락처 : <span id="cPhone"></span></p>
+
+        <p class="sign-label">수탁자 전자서명</p>
+        <img id="workerSignatureImage" class="worker-sign">
+        <p id="signedTime"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="electronic-sign-box no-print">
+    <h3>전자계약 확인 및 서명</h3>
+
+    <div class="worker-guide">
+      반드시 서명 후 <b>전자계약 완료</b> 버튼을 눌러야 계약이 저장됩니다.
+    </div>
+
+    <label class="agree-line">
+      <input type="checkbox" id="agreeCheck">
+      본인은 위 용역계약 내용을 확인하였으며 전자계약에 동의합니다.
+    </label>
+
+    <canvas id="signaturePad" width="600" height="220"></canvas>
+
+    <div class="sign-buttons">
+      <button onclick="clearSignature()">다시서명</button>
+      <button onclick="completeElectronicContract(event)" class="green-btn">
+        전자계약 완료
+      </button>
+    </div>
+
+    <div id="completeBox" class="complete-box">
+      전자계약이 정상 완료되었습니다.
+    </div>
+  </div>
+
+</div>
+
+<script src="service-contract.js"></script>
+</body>
+</html>

@@ -34,9 +34,7 @@ function initResidentNoAutoBirth() {
     this.value = v;
 
     const nums = v.replace(/[^0-9]/g, "");
-    if (nums.length >= 7) {
-      birth.value = getBirth(v);
-    }
+    if (nums.length >= 7) birth.value = getBirth(v);
   });
 }
 
@@ -48,7 +46,7 @@ function getBirth(no) {
   const g = n.slice(6, 7);
 
   let c = "19";
-  if (g === "3" || g === "4" || g === "7" || g === "8") c = "20";
+  if (["3", "4", "7", "8"].includes(g)) c = "20";
 
   return `${c}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
 }
@@ -141,7 +139,7 @@ async function saveContractAndCreateLink(event) {
     });
 
     if (!result || !result.success) {
-      alert((result && result.message) ? result.message : "계약 저장 실패");
+      alert(result.message || "계약 저장 실패");
       return;
     }
 
@@ -157,7 +155,7 @@ async function saveContractAndCreateLink(event) {
     alert("계약 저장 및 전자서명 링크 생성이 완료되었습니다.");
 
   } catch (e) {
-    alert("저장 중 오류가 발생했습니다. Apps Script 배포 또는 인터넷 연결을 확인해주세요.");
+    alert("저장 중 오류가 발생했습니다.");
   } finally {
     btn.disabled = false;
     btn.innerText = "계약 저장 및 전자서명 링크 생성";
@@ -177,7 +175,6 @@ async function loadContract(id) {
     }
 
     currentContractId = id;
-
     fillContract(result.contract || {});
 
     const form = document.querySelector(".form-box");
@@ -230,7 +227,6 @@ function initSignaturePad() {
 function startDraw(e) {
   drawing = true;
   document.body.style.overflow = "hidden";
-
   const p = getPos(e);
   ctx.beginPath();
   ctx.moveTo(p.x, p.y);
@@ -238,7 +234,6 @@ function startDraw(e) {
 
 function draw(e) {
   if (!drawing) return;
-
   const p = getPos(e);
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
@@ -261,7 +256,6 @@ function drawTouch(e) {
 
 function getPos(e) {
   const r = canvas.getBoundingClientRect();
-
   return {
     x: (e.clientX - r.left) * (canvas.width / r.width),
     y: (e.clientY - r.top) * (canvas.height / r.height)

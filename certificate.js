@@ -1,25 +1,41 @@
+/* =========================
+   certificate.js
+   재직증명서 최종 전체본
+   ========================= */
+
 const API_URL =
-"https://script.google.com/macros/s/여기에_배포URL/exec";
+"https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
 
-const searchBtn = document.getElementById("searchBtn");
-const message = document.getElementById("message");
+const searchBtn =
+document.getElementById("searchBtn");
 
-searchBtn.addEventListener("click", searchCertificate);
+const message =
+document.getElementById("message");
+
+searchBtn.addEventListener(
+  "click",
+  searchCertificate
+);
 
 async function searchCertificate() {
 
   const name =
-    document.getElementById("name").value.trim();
+    document.getElementById("name")
+    .value.trim();
 
   const ssn =
-    document.getElementById("ssn").value.trim();
+    document.getElementById("ssn")
+    .value.trim();
 
   const purpose =
-    document.getElementById("purpose").value.trim();
+    document.getElementById("purpose")
+    .value.trim();
 
   if (!name || !ssn) {
+
     message.innerText =
       "이름과 주민번호 뒤 7자리를 입력해주세요.";
+
     return;
   }
 
@@ -27,28 +43,36 @@ async function searchCertificate() {
 
   try {
 
-    const response = await fetch(API_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        action: "getCertificate",
-        name: name,
-        ssn: ssn
-      })
-    });
+    const response =
+      await fetch(API_URL, {
 
-    const result = await response.json();
+        method: "POST",
+
+        body: JSON.stringify({
+          action: "getCertificate",
+          name,
+          ssn
+        })
+      });
+
+    const result =
+      await response.json();
 
     console.log(result);
 
     if (!result.success) {
+
       message.innerText =
-        result.message || "직원 정보를 찾을 수 없습니다.";
+        result.message ||
+        "직원을 찾을 수 없습니다.";
+
       return;
     }
 
-    const emp = result.data;
-
-    renderCertificate(emp, purpose);
+    renderCertificate(
+      result.data,
+      purpose
+    );
 
   } catch (err) {
 
@@ -106,7 +130,8 @@ function renderCertificate(emp, purpose) {
       </table>
 
       <div class="confirm-text">
-        위 사람은 상기와 같이 당사에 재직 중임을 증명합니다.
+        위 사람은 상기와 같이
+        당사에 재직 중임을 증명합니다.
       </div>
 
       <div class="date-text">
@@ -128,16 +153,18 @@ function renderCertificate(emp, purpose) {
         </p>
 
         <p>
-          주소 : 서울시 송파구 올림픽로 300, 5층
+          주소 : 서울시 송파구
+          올림픽로 300, 5층
         </p>
 
       </div>
 
       <button
         class="print-btn"
-        onclick="window.print()"
-      >
+        onclick="window.print()">
+
         인쇄 / PDF 저장
+
       </button>
 
     </div>
@@ -153,7 +180,9 @@ function todayKorean() {
 
   return `
   ${d.getFullYear()}년
-  ${String(d.getMonth() + 1).padStart(2, "0")}월
-  ${String(d.getDate()).padStart(2, "0")}일
+  ${String(d.getMonth()+1)
+    .padStart(2,"0")}월
+  ${String(d.getDate())
+    .padStart(2,"0")}일
   `;
 }

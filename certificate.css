@@ -224,3 +224,16 @@ td{
     height:70px;
   }
 }
+.company-sign-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.company-stamp,
+.stamp-img {
+  width: 72px !important;
+  height: 72px !important;
+  object-fit: contain;
+  vertical-align: middle;
+}

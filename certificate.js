@@ -1,56 +1,64 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
 
 async function createCertificate() {
-  const name = document.getElementById("name").value.trim();
-  const ssnBack = document.getElementById("ssnBack").value.trim();
-  const purpose = document.getElementById("purpose").value.trim();
-  const message = document.getElementById("message");
+  const name = value("empName");
+  const rrnBack = value("rrnBack").replace(/[^0-9]/g, "");
+  const purpose = value("purpose") || "제출용";
 
-  if (!name || !ssnBack || !purpose) {
-    message.innerText = "이름, 주민번호 뒤 7자리, 제출 용도를 모두 입력해주세요.";
+  if (!name || !rrnBack) {
+    setMessage("이름과 주민번호 뒤 7자리를 입력해주세요.");
     return;
   }
 
-  if (ssnBack.length !== 7) {
-    message.innerText = "주민번호 뒤 7자리를 정확히 입력해주세요.";
+  if (rrnBack.length !== 7) {
+    setMessage("주민번호 뒤 7자리는 숫자 7자리로 입력해주세요.");
     return;
   }
 
-  message.innerText = "직원 정보를 조회 중입니다...";
+  setMessage("직원 정보를 조회하는 중입니다...");
 
   try {
-    const findResult = await postData({
+    const result = await postData({
       action: "findEmployee",
-      name,
-      ssnBack
+      name: name,
+      rrnBack: rrnBack,
+      residentBack: rrnBack,
+      residentNoBack: rrnBack
     });
 
-    if (!findResult.success) {
-      message.innerText = findResult.message || "직원 정보를 찾을 수 없습니다.";
+    if (!result.success) {
+      setMessage(result.message || "일치하는 직원 정보를 찾을 수 없습니다.");
       return;
     }
 
-    const emp = findResult.employee;
+    const emp = result.employee || {};
 
-    const logResult = await postData({
+    text("certName", emp.name);
+    text("certBirth", emp.birth);
+    text("certAddress", emp.address);
+    text("certStore", emp.store);
+    text("certPosition", emp.position || "직원");
+    text("certJoinDate", emp.joinDate);
+    text("certStatus", emp.status || "재직중");
+    text("certPurpose", purpose);
+    text("certDate", getTodayKorean());
+
+    document.getElementById("certificateBox").style.display = "block";
+
+    await postData({
       action: "saveIssueLog",
-      certType: "재직증명서",
-      name: emp.name,
-      department: emp.department,
-      position: emp.position,
-      purpose
+      type: "재직증명서",
+      name: emp.name || name,
+      purpose: purpose,
+      memo: "재직증명서 발급"
     });
 
-    if (!logResult.success) {
-      message.innerText = logResult.message || "발급이력 저장 중 오류가 발생했습니다.";
-      return;
-    }
-
-    fillCertificate(emp, purpose, logResult.issueNo);
-    message.innerText = "재직증명서가 생성되었습니다. 아래 인쇄하기 버튼을 눌러 출력하세요.";
+    setMessage("");
 
   } catch (err) {
-    message.innerText = "오류가 발생했습니다: " + err.message;
+    console.error(err);
+    setMessage("조회 중 오류가 발생했습니다. Apps Script 배포 상태를 확인해주세요.");
   }
 }
 
@@ -63,22 +71,22 @@ async function postData(data) {
   return await response.json();
 }
 
-function fillCertificate(emp, purpose, issueNo) {
-  document.getElementById("issueNo").innerText = issueNo;
-  document.getElementById("certName").innerText = emp.name;
-  document.getElementById("certSsn").innerText = `${emp.ssnFront}-${String(emp.ssnBack).substring(0, 1)}******`;
-  document.getElementById("certAddress").innerText = emp.address;
-  document.getElementById("certDepartment").innerText = emp.department;
-  document.getElementById("certPosition").innerText = emp.position;
-  document.getElementById("certPeriod").innerText = `${emp.joinDate} ~ 현재`;
-  document.getElementById("certPurpose").innerText = purpose;
-  document.getElementById("certToday").innerText = getTodayKorean();
+function value(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : "";
+}
+
+function text(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.innerText = val || "";
+}
+
+function setMessage(msg) {
+  const el = document.getElementById("message");
+  if (el) el.innerText = msg;
 }
 
 function getTodayKorean() {
   const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth() + 1).padStart(2, "0");
-  const d = String(today.getDate()).padStart(2, "0");
-  return `${y}년 ${m}월 ${d}일`;
+  return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
 }

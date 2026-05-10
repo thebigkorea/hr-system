@@ -392,3 +392,10 @@ table td{
     height:58px;
   }
 }
+input,
+select,
+textarea {
+  letter-spacing: 0 !important;
+  word-spacing: 0 !important;
+  text-align: left !important;
+}

@@ -395,3 +395,48 @@ function isCanvasEmpty() {
   blank.height = canvas.height;
   return canvas.toDataURL() === blank.toDataURL();
 }
+document.addEventListener("input", function(e) {
+  const el = e.target;
+  if (!el || !el.id) return;
+
+  const moneyIds = [
+    "basePay", "overtimePay", "dutyPay", "positionPay",
+    "mealPay", "totalPay", "hourPay", "servicePay"
+  ];
+
+  if (moneyIds.includes(el.id)) {
+    const n = el.value.replace(/[^0-9]/g, "");
+    el.value = n ? Number(n).toLocaleString() : "";
+  }
+
+  if (el.id === "residentNo") {
+    let n = el.value.replace(/[^0-9]/g, "").slice(0, 13);
+    if (n.length > 6) n = n.slice(0, 6) + "-" + n.slice(6);
+    el.value = n;
+
+    const birth = document.getElementById("birth");
+    if (birth && n.length >= 8) {
+      birth.value = getBirthFromResidentNo(n);
+    }
+  }
+
+  if (el.id === "phone") {
+    let n = el.value.replace(/[^0-9]/g, "").slice(0, 11);
+    if (n.length <= 3) el.value = n;
+    else if (n.length <= 7) el.value = n.slice(0, 3) + "-" + n.slice(3);
+    else el.value = n.slice(0, 3) + "-" + n.slice(3, 7) + "-" + n.slice(7);
+  }
+});
+
+function getBirthFromResidentNo(v) {
+  const n = String(v).replace(/[^0-9]/g, "");
+  const yy = n.slice(0, 2);
+  const mm = n.slice(2, 4);
+  const dd = n.slice(4, 6);
+  const g = n.slice(6, 7);
+
+  let century = "19";
+  if (["3", "4", "7", "8"].includes(g)) century = "20";
+
+  return `${century}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
+}

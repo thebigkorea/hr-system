@@ -1,92 +1,159 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
+"https://script.google.com/macros/s/여기에_배포URL/exec";
 
-async function createCertificate() {
-  const name = value("empName");
-  const rrnBack = value("rrnBack").replace(/[^0-9]/g, "");
-  const purpose = value("purpose") || "제출용";
+const searchBtn = document.getElementById("searchBtn");
+const message = document.getElementById("message");
 
-  if (!name || !rrnBack) {
-    setMessage("이름과 주민번호 뒤 7자리를 입력해주세요.");
+searchBtn.addEventListener("click", searchCertificate);
+
+async function searchCertificate() {
+
+  const name =
+    document.getElementById("name").value.trim();
+
+  const ssn =
+    document.getElementById("ssn").value.trim();
+
+  const purpose =
+    document.getElementById("purpose").value.trim();
+
+  if (!name || !ssn) {
+    message.innerText =
+      "이름과 주민번호 뒤 7자리를 입력해주세요.";
     return;
   }
 
-  if (rrnBack.length !== 7) {
-    setMessage("주민번호 뒤 7자리는 숫자 7자리로 입력해주세요.");
-    return;
-  }
-
-  setMessage("직원 정보를 조회하는 중입니다...");
+  message.innerText = "조회중입니다...";
 
   try {
-    const result = await postData({
-      action: "findEmployee",
-      name: name,
-      rrnBack: rrnBack,
-      residentBack: rrnBack,
-      residentNoBack: rrnBack
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "getCertificate",
+        name: name,
+        ssn: ssn
+      })
     });
 
+    const result = await response.json();
+
+    console.log(result);
+
     if (!result.success) {
-      setMessage(result.message || "일치하는 직원 정보를 찾을 수 없습니다.");
+      message.innerText =
+        result.message || "직원 정보를 찾을 수 없습니다.";
       return;
     }
 
-    const emp = result.employee || {};
+    const emp = result.data;
 
-    text("certName", emp.name);
-    text("certBirth", emp.birth);
-    text("certAddress", emp.address);
-    text("certStore", emp.store);
-    text("certPosition", emp.position || "직원");
-    text("certJoinDate", emp.joinDate);
-    text("certStatus", emp.status || "재직중");
-    text("certPurpose", purpose);
-    text("certDate", getTodayKorean());
-
-    document.getElementById("certificateBox").style.display = "block";
-
-    await postData({
-      action: "saveIssueLog",
-      type: "재직증명서",
-      name: emp.name || name,
-      purpose: purpose,
-      memo: "재직증명서 발급"
-    });
-
-    setMessage("");
+    renderCertificate(emp, purpose);
 
   } catch (err) {
+
     console.error(err);
-    setMessage("조회 중 오류가 발생했습니다. Apps Script 배포 상태를 확인해주세요.");
+
+    message.innerText =
+      "조회 중 오류가 발생했습니다.";
   }
 }
 
-async function postData(data) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+function renderCertificate(emp, purpose) {
 
-  return await response.json();
+  document.body.innerHTML = `
+
+  <div class="wrap">
+
+    <div class="certificate-paper">
+
+      <div class="paper-title">
+        재직증명서
+      </div>
+
+      <table class="info-table">
+
+        <tr>
+          <th>성명</th>
+          <td>${emp.name || ""}</td>
+        </tr>
+
+        <tr>
+          <th>소속</th>
+          <td>${emp.department || ""}</td>
+        </tr>
+
+        <tr>
+          <th>직위</th>
+          <td>${emp.position || ""}</td>
+        </tr>
+
+        <tr>
+          <th>입사일</th>
+          <td>${emp.joinDate || ""}</td>
+        </tr>
+
+        <tr>
+          <th>재직상태</th>
+          <td>${emp.status || "재직중"}</td>
+        </tr>
+
+        <tr>
+          <th>제출용도</th>
+          <td>${purpose || "-"}</td>
+        </tr>
+
+      </table>
+
+      <div class="confirm-text">
+        위 사람은 상기와 같이 당사에 재직 중임을 증명합니다.
+      </div>
+
+      <div class="date-text">
+        ${todayKorean()}
+      </div>
+
+      <div class="company-info">
+
+        <p>한국의집 롯데월드몰점</p>
+
+        <p class="representative-line">
+          <span>대표자 : 박병호</span>
+
+          <img
+            src="stamp.png"
+            class="small-stamp"
+            alt="직인"
+          >
+        </p>
+
+        <p>
+          주소 : 서울시 송파구 올림픽로 300, 5층
+        </p>
+
+      </div>
+
+      <button
+        class="print-btn"
+        onclick="window.print()"
+      >
+        인쇄 / PDF 저장
+      </button>
+
+    </div>
+
+  </div>
+
+  `;
 }
 
-function value(id) {
-  const el = document.getElementById(id);
-  return el ? el.value.trim() : "";
-}
+function todayKorean() {
 
-function text(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.innerText = val || "";
-}
+  const d = new Date();
 
-function setMessage(msg) {
-  const el = document.getElementById("message");
-  if (el) el.innerText = msg;
-}
-
-function getTodayKorean() {
-  const today = new Date();
-  return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
+  return `
+  ${d.getFullYear()}년
+  ${String(d.getMonth() + 1).padStart(2, "0")}월
+  ${String(d.getDate()).padStart(2, "0")}일
+  `;
 }

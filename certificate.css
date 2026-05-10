@@ -1,239 +1,183 @@
+/* certificate.css */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 body{
-  margin:0;
-  padding:40px;
-  background:#f3f4f6;
+  background:#f3f5f9;
   font-family:'Pretendard','Noto Sans KR',sans-serif;
+  color:#111827;
 }
 
-.container{
-  max-width:1000px;
-  margin:0 auto;
+.wrap{
+  width:100%;
+  max-width:900px;
+  margin:40px auto;
+  padding:20px;
 }
 
-.top-area{
+.card{
+  background:#fff;
+  border-radius:24px;
+  padding:50px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.top-logo{
   text-align:center;
+  margin-bottom:20px;
+}
+
+.top-logo img{
+  width:90px;
+}
+
+h1{
+  text-align:center;
+  font-size:54px;
+  color:#173b72;
+  margin-bottom:10px;
+  font-weight:900;
+}
+
+.sub-title{
+  text-align:center;
+  color:#6b7280;
   margin-bottom:40px;
-}
-
-.top-area h1{
-  margin:0;
-  font-size:64px;
-  color:#1f3d68;
-  font-weight:800;
-}
-
-.top-area p{
-  margin-top:14px;
-  font-size:28px;
-  color:#666;
+  font-size:20px;
 }
 
 .form-box{
-  background:#fff;
-  padding:50px;
-  border-radius:24px;
-  box-shadow:0 6px 24px rgba(0,0,0,0.08);
-  margin-bottom:40px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 }
 
-.input-group{
-  margin-bottom:30px;
-}
-
-.input-group label{
-  display:block;
-  font-size:30px;
+label{
+  font-size:20px;
   font-weight:700;
-  margin-bottom:14px;
 }
 
-.input-group input{
+input{
   width:100%;
   height:78px;
-  border:2px solid #d9d9d9;
   border-radius:18px;
+  border:2px solid #d1d5db;
   padding:0 24px;
-  font-size:26px;
-  box-sizing:border-box;
+  font-size:28px;
 }
 
 button{
   width:100%;
-  margin-top:20px;
-  height:90px;
+  height:82px;
   border:none;
   border-radius:20px;
-  background:#1f3d68;
+  background:#173b72;
   color:#fff;
-  font-size:34px;
-  font-weight:700;
+  font-size:32px;
+  font-weight:800;
   cursor:pointer;
+  margin-top:10px;
 }
 
-button:hover{
-  background:#274b7d;
-}
-
-#message{
-  margin-top:24px;
+.message{
   text-align:center;
-  color:#d40000;
+  color:red;
+  margin-top:10px;
   font-size:20px;
 }
 
-.preview-box{
-  margin-top:40px;
-}
+/* 증명서 */
 
-.paper{
-  width:210mm;
-  min-height:297mm;
+.certificate-paper{
   background:#fff;
-  margin:0 auto;
-  padding:25mm 22mm;
-  box-sizing:border-box;
-  box-shadow:0 4px 20px rgba(0,0,0,0.1);
+  width:100%;
+  padding:60px;
+  border-radius:24px;
 }
 
-.issue-no{
-  font-size:15px;
+.paper-title{
+  text-align:center;
+  font-size:52px;
+  font-weight:900;
+  color:#173b72;
   margin-bottom:50px;
 }
 
-.paper h2{
-  text-align:center;
-  font-size:42px;
-  letter-spacing:14px;
-  margin-bottom:55px;
-}
-
-table{
+.info-table{
   width:100%;
   border-collapse:collapse;
+  margin-bottom:40px;
 }
 
-th,
-td{
-  border:1px solid #333;
-  padding:16px;
-  font-size:18px;
+.info-table th,
+.info-table td{
+  border:1px solid #999;
+  padding:18px;
+  font-size:22px;
 }
 
-th{
+.info-table th{
+  background:#f3f4f6;
   width:180px;
-  background:#f7f7f7;
-  text-align:center;
 }
 
-td{
-  text-align:left;
-}
-
-.bottom-text{
-  margin-top:70px;
-  text-align:center;
-  line-height:2;
-  font-size:20px;
-}
-
-.sign-area{
+.confirm-text{
   margin-top:40px;
+  font-size:28px;
+  line-height:1.9;
 }
 
-.ceo-line{
-  margin-top:22px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:18px;
+.date-text{
+  margin-top:50px;
+  font-size:30px;
 }
 
-.ceo-name{
+.company-info{
+  margin-top:40px;
   font-size:24px;
+  line-height:2.0;
 }
 
-.stamp-img{
-  width:92px;
-  height:92px;
+.company-info p{
+  margin:10px 0;
+}
+
+.representative-line{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.small-stamp{
+  width:62px !important;
+  height:62px !important;
   object-fit:contain;
 }
 
-.print-btn-area{
-  text-align:center;
-  margin:30px 0 60px;
-}
-
 .print-btn{
-  width:260px;
-  height:70px;
+  width:100%;
+  margin-top:40px;
+  height:82px;
   border:none;
-  border-radius:16px;
-  background:#1f3d68;
+  border-radius:20px;
+  background:#173b72;
   color:#fff;
-  font-size:28px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.print-btn:hover{
-  background:#294d82;
+  font-size:34px;
+  font-weight:900;
 }
 
 @media print{
 
-  @page{
-    size:A4;
-    margin:0;
-  }
-
   body{
     background:#fff;
-    padding:0;
-    margin:0;
   }
 
-  .no-print{
-    display:none !important;
+  .print-btn{
+    display:none;
   }
 
-  .paper{
-    width:210mm;
-    height:297mm;
-    margin:0;
-    box-shadow:none;
-    padding:22mm 18mm;
-  }
-
-  .paper h2{
-    font-size:30px;
-  }
-
-  th,
-  td{
-    font-size:12px;
-    padding:10px;
-  }
-
-  .bottom-text{
-    font-size:14px;
-    margin-top:45px;
-  }
-
-  .stamp-img{
-    width:70px;
-    height:70px;
-  }
-}
-.company-sign-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.company-stamp,
-.stamp-img {
-  width: 72px !important;
-  height: 72px !important;
-  object-fit: contain;
-  vertical-align: middle;
 }

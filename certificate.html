@@ -1,95 +1,50 @@
+<!-- certificate.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>재직증명서</title>
-  <link rel="stylesheet" href="certificate.css">
+
+  <link rel="stylesheet" href="certificate.css" />
 </head>
-
 <body>
-<div class="container">
 
-  <div class="form-box no-print">
-    <h1>재직증명서 발급</h1>
+  <div class="wrap">
 
-    <div class="input-group">
-      <label>직원 성명</label>
-      <input type="text" id="empName" placeholder="예: 박상신">
+    <div class="card">
+
+      <div class="top-logo">
+        <img src="logo.png" alt="logo">
+      </div>
+
+      <h1>재직증명서</h1>
+      <p class="sub-title">Certificate of Employment</p>
+
+      <div class="form-box">
+
+        <label>이름</label>
+        <input type="text" id="name" placeholder="이름 입력">
+
+        <label>주민번호 뒤 7자리</label>
+        <input type="password" id="ssn" maxlength="7" placeholder="주민번호 뒤 7자리">
+
+        <label>제출 용도</label>
+        <input type="text" id="purpose" placeholder="예) 금융기관 제출용">
+
+        <button id="searchBtn">
+          재직증명서 조회 및 생성
+        </button>
+
+        <p id="message" class="message"></p>
+
+      </div>
+
     </div>
 
-    <div class="input-group">
-      <label>주민번호 뒤 7자리</label>
-      <input type="password" id="rrnBack" placeholder="주민번호 뒤 7자리">
-    </div>
-
-    <div class="input-group">
-      <label>제출 용도</label>
-      <input type="text" id="purpose" placeholder="예: 금융기관 제출용">
-    </div>
-
-    <button onclick="createCertificate()">재직증명서 조회 및 생성</button>
-
-    <div id="message"></div>
   </div>
 
-  <div id="certificateBox" class="certificate-box" style="display:none;">
+  <script src="certificate.js"></script>
 
-    <h1 class="cert-title">재 직 증 명 서</h1>
-
-    <table>
-      <tr>
-        <th>성명</th>
-        <td id="certName"></td>
-      </tr>
-      <tr>
-        <th>생년월일</th>
-        <td id="certBirth"></td>
-      </tr>
-      <tr>
-        <th>주소</th>
-        <td id="certAddress"></td>
-      </tr>
-      <tr>
-        <th>소속</th>
-        <td id="certStore"></td>
-      </tr>
-      <tr>
-        <th>직위</th>
-        <td id="certPosition"></td>
-      </tr>
-      <tr>
-        <th>입사일</th>
-        <td id="certJoinDate"></td>
-      </tr>
-      <tr>
-        <th>재직상태</th>
-        <td id="certStatus"></td>
-      </tr>
-      <tr>
-        <th>제출용도</th>
-        <td id="certPurpose"></td>
-      </tr>
-    </table>
-
-    <p class="cert-text">
-      위 사람은 상기와 같이 당사에 재직 중임을 증명합니다.
-    </p>
-
-    <p class="cert-date" id="certDate"></p>
-
-    <div class="company-box">
-      <p>한국의집 롯데월드몰점</p>
-      <p>대표자 : 박병호</p>
-      <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
-      <img src="https://thebigkorea.github.io/hr-system/stamp.png" class="stamp">
-    </div>
-
-    <button class="no-print" onclick="window.print()">인쇄 / PDF 저장</button>
-  </div>
-
-</div>
-
-<script src="certificate.js"></script>
 </body>
 </html>

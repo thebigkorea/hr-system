@@ -8,22 +8,16 @@ let currentContractId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   initTimeSelect();
-  initMoneyInputs();
   initResidentNoAutoBirth();
+  initMoneyInputs();
   initSignaturePad();
 
-  const params = new URLSearchParams(window.location.search);
-  const contractId = params.get("id");
-
-  if (contractId) {
-    currentContractId = contractId;
-    await loadContract(contractId);
+  const id = new URLSearchParams(window.location.search).get("id");
+  if (id) {
+    currentContractId = id;
+    await loadContract(id);
   }
 });
-
-/* =========================
-   출근/퇴근 시간 자동 생성
-========================= */
 
 function initTimeSelect() {
   const start = document.getElementById("startTime");
@@ -34,73 +28,49 @@ function initTimeSelect() {
   start.innerHTML = `<option value="">출근시간 선택</option>`;
   end.innerHTML = `<option value="">퇴근시간 선택</option>`;
 
-  for (let h = 0; h <= 23; h++) {
+  for (let h = 0; h < 24; h++) {
     ["00", "30"].forEach(m => {
-      const time = `${String(h).padStart(2, "0")}:${m}`;
-
-      const startOption = document.createElement("option");
-      startOption.value = time;
-      startOption.textContent = time;
-      start.appendChild(startOption);
-
-      const endOption = document.createElement("option");
-      endOption.value = time;
-      endOption.textContent = time;
-      end.appendChild(endOption);
+      const t = `${String(h).padStart(2, "0")}:${m}`;
+      start.add(new Option(t, t));
+      end.add(new Option(t, t));
     });
   }
-
-  start.value = "09:00";
-  end.value = "21:00";
 }
 
-/* =========================
-   주민번호 → 생년월일 자동
-========================= */
-
 function initResidentNoAutoBirth() {
-  const residentInput = document.getElementById("residentNo");
-  const birthInput = document.getElementById("birth");
+  const resident = document.getElementById("residentNo");
+  const birth = document.getElementById("birth");
 
-  if (!residentInput || !birthInput) return;
+  if (!resident || !birth) return;
 
-  residentInput.addEventListener("input", function () {
-    let value = this.value.replace(/[^0-9]/g, "");
+  resident.addEventListener("input", function () {
+    let v = this.value.replace(/[^0-9]/g, "");
 
-    if (value.length > 6) {
-      value = value.slice(0, 6) + "-" + value.slice(6, 13);
+    if (v.length > 6) {
+      v = v.slice(0, 6) + "-" + v.slice(6, 13);
     }
 
-    this.value = value;
+    this.value = v;
 
-    const birth = getBirthFromResidentNo(value);
-    if (birth) birthInput.value = birth;
+    const nums = v.replace(/[^0-9]/g, "");
+    if (nums.length >= 7) {
+      birth.value = getBirth(v);
+    }
   });
 }
 
-function getBirthFromResidentNo(residentNo) {
-  const nums = residentNo.replace(/[^0-9]/g, "");
+function getBirth(no) {
+  const n = no.replace(/[^0-9]/g, "");
+  const yy = n.slice(0, 2);
+  const mm = n.slice(2, 4);
+  const dd = n.slice(4, 6);
+  const g = n.slice(6, 7);
 
-  if (nums.length < 7) return "";
+  let c = "19";
+  if (g === "3" || g === "4" || g === "7" || g === "8") c = "20";
 
-  const yy = nums.slice(0, 2);
-  const mm = nums.slice(2, 4);
-  const dd = nums.slice(4, 6);
-  const genderCode = nums.slice(6, 7);
-
-  let century = "19";
-
-  if (genderCode === "1" || genderCode === "2") century = "19";
-  if (genderCode === "3" || genderCode === "4") century = "20";
-  if (genderCode === "5" || genderCode === "6") century = "19";
-  if (genderCode === "7" || genderCode === "8") century = "20";
-
-  return `${century}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
+  return `${c}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
 }
-
-/* =========================
-   임금 콤마 + 자동 합산
-========================= */
 
 function initMoneyInputs() {
   const ids = [
@@ -112,39 +82,24 @@ function initMoneyInputs() {
   ];
 
   ids.forEach(id => {
-    const input = document.getElementById(id);
-    if (!input) return;
+    const el = document.getElementById(id);
+    if (!el) return;
 
-    input.addEventListener("input", function () {
-      const onlyNumber = this.value.replace(/[^0-9]/g, "");
-      this.value = onlyNumber ? Number(onlyNumber).toLocaleString() : "";
+    el.addEventListener("input", function () {
+      const n = this.value.replace(/[^0-9]/g, "");
+      this.value = n ? Number(n).toLocaleString() : "";
       calculateTotalPay();
     });
-
-    input.addEventListener("blur", calculateTotalPay);
   });
-
-  calculateTotalPay();
 }
 
 function calculateTotalPay() {
-  const ids = [
-    "basePay",
-    "overtimePay",
-    "dutyPay",
-    "positionPay",
-    "mealPay"
-  ];
-
-  let total = 0;
-
-  ids.forEach(id => {
-    const input = document.getElementById(id);
-    if (!input) return;
-
-    const number = Number(input.value.replace(/,/g, "") || 0);
-    total += number;
-  });
+  const total =
+    numberValue("basePay") +
+    numberValue("overtimePay") +
+    numberValue("dutyPay") +
+    numberValue("positionPay") +
+    numberValue("mealPay");
 
   const totalInput = document.getElementById("totalPay");
   if (totalInput) {
@@ -152,42 +107,24 @@ function calculateTotalPay() {
   }
 }
 
-/* =========================
-   계약서 생성
-========================= */
-
-function createContract() {
-  calculateTotalPay();
-
-  const data = collectData();
-
-  if (!validateData(data)) return;
-
-  fillContract(data);
-  saveEmployeeFromContract(data);
-
-  setMessage("근로계약서가 생성되었습니다. 계약 저장 및 직원 링크 생성을 눌러주세요.");
-}
-
 function collectData() {
   calculateTotalPay();
 
   return {
+    contractType: "정규직 근로계약서",
+
     empName: value("empName"),
     residentNo: value("residentNo"),
     birth: value("birth"),
     phone: value("phone"),
     address: value("address"),
-    bank: value("bank"),
-    account: value("account"),
 
-    joinDate: formatDateKorean(value("joinDate")),
+    joinDate: formatDate(value("joinDate")),
     workDays: value("workDays"),
-    monthHour: value("monthHour") || "209",
-    workTime:
-      value("startTime") && value("endTime")
-        ? `${value("startTime")} ~ ${value("endTime")}`
-        : "",
+    monthHour: value("monthHour"),
+    workTime: `${value("startTime")} ~ ${value("endTime")}`,
+    startTime: value("startTime"),
+    endTime: value("endTime"),
     breakTime: value("breakTime"),
     workPlace: value("workPlace"),
     jobDuty: value("jobDuty"),
@@ -197,11 +134,16 @@ function collectData() {
     dutyPay: value("dutyPay"),
     positionPay: value("positionPay"),
     mealPay: value("mealPay"),
-    totalPay: value("totalPay")
+    totalPay: value("totalPay"),
+
+    bank: value("bank"),
+    account: value("account"),
+
+    representative: "박병호"
   };
 }
 
-function validateData(data) {
+function validateData(d) {
   const required = [
     "empName",
     "residentNo",
@@ -210,18 +152,21 @@ function validateData(data) {
     "address",
     "joinDate",
     "workDays",
-    "workTime",
+    "monthHour",
+    "startTime",
+    "endTime",
     "breakTime",
     "workPlace",
     "jobDuty",
     "basePay",
-    "totalPay"
+    "totalPay",
+    "bank",
+    "account"
   ];
 
-  for (const key of required) {
-    if (!data[key]) {
+  for (const k of required) {
+    if (!d[k]) {
       alert("필수 항목을 모두 입력해주세요.");
-      setMessage("필수 항목을 모두 입력해주세요.");
       return false;
     }
   }
@@ -229,89 +174,65 @@ function validateData(data) {
   return true;
 }
 
-function fillContract(data) {
-  text("cEmpName", data.empName);
-  text("cWorkerName", data.empName);
-  text("cResidentNo", data.residentNo);
-  text("cBirth", data.birth);
-  text("cPhone", data.phone);
-  text("cAddress", data.address);
-  text("cBankAccount", `${data.bank || ""} ${data.account || ""}`);
+function createContract() {
+  const d = collectData();
 
-  text("cJoinDate", data.joinDate);
-  text("cWorkPlace", data.workPlace);
-  text("cJobDuty", data.jobDuty);
-  text("cWorkDays", data.workDays);
-  text("cWorkTime", data.workTime);
-  text("cBreakTime", data.breakTime);
-  text("cMonthHour", data.monthHour);
+  if (!validateData(d)) return;
 
-  text("cBasePay", withWon(data.basePay));
-  text("cOvertimePay", withWon(data.overtimePay));
-  text("cDutyPay", withWon(data.dutyPay));
-  text("cPositionPay", withWon(data.positionPay));
-  text("cMealPay", withWon(data.mealPay));
-  text("cTotalPay", withWon(data.totalPay));
-
-  text("cToday", getTodayKorean());
+  fillContract(d);
+  setMessage("정규직 근로계약서가 생성되었습니다.");
+  alert("정규직 근로계약서가 생성되었습니다.");
 }
 
-/* =========================
-   계약 저장 + 직원 링크 생성
-========================= */
-
 async function saveContractAndCreateLink(event) {
-  calculateTotalPay();
-
   const btn = event.target;
-  const data = collectData();
+  const d = collectData();
 
-  if (!validateData(data)) return;
+  if (!validateData(d)) return;
 
-  fillContract(data);
+  fillContract(d);
 
-  btn.innerText = "처리중...";
   btn.disabled = true;
+  btn.innerText = "처리중...";
   setMessage("계약 저장 및 직원 링크 생성 중입니다...");
 
   try {
     const result = await postData({
       action: "saveContractDraft",
-      contract: data
+      contract: d
     });
 
-    if (!result.success) {
-      alert(result.message || "계약 저장 실패");
-      setMessage(result.message || "계약 저장 실패");
+    if (!result || !result.success) {
+      alert((result && result.message) ? result.message : "계약 저장 실패");
+      setMessage((result && result.message) ? result.message : "계약 저장 실패");
       return;
     }
 
     currentContractId = result.contractId;
 
+    const link =
+      `https://thebigkorea.github.io/hr-system/regular-contract.html?id=${encodeURIComponent(result.contractId)}`;
+
     document.getElementById("contractLinkBox").style.display = "block";
-    document.getElementById("contractLink").value = result.link;
+    document.getElementById("contractLink").value = link;
 
     setMessage("계약 저장 완료. 직원 링크가 생성되었습니다.");
     alert("계약 저장 및 직원 링크 생성이 완료되었습니다.");
 
-  } catch (err) {
-    alert("계약 저장 중 오류가 발생했습니다.");
-    setMessage("계약 저장 중 오류: " + err.message);
+  } catch (e) {
+    alert("저장 중 오류가 발생했습니다. Apps Script 배포 또는 인터넷 연결을 확인해주세요.");
+    setMessage("저장 중 오류가 발생했습니다.");
   } finally {
-    btn.innerText = "계약 저장 및 직원 링크 생성";
     btn.disabled = false;
+    btn.innerText = "계약 저장 및 직원 링크 생성";
   }
 }
 
-/* =========================
-   직원 링크 계약서 불러오기
-========================= */
-
-async function loadContract(contractId) {
+async function loadContract(id) {
   try {
     const result = await postData({
       action: "getContractById",
-      contractId
+      contractId: id
     });
 
     if (!result.success) {
@@ -319,32 +240,50 @@ async function loadContract(contractId) {
       return;
     }
 
-    fillContract(result.contract);
+    currentContractId = id;
 
-    const formBox = document.querySelector(".form-box");
-    if (formBox) formBox.style.display = "none";
+    fillContract(result.contract || {});
+
+    const form = document.querySelector(".form-box");
+    if (form) form.style.display = "none";
 
     setMessage("계약 내용을 확인한 뒤 전자서명을 진행해주세요.");
 
-  } catch (err) {
-    alert("계약 불러오기 오류");
+  } catch (e) {
+    alert("계약서를 불러오는 중 오류가 발생했습니다.");
   }
 }
 
-async function saveEmployeeFromContract(data) {
-  try {
-    await postData({
-      action: "saveEmployeeFromContract",
-      employee: data
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
+function fillContract(d) {
+  text("cEmpName", d.empName);
+  text("cWorkerName", d.empName);
+  text("cResidentNo", d.residentNo);
+  text("cBirth", d.birth);
+  text("cAddress", d.address);
+  text("cPhone", d.phone);
 
-/* =========================
-   전자서명
-========================= */
+  text("cJoinDate", d.joinDate);
+  text("cWorkPlace", d.workPlace);
+  text("cJobDuty", d.jobDuty);
+  text("cWorkDays", d.workDays);
+  text("cMonthHour", d.monthHour);
+  text("cWorkTime", d.workTime);
+  text("cBreakTime", d.breakTime);
+
+  text("cBasePay", withWon(d.basePay));
+  text("cOvertimePay", withWon(d.overtimePay));
+  text("cDutyPay", withWon(d.dutyPay));
+  text("cPositionPay", withWon(d.positionPay));
+  text("cMealPay", withWon(d.mealPay));
+  text("cTotalPay", withWon(d.totalPay));
+
+  text("cBank", d.bank);
+  text("cAccount", d.account);
+  text("cBank2", d.bank);
+  text("cAccount2", d.account);
+
+  text("cToday", getTodayKorean());
+}
 
 function initSignaturePad() {
   canvas = document.getElementById("signaturePad");
@@ -360,8 +299,8 @@ function initSignaturePad() {
   canvas.addEventListener("mouseup", endDraw);
   canvas.addEventListener("mouseleave", endDraw);
 
-  canvas.addEventListener("touchstart", startDrawTouch, { passive:false });
-  canvas.addEventListener("touchmove", drawTouch, { passive:false });
+  canvas.addEventListener("touchstart", startDrawTouch, { passive: false });
+  canvas.addEventListener("touchmove", drawTouch, { passive: false });
   canvas.addEventListener("touchend", endDraw);
 }
 
@@ -369,16 +308,16 @@ function startDraw(e) {
   drawing = true;
   document.body.style.overflow = "hidden";
 
-  const pos = getCanvasPos(e);
+  const p = getPos(e);
   ctx.beginPath();
-  ctx.moveTo(pos.x, pos.y);
+  ctx.moveTo(p.x, p.y);
 }
 
 function draw(e) {
   if (!drawing) return;
 
-  const pos = getCanvasPos(e);
-  ctx.lineTo(pos.x, pos.y);
+  const p = getPos(e);
+  ctx.lineTo(p.x, p.y);
   ctx.stroke();
 }
 
@@ -397,12 +336,12 @@ function drawTouch(e) {
   draw(e.touches[0]);
 }
 
-function getCanvasPos(e) {
-  const rect = canvas.getBoundingClientRect();
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
 
   return {
-    x: (e.clientX - rect.left) * (canvas.width / rect.width),
-    y: (e.clientY - rect.top) * (canvas.height / rect.height)
+    x: (e.clientX - r.left) * (canvas.width / r.width),
+    y: (e.clientY - r.top) * (canvas.height / r.height)
   };
 }
 
@@ -412,7 +351,10 @@ function clearSignature() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const img = document.getElementById("workerSignatureImage");
-  if (img) img.src = "";
+  if (img) {
+    img.src = "";
+    img.style.display = "none";
+  }
 
   const completeBox = document.getElementById("completeBox");
   if (completeBox) completeBox.style.display = "none";
@@ -424,7 +366,7 @@ function clearSignature() {
 async function completeElectronicContract(event) {
   const agree = document.getElementById("agreeCheck");
 
-  if (!agree.checked) {
+  if (!agree || !agree.checked) {
     alert("전자계약 동의 체크를 해주세요.");
     return;
   }
@@ -435,56 +377,57 @@ async function completeElectronicContract(event) {
   }
 
   if (!currentContractId) {
-    alert("계약번호가 없습니다. 직원 전용 링크로 다시 접속해주세요.");
+    alert("계약번호가 없습니다. 직원 링크로 다시 접속해주세요.");
     return;
   }
 
   const btn = event.target;
-  btn.innerText = "저장중...";
   btn.disabled = true;
+  btn.innerText = "저장중...";
 
-  const signatureData = canvas.toDataURL("image/png");
+  const signature = canvas.toDataURL("image/png");
 
   const img = document.getElementById("workerSignatureImage");
-  img.src = signatureData;
-  img.style.display = "block";
+  if (img) {
+    img.src = signature;
+    img.style.display = "block";
+  }
 
-  document.getElementById("signedTime").innerText =
-    getTodayKorean() + " 전자서명 완료";
+  const signedTime = document.getElementById("signedTime");
+  if (signedTime) {
+    signedTime.innerText = new Date().toLocaleString() + " 전자서명 완료";
+  }
 
   try {
     const result = await postData({
       action: "signContract",
       contractId: currentContractId,
-      signature: signatureData
+      signature
     });
 
-    if (!result.success) {
-      alert(result.message || "전자서명 저장 실패");
-      return;
+    if (result.success) {
+      const completeBox = document.getElementById("completeBox");
+      if (completeBox) completeBox.style.display = "block";
+
+      btn.innerText = "전자계약 완료됨";
+      setMessage("전자계약이 정상 완료되었습니다.");
+      alert("전자계약이 정상 완료되었습니다.");
+    } else {
+      alert(result.message || "서명 저장 실패");
+      btn.disabled = false;
+      btn.innerText = "전자계약 완료";
     }
-
-    document.getElementById("completeBox").style.display = "block";
-    btn.innerText = "전자계약 완료됨";
-    btn.style.background = "#059669";
-
-    alert("전자계약이 정상 완료되었습니다.");
-
-  } catch (err) {
-    alert("전자서명 오류");
-  } finally {
+  } catch (e) {
+    alert("전자서명 저장 중 오류가 발생했습니다.");
     btn.disabled = false;
+    btn.innerText = "전자계약 완료";
   }
 }
-
-/* =========================
-   공통
-========================= */
 
 function copyContractLink() {
   const input = document.getElementById("contractLink");
 
-  if (!input.value) {
+  if (!input || !input.value) {
     alert("복사할 링크가 없습니다.");
     return;
   }
@@ -495,12 +438,12 @@ function copyContractLink() {
 }
 
 async function postData(data) {
-  const response = await fetch(API_URL, {
+  const res = await fetch(API_URL, {
     method: "POST",
     body: JSON.stringify(data)
   });
 
-  return await response.json();
+  return await res.json();
 }
 
 function value(id) {
@@ -518,25 +461,15 @@ function setMessage(msg) {
   if (el) el.innerText = msg;
 }
 
-function withWon(v) {
-  if (!v) return "0원";
-  return `${v}원`;
-}
-
-function formatDateKorean(dateValue) {
-  if (!dateValue) return "";
-  if (!dateValue.includes("-")) return dateValue;
-
-  const [y, m, d] = dateValue.split("-");
+function formatDate(v) {
+  if (!v) return "";
+  const [y, m, d] = v.split("-");
   return `${y}년 ${Number(m)}월 ${Number(d)}일`;
 }
 
 function getTodayKorean() {
   const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth() + 1).padStart(2, "0");
-  const d = String(today.getDate()).padStart(2, "0");
-  return `${y}년 ${m}월 ${d}일`;
+  return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
 }
 
 function isCanvasEmpty() {
@@ -544,4 +477,13 @@ function isCanvasEmpty() {
   blank.width = canvas.width;
   blank.height = canvas.height;
   return canvas.toDataURL() === blank.toDataURL();
+}
+
+function numberValue(id) {
+  return Number(value(id).replace(/[^0-9]/g, "")) || 0;
+}
+
+function withWon(v) {
+  if (!v) return "0원";
+  return String(v).includes("원") ? v : `${v}원`;
 }

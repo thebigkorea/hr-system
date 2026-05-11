@@ -14,15 +14,20 @@ body {
 
 .wrap {
   width: 100%;
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.result-wrap {
+  max-width: none;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
   padding: 50px;
+  margin-bottom: 36px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
@@ -72,14 +77,14 @@ input {
 
 button {
   width: 100%;
-  height: 82px;
   border: none;
   border-radius: 20px;
   background: #173b72;
   color: #fff;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 800;
   cursor: pointer;
+  padding: 22px 20px;
   margin-top: 10px;
 }
 
@@ -100,18 +105,17 @@ button:active {
 ========================= */
 
 .certificate-paper {
-  background: #fff;
   width: 794px;
   min-height: 1123px;
-  margin: 40px auto;
-  padding: 86px 70px 70px;
-  border-radius: 0;
+  margin: 0 auto;
+  background: #fff;
+  padding: 72px 70px 62px;
   box-shadow: 0 8px 28px rgba(0,0,0,0.12);
 }
 
 .issue-no {
   font-size: 13px;
-  margin-bottom: 55px;
+  margin-bottom: 42px;
   color: #111;
 }
 
@@ -121,21 +125,21 @@ button:active {
   font-weight: 800;
   letter-spacing: 16px;
   color: #000;
-  margin-bottom: 58px;
+  margin-bottom: 44px;
 }
 
 .info-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 auto 66px;
+  margin: 0 auto 38px;
 }
 
 .info-table th,
 .info-table td {
   border: 1px solid #222;
-  padding: 18px 20px;
-  height: 62px;
-  font-size: 21px;
+  padding: 14px 18px;
+  height: 54px;
+  font-size: 18px;
   vertical-align: middle;
 }
 
@@ -153,23 +157,23 @@ button:active {
 
 .confirm-text {
   text-align: center;
-  font-size: 22px;
-  line-height: 1.9;
-  margin-top: 54px;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-top: 34px;
 }
 
 .date-text {
   text-align: center;
-  font-size: 22px;
-  margin-top: 48px;
+  font-size: 18px;
+  margin-top: 24px;
   font-weight: 400;
 }
 
 .company-info {
+  margin-top: 48px;
   text-align: center;
-  font-size: 21px;
-  line-height: 1.9;
-  margin-top: 76px;
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 .company-info p {
@@ -177,26 +181,32 @@ button:active {
 }
 
 .representative-line {
-  margin-top: 26px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
-  font-size: 24px;
+  gap: 14px;
+}
+
+.representative-line span {
+  font-size: 21px;
   font-weight: 700;
 }
 
 .small-stamp {
-  width: 74px !important;
-  height: 74px !important;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
 }
 
-.print-btn {
+.print-btn-area {
   width: 794px;
-  display: block;
   margin: 24px auto 0;
-  height: auto;
+}
+
+.print-btn {
+  width: 100%;
+  display: block;
   padding: 22px 20px;
   border: none;
   border-radius: 16px;
@@ -217,6 +227,7 @@ button:active {
 }
 
 @media print {
+
   html,
   body {
     width: 210mm;
@@ -241,7 +252,9 @@ button:active {
   h1,
   .sub-title,
   .message,
-  .print-btn {
+  .print-btn,
+  .print-btn-area,
+  .no-print {
     display: none !important;
   }
 
@@ -250,73 +263,66 @@ button:active {
     height: 297mm !important;
     min-height: auto !important;
     margin: 0 !important;
-    padding: 24mm 20mm 18mm !important;
-    box-shadow: none !important;
+    padding: 18mm 20mm 12mm !important;
     border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+
     page-break-before: avoid !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
-    overflow: hidden !important;
   }
 
   .issue-no {
-    font-size: 12px !important;
-    margin-bottom: 28px !important;
+    font-size: 11px !important;
+    margin-bottom: 18px !important;
   }
 
   .paper-title {
-    font-size: 34px !important;
-    margin-bottom: 38px !important;
+    font-size: 30px !important;
+    letter-spacing: 14px !important;
+    margin-bottom: 28px !important;
   }
 
   .info-table {
-    margin-bottom: 45px !important;
+    margin-bottom: 28px !important;
   }
 
   .info-table th,
   .info-table td {
-    font-size: 18px !important;
-    padding: 13px 16px !important;
-    height: 52px !important;
+    font-size: 15px !important;
+    padding: 9px 13px !important;
+    height: 40px !important;
   }
 
   .confirm-text {
-    margin-top: 42px !important;
-    font-size: 20px !important;
+    margin-top: 20px !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
   }
 
   .date-text {
-    margin-top: 42px !important;
-    font-size: 21px !important;
+    margin-top: 18px !important;
+    font-size: 16px !important;
   }
 
   .company-info {
-    margin-top: 58px !important;
-    font-size: 19px !important;
+    margin-top: 34px !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
   }
 
   .representative-line {
-    font-size: 22px !important;
+    margin-top: 14px !important;
+    gap: 12px !important;
+  }
+
+  .representative-line span {
+    font-size: 18px !important;
   }
 
   .small-stamp {
-    width: 70px !important;
-    height: 70px !important;
-  }
-}
-.result-wrap {
-  max-width: none;
-}
-
-.print-btn-area {
-  width: 794px;
-  margin: 24px auto 0;
-}
-
-@media print {
-  .no-print,
-  .print-btn-area,
-  .print-btn {
-    display: none !important;
+    width: 58px !important;
+    height: 58px !important;
   }
 }

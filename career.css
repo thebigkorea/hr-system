@@ -220,3 +220,113 @@ td{
     height:70px;
   }
 }
+/* =========================
+   경력증명서 A4 1장 + 빈 페이지 방지
+========================= */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.print-btn {
+  width: 794px;
+  display: block;
+  margin: 24px auto 0;
+  height: auto;
+  padding: 22px 20px;
+  border: none;
+  border-radius: 16px;
+  background: #1f4678;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media print {
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    overflow: hidden !important;
+  }
+
+  .no-print,
+  .print-btn-area,
+  .form-box,
+  .top-area {
+    display: none !important;
+  }
+
+  .container {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .preview-box {
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+  }
+
+  .paper {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 24mm 20mm 18mm !important;
+    box-shadow: none !important;
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    overflow: hidden !important;
+  }
+
+  h2 {
+    font-size: 34px !important;
+    margin-bottom: 38px !important;
+  }
+
+  table {
+    margin-bottom: 45px !important;
+  }
+
+  th,
+  td {
+    font-size: 18px !important;
+    padding: 13px 16px !important;
+    height: 52px !important;
+  }
+
+  .bottom-text {
+    margin-top: 42px !important;
+    font-size: 20px !important;
+    line-height: 1.8 !important;
+  }
+
+  .sign-area {
+    margin-top: 58px !important;
+    font-size: 19px !important;
+    line-height: 1.8 !important;
+  }
+
+  .ceo-name {
+    font-size: 22px !important;
+  }
+
+  .stamp-img {
+    width: 70px !important;
+    height: 70px !important;
+  }
+}

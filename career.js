@@ -40,7 +40,6 @@ async function createCareerCertificate() {
     }
 
     renderCareer(result.data, work, purpose);
-
     message.innerText = "경력증명서가 생성되었습니다.";
 
   } catch (err) {
@@ -69,7 +68,7 @@ function setLoading(isLoading) {
 
 function renderCareer(emp, work, purpose) {
   document.getElementById("issueNo").innerText =
-    emp.issueNo || "-";
+    emp.issueNo || makeIssueNo("CAR");
 
   document.getElementById("certName").innerText =
     emp.name || "";
@@ -112,4 +111,17 @@ function todayKorean() {
   const d = new Date();
 
   return `${d.getFullYear()}년 ${String(d.getMonth() + 1).padStart(2, "0")}월 ${String(d.getDate()).padStart(2, "0")}일`;
+}
+
+function makeIssueNo(prefix) {
+  const d = new Date();
+
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const h = String(d.getHours()).padStart(2, "0");
+  const min = String(d.getMinutes()).padStart(2, "0");
+  const s = String(d.getSeconds()).padStart(2, "0");
+
+  return `${prefix}-${y}${m}${day}-${h}${min}${s}`;
 }

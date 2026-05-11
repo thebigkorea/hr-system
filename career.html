@@ -36,7 +36,10 @@
       <input type="text" id="purpose" placeholder="예: 이직 제출용">
     </div>
 
-    <button onclick="createCareerCertificate()">경력증명서 조회 및 생성</button>
+    <button id="searchBtn" type="button" onclick="createCareerCertificate()">
+      경력증명서 조회 및 생성
+    </button>
+
     <p id="message"></p>
   </div>
 
@@ -85,7 +88,9 @@
     </div>
 
     <div class="print-btn-area no-print">
-      <button class="print-btn" onclick="window.print()">인쇄하기</button>
+      <button class="print-btn" type="button" onclick="window.print()">
+        인쇄하기
+      </button>
     </div>
   </div>
 

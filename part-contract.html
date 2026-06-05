@@ -13,10 +13,29 @@
   <meta property="og:url" content="https://thebigkorea.github.io/hr-system/part-contract.html">
 
   <link rel="stylesheet" href="part-contract.css">
+  <style>
+  body.loading main {
+    display: none !important;
+  }
+
+  #loadingScreen {
+    display: none;
+    text-align: center;
+    padding: 120px 20px;
+    font-size: 26px;
+    font-weight: 800;
+    color: #1f3f6d;
+  }
+
+  body.loading #loadingScreen {
+    display: block;
+  }
+</style>
+
 </head>
 
-<body>
-<div class="container">
+<body class="loading">
+  <div id="loadingScreen">계약서를 불러오는 중입니다...</div>
 
   <div class="top-area no-print">
     <h1>계약직(아르바이트) 근로계약서</h1>

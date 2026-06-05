@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     currentContractId = id;
     await loadContract(id);
   }
+
+  document.body.classList.remove("loading");
+
 });
 
 function initResidentNoAutoBirth() {

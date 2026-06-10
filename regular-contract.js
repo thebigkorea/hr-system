@@ -412,14 +412,26 @@ async function completeElectronicContract(event) {
   }
 
   try {
-    const idCardImage = await getIdCardImageBase64();
 
-    const result = await postData({
-     action: "signContract",
-     contractId: currentContractId,
-     signature,
-     idCardImage
-   });
+  const idCardImage =
+    await getIdCardImageBase64();
+
+  if (!idCardImage) {
+
+    alert("신분증 사진을 등록해주세요.");
+
+    btn.disabled = false;
+    btn.innerText = "전자계약 완료";
+
+    return;
+  }
+
+  const result = await postData({
+    action: "signContract",
+    contractId: currentContractId,
+    signature,
+    idCardImage
+  });
 
     if (result.success) {
       const completeBox = document.getElementById("completeBox");
@@ -567,14 +579,33 @@ document.addEventListener("change", function(e) {
   const reader = new FileReader();
 
   reader.onload = function(event) {
-    selectedIdCardImage = event.target.result;
+    const img = new Image();
 
-    if (preview) {
-      preview.innerHTML = `
-        <img src="${selectedIdCardImage}"
-             style="max-width:100%;border-radius:12px;border:1px solid #ddd;margin-top:10px;">
-      `;
-    }
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      const maxWidth = 900;
+      const scale = Math.min(1, maxWidth / img.width);
+
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      selectedIdCardImage = canvas.toDataURL("image/jpeg", 0.65);
+
+      if (preview) {
+        preview.innerHTML = `
+          <img src="${selectedIdCardImage}"
+               style="max-width:100%;border-radius:12px;border:1px solid #ddd;margin-top:10px;">
+          <p style="font-size:13px;color:#059669;font-weight:800;">
+            신분증 사진이 등록되었습니다.
+          </p>
+        `;
+      }
+    };
+
+    img.src = event.target.result;
   };
 
   reader.readAsDataURL(file);

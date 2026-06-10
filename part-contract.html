@@ -13,25 +13,21 @@
   <meta property="og:url" content="https://thebigkorea.github.io/hr-system/part-contract.html">
 
   <link rel="stylesheet" href="part-contract.css">
+
   <style>
-  body.loading main {
-    display: none !important;
-  }
+    body.loading main { display: none !important; }
 
-  #loadingScreen {
-    display: none;
-    text-align: center;
-    padding: 120px 20px;
-    font-size: 26px;
-    font-weight: 800;
-    color: #1f3f6d;
-  }
+    #loadingScreen {
+      display: none;
+      text-align: center;
+      padding: 120px 20px;
+      font-size: 26px;
+      font-weight: 800;
+      color: #1f3f6d;
+    }
 
-  body.loading #loadingScreen {
-    display: block;
-  }
-</style>
-
+    body.loading #loadingScreen { display: block; }
+  </style>
 </head>
 
 <body class="loading">
@@ -42,9 +38,7 @@
     <p>Electronic Employment Contract</p>
   </div>
 
-  <!-- 직원 기본정보 -->
   <div class="form-box no-print">
-
     <h2>직원 기본정보</h2>
 
     <div class="grid">
@@ -73,18 +67,14 @@
       <label>주소</label>
       <input type="text" id="address" placeholder="직원 주소 입력">
     </div>
-
   </div>
 
-  <!-- 신분증 등록 : 직원 링크에서도 보이게 할 영역 -->
   <div class="form-box no-print" id="idCardSection">
-
     <h2>신분증 등록</h2>
 
     <div class="grid">
       <div class="input-group">
         <label>신분증 사진</label>
-
         <input id="idCardFile"
                type="file"
                accept="image/*"
@@ -92,22 +82,14 @@
       </div>
     </div>
 
-    <p style="
-      font-size:13px;
-      color:#777;
-      margin-top:10px;
-      margin-bottom:20px;
-    ">
+    <p style="font-size:13px;color:#777;margin-top:10px;margin-bottom:20px;">
       휴대폰에서는 카메라 촬영 또는 사진첩 선택이 가능합니다.
     </p>
 
     <div id="idCardPreview"></div>
-
   </div>
 
-  <!-- 계약 및 근무 정보 -->
   <div class="form-box no-print">
-
     <h2>계약 및 근무 정보</h2>
 
     <div class="grid">
@@ -199,6 +181,16 @@
           <option>미희망</option>
         </select>
       </div>
+
+      <div class="input-group">
+        <label>급여은행</label>
+        <input type="text" id="bank" placeholder="예: 국민은행">
+      </div>
+
+      <div class="input-group">
+        <label>계좌번호</label>
+        <input type="text" id="account" placeholder="예: 816901-04-112155">
+      </div>
     </div>
 
     <button onclick="createContract()">계약직(아르바이트) 근로계약서 생성</button>
@@ -214,11 +206,9 @@
     </div>
 
     <div id="message"></div>
-
   </div>
 
   <div class="paper" id="contractPaper">
-
     <h1 class="contract-title">계약직(아르바이트) 근로계약서</h1>
 
     <p>
@@ -270,8 +260,12 @@
       </tr>
     </table>
 
-    <p>회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를 익월 10일에 근로자 명의의 은행계좌로 송금한다.</p>
+    <p>
+      회사는 매월 1일부터 말일까지의 기간 동안 산정한 급여를
+      익월 10일에 근로자 명의의 은행계좌로 송금한다.
+    </p>
     <p>급여 지급 시 갑근세, 사회보험료 등 법정공제액은 공제 후 지급한다.</p>
+    <p>급여계좌 : <span id="cBank"></span> <span id="cAccount"></span></p>
 
     <h3>7. 4대보험 가입유무</h3>
     <p>근로자는 4대보험 가입 여부에 대하여 <strong id="cInsuranceText"></strong> 의사를 표시한다.</p>
@@ -303,13 +297,13 @@
         <p>생년월일 : <span id="cBirth"></span></p>
         <p>주소 : <span id="cAddress"></span></p>
         <p>연락처 : <span id="cPhone"></span></p>
+        <p>급여계좌 : <span id="cBank2"></span> <span id="cAccount2"></span></p>
 
         <p class="sign-label">근로자 전자서명</p>
         <img id="workerSignatureImage" class="worker-sign">
         <p id="signedTime"></p>
       </div>
     </div>
-
   </div>
 
   <div class="electronic-sign-box no-print">
@@ -338,8 +332,6 @@
     </div>
   </div>
 
-</div>
-
-<script src="part-contract.js"></script>
+  <script src="part-contract.js"></script>
 </body>
 </html>

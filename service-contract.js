@@ -84,6 +84,9 @@ function collectData() {
     totalPay: value("servicePay"),
     taxType: value("taxType"),
 
+    bank: value("bank"),
+    account: value("account"),
+
     representative: "박병호"
   };
 }
@@ -215,8 +218,14 @@ function fillContract(d) {
   text("cPayType", d.payType);
   text("cServicePay", d.servicePay ? `${d.servicePay}원` : "");
   text("cTaxType", d.taxType);
+
+  text("cBank", d.bank);
+  text("cAccount", d.account);
+  text("cBank2", d.bank);
+  text("cAccount2", d.account);
+
   text("cToday", getTodayKorean());
-}
+  }
 
 function initSignaturePad() {
   canvas = document.getElementById("signaturePad");

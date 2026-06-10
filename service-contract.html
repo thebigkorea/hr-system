@@ -14,25 +14,24 @@
 
   <link rel="stylesheet" href="service-contract.css">
 
-<style>
-  body.loading main {
-    display: none !important;
-  }
+  <style>
+    body.loading main {
+      display: none !important;
+    }
 
-  #loadingScreen {
-    display: none;
-    text-align: center;
-    padding: 120px 20px;
-    font-size: 26px;
-    font-weight: 800;
-    color: #1f3f6d;
-  }
+    #loadingScreen {
+      display: none;
+      text-align: center;
+      padding: 120px 20px;
+      font-size: 26px;
+      font-weight: 800;
+      color: #1f3f6d;
+    }
 
-  body.loading #loadingScreen {
-    display: block;
-  }
-</style>
-
+    body.loading #loadingScreen {
+      display: block;
+    }
+  </style>
 </head>
 
 <body class="loading">
@@ -43,7 +42,6 @@
     <p>Independent Contractor Service Agreement</p>
   </div>
 
-  <!-- 계약자 기본정보 -->
   <div class="form-box no-print">
     <h2>계약자 기본정보</h2>
 
@@ -75,15 +73,12 @@
     </div>
   </div>
 
-  <!-- 신분증 등록 : 전자서명 링크에서도 보이게 할 영역 -->
   <div class="form-box no-print" id="idCardSection">
-
     <h2>신분증 등록</h2>
 
     <div class="grid">
       <div class="input-group">
         <label>신분증 사진</label>
-
         <input id="idCardFile"
                type="file"
                accept="image/*"
@@ -91,22 +86,14 @@
       </div>
     </div>
 
-    <p style="
-      font-size:13px;
-      color:#777;
-      margin-top:10px;
-      margin-bottom:20px;
-    ">
+    <p style="font-size:13px;color:#777;margin-top:10px;margin-bottom:20px;">
       휴대폰에서는 카메라 촬영 또는 사진첩 선택이 가능합니다.
     </p>
 
     <div id="idCardPreview"></div>
-
   </div>
 
-  <!-- 용역 정보 / 용역비 정보 -->
   <div class="form-box no-print">
-
     <h2>용역 정보</h2>
 
     <div class="grid">
@@ -159,6 +146,16 @@
       </div>
 
       <div class="input-group">
+        <label>급여은행</label>
+        <input type="text" id="bank" placeholder="예: 국민은행">
+      </div>
+
+      <div class="input-group">
+        <label>계좌번호</label>
+        <input type="text" id="account" placeholder="예: 816901-04-112155">
+      </div>
+
+      <div class="input-group">
         <label>원천징수</label>
         <select id="taxType">
           <option>사업소득세 3.3% 원천징수</option>
@@ -180,7 +177,6 @@
     </div>
 
     <div id="message"></div>
-
   </div>
 
   <div class="paper" id="contractPaper">
@@ -200,6 +196,7 @@
     <p>② 용역내용 : <span id="cJobDuty"></span></p>
 
     <h3>제3조 용역비</h3>
+
     <table>
       <tr>
         <th>지급 기준</th>
@@ -217,6 +214,8 @@
       위탁자는 수탁자에게 용역 수행 대가로 위 금액을 지급하며,
       사업소득세 등 관련 법령에 따른 원천징수 대상 금액은 공제 후 지급한다.
     </p>
+
+    <p>지급계좌 : <span id="cBank"></span> <span id="cAccount"></span></p>
 
     <h3>제4조 독립사업자 지위</h3>
     <p>
@@ -272,6 +271,7 @@
         <p>생년월일 : <span id="cBirth"></span></p>
         <p>주소 : <span id="cAddress"></span></p>
         <p>연락처 : <span id="cPhone"></span></p>
+        <p>지급계좌 : <span id="cBank2"></span> <span id="cAccount2"></span></p>
 
         <p class="sign-label">수탁자 전자서명</p>
         <img id="workerSignatureImage" class="worker-sign">
@@ -306,8 +306,6 @@
     </div>
   </div>
 
-</div>
-
-<script src="service-contract.js"></script>
+  <script src="service-contract.js"></script>
 </body>
 </html>

@@ -106,6 +106,9 @@ function collectData() {
     hourPay: value("hourPay"),
     insurance: value("insurance"),
 
+    bank: value("bank"),
+    account: value("account"),
+
     workPlace: "한국의집 롯데월드몰점",
     representative: "박병호"
   };
@@ -250,6 +253,12 @@ function fillContract(d) {
   text("cHourPay", d.hourPay ? `${d.hourPay}원` : "");
   text("cInsurance", d.insurance);
   text("cInsuranceText", d.insurance || "");
+
+  text("cBank", d.bank);
+  text("cAccount", d.account);
+  text("cBank2", d.bank);
+  text("cAccount2", d.account);
+
   text("cToday", getTodayKorean());
 }
 

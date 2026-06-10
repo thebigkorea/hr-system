@@ -592,13 +592,12 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
 });
-function getIdCardImageBase64() {
-  return Promise.resolve(selectedIdCardImage || "");
-}
 let selectedIdCardImage = "";
 
-function previewIdCard(event) {
-  const file = event.target.files && event.target.files[0];
+document.addEventListener("change", function(e) {
+  if (!e.target || e.target.id !== "idCardFile") return;
+
+  const file = e.target.files && e.target.files[0];
   const preview = document.getElementById("idCardPreview");
 
   if (!file) {
@@ -609,8 +608,8 @@ function previewIdCard(event) {
 
   const reader = new FileReader();
 
-  reader.onload = function(e) {
-    selectedIdCardImage = e.target.result;
+  reader.onload = function(event) {
+    selectedIdCardImage = event.target.result;
 
     if (preview) {
       preview.innerHTML = `
@@ -621,4 +620,8 @@ function previewIdCard(event) {
   };
 
   reader.readAsDataURL(file);
+});
+
+function getIdCardImageBase64() {
+  return Promise.resolve(selectedIdCardImage || "");
 }

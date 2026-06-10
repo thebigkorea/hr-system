@@ -417,8 +417,10 @@ function signAdminBox(c, signature, result, companyLabel, workerLabel) {
         <p>대표 : 박병호</p>
         <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
         <p>연락처 : 070-5015-7233</p>
-        <img class="company-stamp" src="https://thebigkorea.github.io/hr-system/stamp.png">
-      </div>
+        <img class="company-stamp"
+        src="https://thebigkorea.github.io/hr-system/stamp.png"
+        style="width:90px;height:auto;display:block;margin-top:12px;">
+        </div>
 
       <div>
         <h3>[${workerLabel}]</h3>

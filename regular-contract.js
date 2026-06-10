@@ -593,20 +593,32 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 function getIdCardImageBase64() {
-  return new Promise((resolve) => {
-    const fileInput = document.getElementById("idCardFile");
+  return Promise.resolve(selectedIdCardImage || "");
+}
+let selectedIdCardImage = "";
 
-    if (!fileInput || !fileInput.files || !fileInput.files[0]) {
-      resolve("");
-      return;
+function previewIdCard(event) {
+  const file = event.target.files && event.target.files[0];
+  const preview = document.getElementById("idCardPreview");
+
+  if (!file) {
+    selectedIdCardImage = "";
+    if (preview) preview.innerHTML = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    selectedIdCardImage = e.target.result;
+
+    if (preview) {
+      preview.innerHTML = `
+        <img src="${selectedIdCardImage}"
+             style="max-width:100%;border-radius:12px;border:1px solid #ddd;margin-top:10px;">
+      `;
     }
+  };
 
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      resolve(e.target.result);
-    };
-
-    reader.readAsDataURL(fileInput.files[0]);
-  });
+  reader.readAsDataURL(file);
 }

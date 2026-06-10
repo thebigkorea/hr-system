@@ -2,12 +2,23 @@
   box-sizing:border-box;
 }
 
+html,
 body{
   margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+  overflow-y:auto;
+  position:static;
+}
+
+body{
   padding:30px;
   background:#f3f4f6;
   font-family:'Pretendard','Noto Sans KR',sans-serif;
   color:#111827;
+  -webkit-overflow-scrolling:touch;
 }
 
 .container{
@@ -232,7 +243,8 @@ table td{
 }
 
 .company-box,
-.worker-box{
+.worker-box,
+.sign-box{
   flex:1;
   border:1px solid #333;
   padding:20px;
@@ -240,13 +252,15 @@ table td{
 }
 
 .company-box h4,
-.worker-box h4{
+.worker-box h4,
+.sign-box h4{
   margin:0 0 18px;
   font-size:22px;
 }
 
 .stamp-img{
-  width:110px;
+  width:90px;
+  height:auto;
   display:block;
   margin-top:12px;
 }
@@ -325,6 +339,67 @@ table td{
   font-weight:900;
 }
 
+input,
+select,
+textarea{
+  letter-spacing:0 !important;
+  word-spacing:0 !important;
+  text-align:left !important;
+}
+
+@media(max-width:768px){
+  body{
+    padding:14px;
+    overflow-y:auto;
+  }
+
+  .form-box,
+  .electronic-sign-box{
+    padding:20px;
+    border-radius:18px;
+  }
+
+  .paper{
+    padding:24px;
+  }
+
+  .top-area h1{
+    font-size:34px;
+  }
+
+  .top-area p{
+    font-size:16px;
+  }
+
+  .form-box h2,
+  .electronic-sign-box h3{
+    font-size:24px;
+  }
+
+  .contract-title{
+    font-size:28px;
+    letter-spacing:4px;
+  }
+
+  .sign-area{
+    flex-direction:column;
+  }
+
+  .sign-buttons{
+    grid-template-columns:1fr;
+  }
+
+  button{
+    font-size:19px;
+    height:58px;
+  }
+
+  #signaturePad{
+    height:200px;
+    touch-action:auto;
+  }
+}
+
 @media print{
   body{
     background:white;
@@ -359,49 +434,4 @@ table td{
     font-size:12px;
     padding:6px;
   }
-}
-
-@media(max-width:768px){
-  body{
-    padding:14px;
-  }
-
-  .paper{
-    padding:24px;
-  }
-
-  .top-area h1{
-    font-size:36px;
-  }
-
-  .contract-title{
-    font-size:28px;
-    letter-spacing:4px;
-  }
-
-  .sign-area{
-    flex-direction:column;
-  }
-
-  .sign-buttons{
-    grid-template-columns:1fr;
-  }
-
-  button{
-    font-size:19px;
-    height:58px;
-  }
-}
-input,
-select,
-textarea {
-  letter-spacing: 0 !important;
-  word-spacing: 0 !important;
-  text-align: left !important;
-}
-html,
-body{
-  overflow-x:hidden;
-  overflow-y:auto;
-  height:auto;
 }

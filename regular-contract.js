@@ -549,49 +549,7 @@ function getBirthFromResidentNo(v) {
   return `${century}${yy}년 ${Number(mm)}월 ${Number(dd)}일`;
 }
 
-document.addEventListener("DOMContentLoaded", function(){
 
-  const fileInput =
-    document.getElementById("idCardFile");
-
-  if(fileInput){
-
-    fileInput.addEventListener("change", function(){
-
-      const file = this.files[0];
-
-      const preview =
-        document.getElementById("idCardPreview");
-
-      if(!file){
-
-        preview.innerHTML = "";
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = function(e){
-
-        preview.innerHTML = `
-          <img
-            src="${e.target.result}"
-            style="
-              max-width:100%;
-              border-radius:12px;
-              border:1px solid #ddd;
-              margin-top:10px;
-            ">
-        `;
-      };
-
-      reader.readAsDataURL(file);
-
-    });
-
-  }
-
-});
 let selectedIdCardImage = "";
 
 document.addEventListener("change", function(e) {

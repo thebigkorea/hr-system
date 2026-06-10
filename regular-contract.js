@@ -319,7 +319,6 @@ function initSignaturePad() {
 
 function startDraw(e) {
   drawing = true;
-  document.body.style.overflow = "hidden";
 
   const p = getPos(e);
   ctx.beginPath();
@@ -336,7 +335,6 @@ function draw(e) {
 
 function endDraw() {
   drawing = false;
-  document.body.style.overflow = "auto";
 }
 
 function startDrawTouch(e) {
@@ -414,15 +412,7 @@ async function completeElectronicContract(event) {
   try {
 
   
-  if (!idCardImage) {
-
-    alert("신분증 사진을 등록해주세요.");
-
-    btn.disabled = false;
-    btn.innerText = "전자계약 완료";
-
-    return;
-  }
+  
 
   const result = await postData({
     action: "signContract",

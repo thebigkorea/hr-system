@@ -43,6 +43,7 @@
     <p>Independent Contractor Service Agreement</p>
   </div>
 
+  <!-- 계약자 기본정보 -->
   <div class="form-box no-print">
     <h2>계약자 기본정보</h2>
 
@@ -72,34 +73,39 @@
       <label>주소</label>
       <input type="text" id="address" placeholder="주소 입력">
     </div>
-
-    
-<h2>신분증 등록</h2>
-
-<div class="grid">
-
-  <div class="input-group">
-    <label>신분증 사진</label>
-
-    <input id="idCardFile"
-           type="file"
-           accept="image/*"
-           capture="environment">
   </div>
 
-</div>
+  <!-- 신분증 등록 : 전자서명 링크에서도 보이게 할 영역 -->
+  <div class="form-box no-print" id="idCardSection">
 
-<p style="
-  font-size:13px;
-  color:#777;
-  margin-top:10px;
-  margin-bottom:20px;
-">
-  휴대폰에서는 카메라 촬영 또는 사진첩 선택이 가능합니다.
-</p>
+    <h2>신분증 등록</h2>
 
-<div id="idCardPreview"></div>
+    <div class="grid">
+      <div class="input-group">
+        <label>신분증 사진</label>
 
+        <input id="idCardFile"
+               type="file"
+               accept="image/*"
+               capture="environment">
+      </div>
+    </div>
+
+    <p style="
+      font-size:13px;
+      color:#777;
+      margin-top:10px;
+      margin-bottom:20px;
+    ">
+      휴대폰에서는 카메라 촬영 또는 사진첩 선택이 가능합니다.
+    </p>
+
+    <div id="idCardPreview"></div>
+
+  </div>
+
+  <!-- 용역 정보 / 용역비 정보 -->
+  <div class="form-box no-print">
 
     <h2>용역 정보</h2>
 
@@ -174,6 +180,7 @@
     </div>
 
     <div id="message"></div>
+
   </div>
 
   <div class="paper" id="contractPaper">

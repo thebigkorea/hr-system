@@ -247,8 +247,18 @@ async function loadContract(id) {
 
     fillContract(result.contract || {});
 
-    const form = document.querySelector(".form-box");
-    if (form) form.style.display = "none";
+   const forms = document.querySelectorAll(".form-box");
+
+    forms.forEach(box => {
+     box.style.display = "none";
+    });
+
+   const idCardSection =
+     document.getElementById("idCardSection");
+
+    if(idCardSection){
+      idCardSection.style.display = "block";
+    }
 
     setMessage("계약 내용을 확인한 뒤 전자서명을 진행해주세요.");
 

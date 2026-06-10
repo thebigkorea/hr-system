@@ -376,11 +376,14 @@ async function completeElectronicContract(event) {
   }
 
   try {
-    const result = await postData({
-      action: "signContract",
-      contractId: currentContractId,
-      signature
-    });
+   const idCardImage = await getIdCardImageBase64();
+
+   const result = await postData({
+     action: "signContract",
+     contractId: currentContractId,
+     signature,
+     idCardImage
+   });
 
     if (result.success) {
       const completeBox = document.getElementById("completeBox");
@@ -544,3 +547,21 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
 });
+function getIdCardImageBase64() {
+  return new Promise((resolve) => {
+    const fileInput = document.getElementById("idCardFile");
+
+    if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+      resolve("");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      resolve(e.target.result);
+    };
+
+    reader.readAsDataURL(fileInput.files[0]);
+  });
+}

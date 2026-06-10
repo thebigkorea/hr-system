@@ -231,9 +231,8 @@ table td{
   width:100%;
   height:220px;
   background:white;
-  border:2px dashed #9ca3af;
-  border-radius:20px;
-  touch-action:none;
+  touch-action:auto;
+  overscroll-behavior:auto;
 }
 
 .sign-buttons{
@@ -281,4 +280,10 @@ textarea {
   letter-spacing: 0 !important;
   word-spacing: 0 !important;
   text-align: left !important;
+}
+html,
+body{
+  overflow-x:hidden;
+  overflow-y:auto;
+  height:auto;
 }

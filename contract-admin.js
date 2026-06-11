@@ -524,13 +524,11 @@ function getEndDateBadge(endDate, contractType) {
     return "";
   }
 
+  const end = parseKoreanDate(endDate);
+  if (!end) return "";
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
-  const end = new Date(endDate);
-  end.setHours(0, 0, 0, 0);
-
-  if (isNaN(end.getTime())) return "";
 
   const diff =
     Math.ceil((end - today) / (1000 * 60 * 60 * 24));
@@ -548,4 +546,24 @@ function getEndDateBadge(endDate, contractType) {
   }
 
   return "";
+}
+
+function parseKoreanDate(value) {
+  const text = String(value || "").trim();
+
+  let m = text.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+  if (m) {
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }
+
+  m = text.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) {
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }
+
+  const d = new Date(text);
+  if (isNaN(d.getTime())) return null;
+
+  d.setHours(0, 0, 0, 0);
+  return d;
 }

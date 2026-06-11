@@ -67,8 +67,15 @@ function searchContracts() {
     const matchName =
       !name || String(c.employeeName || "").includes(name);
 
-    const matchStatus =
-      status === "all" || c.status === status;
+    let matchStatus = false;
+
+      if(status === "all"){
+        matchStatus = true;
+      }else if(status === "재계약필요"){
+        matchStatus = isContractRenewalNeeded(c.endDate, c.contractType);
+      }else{
+        matchStatus = c.status === status;
+      }
 
     let matchType = false;
 
@@ -566,4 +573,30 @@ function parseKoreanDate(value) {
 
   d.setHours(0, 0, 0, 0);
   return d;
+}
+
+function isContractRenewalNeeded(endDate, contractType){
+  if(!endDate) return false;
+
+  const type = String(contractType || "");
+
+  if(
+    !type.includes("계약직") &&
+    !type.includes("아르바이트") &&
+    !type.includes("용역") &&
+    !type.includes("사업소득")
+  ){
+    return false;
+  }
+
+  const end = parseKoreanDate(endDate);
+  if(!end) return false;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const diff =
+    Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+
+  return diff <= 30;
 }

@@ -598,5 +598,5 @@ function isContractRenewalNeeded(endDate, contractType){
   const diff =
     Math.ceil((end - today) / (1000 * 60 * 60 * 24));
 
-  return diff <= 30;
+  return diff <= 7;
 }

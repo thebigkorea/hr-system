@@ -214,6 +214,30 @@ td{
   flex:1;
 }
 
+.end-badge{
+  display:inline-block;
+  margin-left:6px;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.end-badge.yellow{
+  background:#fff3cd;
+  color:#8a5a00;
+}
+
+.end-badge.orange{
+  background:#fed7aa;
+  color:#c2410c;
+}
+
+.end-badge.red{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
 @media print{
   body *{
     visibility:hidden;

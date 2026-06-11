@@ -26,7 +26,7 @@ async function loadContracts() {
 
   tbody.innerHTML = `
     <tr>
-      <td colspan="9">계약 목록을 불러오는 중입니다...</td>
+      <td colspan="10">계약 목록을 불러오는 중입니다...</td>
     </tr>
   `;
 
@@ -38,7 +38,7 @@ async function loadContracts() {
     if (!result.success) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="9">${result.message || "계약 목록을 불러오지 못했습니다."}</td>
+          <td colspan="10">${result.message || "계약 목록을 불러오지 못했습니다."}</td>
         </tr>
       `;
       return;
@@ -50,7 +50,7 @@ async function loadContracts() {
   } catch (err) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="9">오류가 발생했습니다: ${err.message}</td>
+        <td colspan="10">오류가 발생했습니다: ${err.message}</td>
       </tr>
     `;
   }
@@ -112,7 +112,7 @@ function renderContracts(list) {
   if (!list || list.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="9">조회된 계약이 없습니다.</td>
+        <td colspan="10">조회된 계약이 없습니다.</td>
       </tr>
     `;
     return;
@@ -133,6 +133,10 @@ function renderContracts(list) {
       <td>${c.employeeName || ""}</td>
       <td>${c.phone || ""}</td>
       <td>${c.joinDate || ""}</td>
+      <td>
+        ${c.endDate || ""}
+        ${getEndDateBadge(c.endDate, c.contractType)}
+      </td>
       <td>${c.createdAt || ""}</td>
       <td>${c.signedAt || "-"}</td>
       <td>
@@ -505,4 +509,43 @@ async function postData(data) {
 function won(v) {
   if (!v) return "0원";
   return String(v).includes("원") ? v : `${v}원`;
+}
+function getEndDateBadge(endDate, contractType) {
+  if (!endDate) return "";
+
+  const type = String(contractType || "");
+
+  if (
+    !type.includes("계약직") &&
+    !type.includes("아르바이트") &&
+    !type.includes("용역") &&
+    !type.includes("사업소득")
+  ) {
+    return "";
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const end = new Date(endDate);
+  end.setHours(0, 0, 0, 0);
+
+  if (isNaN(end.getTime())) return "";
+
+  const diff =
+    Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+
+  if (diff < 0) {
+    return `<span class="end-badge red">계약만료</span>`;
+  }
+
+  if (diff <= 7) {
+    return `<span class="end-badge orange">재계약필요</span>`;
+  }
+
+  if (diff <= 30) {
+    return `<span class="end-badge yellow">만료임박</span>`;
+  }
+
+  return "";
 }

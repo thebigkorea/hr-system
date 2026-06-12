@@ -142,18 +142,36 @@ function renderContracts(list) {
       <td>${c.joinDate || ""}</td>
       <td>
         ${c.endDate || ""}
-        ${getEndDateBadge(c.endDate, c.contractType)}
+        ${getEndDateBadge(c.endDate,c.contractType,c.expireHidden)}
       </td>
       <td>${c.createdAt || ""}</td>
       <td>${c.signedAt || "-"}</td>
       <td>
-        <div class="action-buttons">
-          <button onclick="openContract('${c.contractId}')">원본보기</button>
-          <button class="green" onclick="copyViewLink('${c.workerLink || ""}', '${c.contractId || ""}')">
-            완료본 링크복사
-          </button>
-        </div>
-      </td>
+  <div class="action-buttons">
+
+    <button onclick="openContract('${c.contractId}')">
+      원본보기
+    </button>
+
+    <button class="green"
+      onclick="copyViewLink('${c.workerLink || ""}', '${c.contractId || ""}')">
+      완료본 링크복사
+    </button>
+
+    ${
+      getEndDateBadge(c.endDate,c.contractType,c.expireHidden)
+      ? `
+        <button
+          class="gray"
+          onclick="hideExpireBadge('${c.contractId}')">
+          만료확인
+        </button>
+      `
+      : ""
+    }
+
+  </div>
+</td>
     `;
 
     tbody.appendChild(tr);
@@ -517,7 +535,12 @@ function won(v) {
   if (!v) return "0원";
   return String(v).includes("원") ? v : `${v}원`;
 }
-function getEndDateBadge(endDate, contractType) {
+function getEndDateBadge(endDate, contractType, expireHidden) {
+
+   if(expireHidden === "Y"){
+      return "";
+   }
+
   if (!endDate) return "";
 
   const type = String(contractType || "");
@@ -599,4 +622,28 @@ function isContractRenewalNeeded(endDate, contractType){
     Math.ceil((end - today) / (1000 * 60 * 60 * 24));
 
   return diff <= 7;
+}
+async function hideExpireBadge(contractId){
+
+  if(!confirm("재계약 완료 처리하시겠습니까?")){
+    return;
+  }
+
+  try{
+
+    const result = await postData({
+      action:"hideExpireBadge",
+      contractId:contractId
+    });
+
+    if(result.success){
+      alert("재계약 완료 처리되었습니다.");
+      loadContracts();
+    }else{
+      alert(result.message || "처리 실패");
+    }
+
+  }catch(err){
+    alert("오류가 발생했습니다.");
+  }
 }

@@ -215,7 +215,7 @@ async function copyCompleteLink(retireId) {
     location.origin +
     location.pathname.replace(
       "retirement-list.html",
-      "retirement-complete.html"
+      "retirement-done.html"
     ) +
     "?id=" +
     encodeURIComponent(retireId);

@@ -38,6 +38,12 @@ async function loadRetirementList() {
     const searchType =
       document.getElementById("searchType").value;
 
+    const startDate =
+      document.getElementById("startDate").value;
+
+    const endDate =
+      document.getElementById("endDate").value;
+
     if (searchStore) {
 
       list = list.filter(
@@ -51,6 +57,26 @@ async function loadRetirementList() {
         item => item.type === searchType
       );
     }
+
+    if (startDate) {
+
+  list = list.filter(item => {
+
+    if (!item.retireDate) return false;
+
+    return item.retireDate >= startDate;
+  });
+}
+
+if (endDate) {
+
+  list = list.filter(item => {
+
+    if (!item.retireDate) return false;
+
+    return item.retireDate <= endDate;
+  });
+}
 
     if (list.length === 0) {
 

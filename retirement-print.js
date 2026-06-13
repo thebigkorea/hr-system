@@ -57,10 +57,10 @@ function renderRetirement(data) {
   setText("name", data.name);
   setText("position", data.position);
   setText("phone", data.phone);
-  setText("joinDate", data.joinDate || "-");
-  setText("retireDate", data.retireDate);
-  setText("createdAt", data.createdAt);
-  setText("signedAt", data.signedAt || "-");
+  setText("joinDate", formatDate(data.joinDate));
+setText("retireDate", formatDate(data.retireDate));
+setText("createdAt", formatDate(data.createdAt));
+setText("signedAt", formatDate(data.signedAt));
   setText("reason", data.reason || "-");
   setText("manager", data.manager || "-");
 
@@ -86,4 +86,20 @@ function setText(id, value) {
 
   el.textContent =
     value || "-";
+}
+function formatDate(value) {
+
+  if (!value) return "-";
+
+  const d = new Date(value);
+
+  if (isNaN(d.getTime())) {
+    return value;
+  }
+
+  return d.toLocaleDateString("ko-KR", {
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  });
 }

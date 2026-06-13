@@ -60,8 +60,8 @@ function renderRetirement(data) {
   setText("viewType", data.type);
   setText("viewName", data.name);
   setText("viewPosition", data.position);
-  setText("viewJoinDate", data.joinDate);
-  setText("viewRetireDate", data.retireDate);
+  setText("viewJoinDate", formatDate(data.joinDate));
+  setText("viewRetireDate", formatDate(data.retireDate));
   setText("viewPhone", data.phone);
   setText("viewReason", data.reason);
 
@@ -291,4 +291,19 @@ async function submitSignature() {
       "전자서명 중 오류가 발생했습니다."
     );
   }
+}
+function formatDate(value) {
+  if (!value) return "-";
+
+  const d = new Date(value);
+
+  if (isNaN(d.getTime())) {
+    return value;
+  }
+
+  return d.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  });
 }

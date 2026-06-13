@@ -165,4 +165,7 @@ input[type="date"]{
   color:#fff;
   font-weight:800;
   text-decoration:none;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
 }

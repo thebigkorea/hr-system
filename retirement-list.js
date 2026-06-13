@@ -161,15 +161,22 @@ function renderItem(item) {
         ${escapeHtml(item.status)}
       </div>
 
-      <div style="margin-top:16px;">
+      <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
 
   <a href="retirement-print.html?id=${item.retireId}"
      target="_blank"
      class="print-btn">
 
-     출력하기
+     인쇄 / PDF저장
 
   </a>
+
+  <button class="print-btn"
+          onclick="copyCompleteLink('${item.retireId}')">
+
+     직원용 완료링크 복사
+
+  </button>
 
 </div>
 
@@ -201,4 +208,22 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+async function copyCompleteLink(retireId) {
+
+  const link =
+    location.origin +
+    location.pathname.replace(
+      "retirement-list.html",
+      "retirement-print.html"
+    ) +
+    "?id=" +
+    encodeURIComponent(retireId);
+
+  try {
+    await navigator.clipboard.writeText(link);
+    alert("직원에게 보낼 완료본 링크가 복사되었습니다.");
+  } catch(err) {
+    prompt("아래 링크를 복사해서 직원에게 보내세요.", link);
+  }
 }

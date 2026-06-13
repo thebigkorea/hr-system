@@ -103,6 +103,22 @@ function renderResult(data) {
   const box =
     document.getElementById("resultBox");
 
+  const thumbImage =
+    "https://thebigkorea.github.io/hr-system/images/retirement-request-thumb.jpg";
+
+  const kakaoMessage =
+`[더큰코리아 퇴직서 전자서명 요청]
+
+아래 링크를 통해 퇴직서 내용을 확인하신 후 전자서명을 진행해주시기 바랍니다.
+
+${data.signLink}
+
+서명 요청 이미지:
+${thumbImage}
+
+※ 서명 완료 후 자동 저장됩니다.
+※ 문의 : 더큰코리아 인사관리팀`;
+
   box.innerHTML = `
     <div>
 
@@ -127,15 +143,23 @@ function renderResult(data) {
 
         <a href="${data.signLink}"
            target="_blank">
-
           ${data.signLink}
-
         </a>
+
+        <br><br>
+
+        <img src="${thumbImage}"
+             alt="퇴직서 전자서명 요청"
+             style="width:100%; border-radius:16px;">
 
         <button class="copy-btn"
                 onclick="copyLink('${data.signLink}')">
+          링크만 복사
+        </button>
 
-          링크 복사
+        <button class="copy-btn"
+                onclick="copyMessage(\`${kakaoMessage}\`)">
+          카톡 문구 복사
         </button>
 
       </div>
@@ -155,6 +179,20 @@ async function copyLink(link) {
   } catch(err) {
 
     alert("복사 실패");
+  }
+}
+
+async function copyMessage(message) {
+
+  try {
+
+    await navigator.clipboard.writeText(message);
+
+    alert("카톡 전송용 문구가 복사되었습니다.");
+
+  } catch(err) {
+
+    prompt("아래 내용을 복사해서 카톡으로 보내세요.", message);
   }
 }
 

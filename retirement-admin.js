@@ -36,13 +36,7 @@ async function createRetirement() {
     reason:
       document.getElementById("reason").value.trim(),
 
-    recommendReason:
-      document.getElementById("recommendReason").value.trim(),
-
-    agreement:
-      document.getElementById("agreement").value.trim(),
-
-    
+        
     manager:
       document.getElementById("manager").value.trim()
   };
@@ -225,5 +219,31 @@ function setRetirementText() {
     reason.value = "";
     recommendReason.value = "";
     agreement.value = "";
+  }
+}
+function setReasonText(type) {
+
+  document.getElementById("type").value = type;
+
+  const reason =
+    document.getElementById("reason");
+
+  if (type === "자진사직") {
+    reason.value =
+      "본인은 개인 사정으로 인하여 퇴직을 희망하며, 본인의 자유로운 의사에 따라 사직서를 제출합니다.";
+  }
+
+  if (type === "권고사직") {
+    reason.value =
+      "본인은 회사로부터 퇴직 권고에 대한 설명을 들었으며, 퇴직예정일 및 관련 내용을 확인한 후 권고사직에 동의합니다.";
+  }
+
+  if (type === "계약만료") {
+    reason.value =
+      "본인은 근로계약 기간 만료에 따라 퇴직 처리됨을 확인합니다.";
+  }
+
+  if (type === "기타") {
+    reason.value = "";
   }
 }

@@ -98,18 +98,19 @@
     <input id="phone"
            type="tel">
 
-    <label>퇴직사유</label>
+    <label>퇴직사유 선택</label>
 
-    <textarea id="reason"></textarea>
+<div class="reason-buttons">
+  <button type="button" onclick="setReasonText('자진사직')">자진사직</button>
+  <button type="button" onclick="setReasonText('권고사직')">권고사직</button>
+  <button type="button" onclick="setReasonText('계약만료')">계약만료</button>
+  <button type="button" onclick="setReasonText('기타')">기타</button>
+</div>
 
-    <label>권고사유</label>
+<label>퇴직사유 문구</label>
+<textarea id="reason"></textarea>
 
-    <textarea id="recommendReason"></textarea>
-
-    <label>합의내용</label>
-
-    <textarea id="agreement"></textarea>
-
+    
    
     <label>작성 관리자</label>
 

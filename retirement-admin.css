@@ -139,3 +139,29 @@ textarea{
   }
 
 }
+.reason-buttons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.reason-buttons button{
+  border:none;
+  border-radius:14px;
+  padding:14px;
+  background:#e5e7eb;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.reason-buttons button:hover{
+  background:#111827;
+  color:#fff;
+}
+
+@media(max-width:700px){
+  .reason-buttons{
+    grid-template-columns:1fr 1fr;
+  }
+}

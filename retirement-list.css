@@ -55,12 +55,15 @@ label{
   font-weight:700;
 }
 
-select{
+select,
+input[type="date"]{
   width:100%;
-  padding:14px;
-  border-radius:14px;
+  padding:16px;
+  border-radius:16px;
   border:1px solid #d1d5db;
-  font-size:15px;
+  font-size:16px;
+  background:#fff;
+  min-height:56px;
 }
 
 .btn{

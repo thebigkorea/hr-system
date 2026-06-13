@@ -1,10 +1,10 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzhbRFVeN7NYCGSP4AJopaZRmaib_22aBTP3j3pDcQrmlgMlHe4y27XVZCzKizw4COKJg/exec";
 
-document.addEventListener(
-  "DOMContentLoaded",
-  loadRetirementList
-);
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("retirementList").innerHTML =
+    `<div class="empty">검색조건을 선택한 뒤 조회하세요.</div>`;
+});
 
 async function loadRetirementList() {
 

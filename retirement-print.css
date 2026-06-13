@@ -1,0 +1,171 @@
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#f3f5f8;
+  font-family:
+    "Noto Sans KR",
+    sans-serif;
+
+  color:#111827;
+}
+
+.print-wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:30px;
+}
+
+.toolbar{
+  margin-bottom:20px;
+  text-align:right;
+}
+
+.toolbar button{
+  border:none;
+  background:#111827;
+  color:#fff;
+  padding:14px 20px;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.paper{
+  background:#fff;
+  padding:60px;
+  border-radius:24px;
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.08);
+}
+
+.paper h1{
+  text-align:center;
+  font-size:42px;
+  letter-spacing:12px;
+  margin-bottom:40px;
+}
+
+.paper h2{
+  margin-top:40px;
+  margin-bottom:14px;
+  font-size:24px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  border:1px solid #d1d5db;
+  padding:14px;
+  font-size:15px;
+}
+
+th{
+  width:18%;
+  background:#f9fafb;
+  text-align:center;
+}
+
+td{
+  width:32%;
+}
+
+.text-box{
+  min-height:180px;
+  border:1px solid #d1d5db;
+  border-radius:18px;
+  padding:20px;
+  line-height:1.9;
+  white-space:pre-wrap;
+}
+
+.confirm-text{
+  margin-top:40px;
+  line-height:2;
+  font-size:16px;
+}
+
+.sign-area{
+  margin-top:50px;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.sign-box{
+  margin-top:12px;
+  height:180px;
+  border:1px solid #d1d5db;
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+}
+
+.sign-box img{
+  max-width:100%;
+  max-height:100%;
+}
+
+.company-box{
+  border:1px solid #d1d5db;
+  border-radius:18px;
+  padding:24px;
+  line-height:2;
+}
+
+@media print{
+
+  body{
+    background:#fff;
+  }
+
+  .toolbar{
+    display:none;
+  }
+
+  .print-wrap{
+    padding:0;
+    max-width:none;
+  }
+
+  .paper{
+    box-shadow:none;
+    border-radius:0;
+    padding:30px;
+  }
+}
+
+@media(max-width:700px){
+
+  .paper{
+    padding:24px;
+  }
+
+  .sign-area{
+    grid-template-columns:1fr;
+  }
+
+  .paper h1{
+    font-size:30px;
+    letter-spacing:6px;
+  }
+
+  th,
+  td{
+    font-size:13px;
+    padding:10px;
+  }
+}

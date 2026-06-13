@@ -135,6 +135,18 @@ function renderItem(item) {
         ${escapeHtml(item.status)}
       </div>
 
+      <div style="margin-top:16px;">
+
+  <a href="retirement-print.html?id=${item.retireId}"
+     target="_blank"
+     class="print-btn">
+
+     출력하기
+
+  </a>
+
+</div>
+
       <div class="link-box">
 
         <div>

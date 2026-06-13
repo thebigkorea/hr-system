@@ -48,9 +48,8 @@
       <div>
         <label>퇴직유형</label>
 
-        <select id="type">
+        <select id="type" onchange="setRetirementText()">
           <option value="">선택</option>
-
           <option>자진사직</option>
           <option>권고사직</option>
           <option>계약만료</option>
@@ -111,11 +110,7 @@
 
     <textarea id="agreement"></textarea>
 
-    <label>위로금</label>
-
-    <input id="compensation"
-           type="text">
-
+   
     <label>작성 관리자</label>
 
     <input id="manager"

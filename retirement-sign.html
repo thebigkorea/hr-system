@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>퇴직서 확인 및 서명</title>
+
+  <link rel="stylesheet"
+        href="retirement-sign.css">
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="header">
+
+    <h1>퇴직서 확인</h1>
+
+    <p>
+      내용을 확인한 뒤
+      전자서명을 진행해주세요.
+    </p>
+
+  </div>
+
+  <div class="card">
+
+    <div id="loading">
+      불러오는 중...
+    </div>
+
+    <div id="content"
+         style="display:none;">
+
+      <div class="info-grid">
+
+        <div>
+          <label>점포</label>
+          <div id="viewStore"
+               class="view-box"></div>
+        </div>
+
+        <div>
+          <label>퇴직유형</label>
+          <div id="viewType"
+               class="view-box"></div>
+        </div>
+
+        <div>
+          <label>성명</label>
+          <div id="viewName"
+               class="view-box"></div>
+        </div>
+
+        <div>
+          <label>직위</label>
+          <div id="viewPosition"
+               class="view-box"></div>
+        </div>
+
+        <div>
+          <label>입사일</label>
+          <div id="viewJoinDate"
+               class="view-box"></div>
+        </div>
+
+        <div>
+          <label>퇴직예정일</label>
+          <div id="viewRetireDate"
+               class="view-box"></div>
+        </div>
+
+      </div>
+
+      <label>연락처</label>
+
+      <div id="viewPhone"
+           class="view-box"></div>
+
+      <label>퇴직사유</label>
+
+      <div id="viewReason"
+           class="view-box big"></div>
+
+      <div id="recommendWrap">
+
+        <label>권고사유</label>
+
+        <div id="viewRecommendReason"
+             class="view-box big"></div>
+
+      </div>
+
+      <div id="agreementWrap">
+
+        <label>합의내용</label>
+
+        <div id="viewAgreement"
+             class="view-box big"></div>
+
+      </div>
+
+      <div id="compensationWrap">
+
+        <label>위로금</label>
+
+        <div id="viewCompensation"
+             class="view-box"></div>
+
+      </div>
+
+      <div class="agree-box">
+
+        <input id="consent"
+               type="checkbox">
+
+        <label for="consent">
+
+          위 내용을 확인하였으며
+          본인의 의사에 따라 동의합니다.
+
+        </label>
+
+      </div>
+
+      <label>전자서명</label>
+
+      <canvas id="signaturePad"></canvas>
+
+      <div class="btn-row">
+
+        <button class="btn light"
+                onclick="clearSignature()">
+
+          서명 지우기
+
+        </button>
+
+        <button class="btn primary"
+                onclick="submitSignature()">
+
+          전자서명 제출
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="retirement-sign.js"></script>
+
+</body>
+</html>

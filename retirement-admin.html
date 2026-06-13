@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>퇴직관리</title>
+
+  <link rel="stylesheet"
+        href="retirement-admin.css">
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="header">
+    <h1>퇴직관리</h1>
+
+    <p>
+      퇴직서 작성 후 직원에게
+      전자서명 링크를 전달합니다.
+    </p>
+  </div>
+
+  <div class="card">
+
+    <div class="row">
+
+      <div>
+        <label>점포</label>
+
+        <select id="store">
+          <option value="">선택</option>
+
+          <option>더큰코리아 본사</option>
+          <option>한국의집 롯데월드몰점</option>
+          <option>한국의집 효종갱 파주아울렛점</option>
+          <option>소바공방 평촌점</option>
+          <option>길채정 압구정점</option>
+          <option>고궁 부여점</option>
+          <option>카페그랑떼 부여점</option>
+          <option>기타</option>
+        </select>
+      </div>
+
+      <div>
+        <label>퇴직유형</label>
+
+        <select id="type">
+          <option value="">선택</option>
+
+          <option>자진사직</option>
+          <option>권고사직</option>
+          <option>계약만료</option>
+          <option>기타</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div>
+        <label>성명</label>
+        <input id="name"
+               type="text">
+      </div>
+
+      <div>
+        <label>직위</label>
+        <input id="position"
+               type="text">
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div>
+        <label>입사일</label>
+
+        <input id="joinDate"
+               type="date">
+      </div>
+
+      <div>
+        <label>퇴직예정일</label>
+
+        <input id="retireDate"
+               type="date">
+      </div>
+
+    </div>
+
+    <label>연락처</label>
+
+    <input id="phone"
+           type="tel">
+
+    <label>퇴직사유</label>
+
+    <textarea id="reason"></textarea>
+
+    <label>권고사유</label>
+
+    <textarea id="recommendReason"></textarea>
+
+    <label>합의내용</label>
+
+    <textarea id="agreement"></textarea>
+
+    <label>위로금</label>
+
+    <input id="compensation"
+           type="text">
+
+    <label>작성 관리자</label>
+
+    <input id="manager"
+           type="text"
+           value="관리자">
+
+    <button class="btn primary"
+            onclick="createRetirement()">
+
+      퇴직서 생성
+    </button>
+
+  </div>
+
+  <div class="card">
+
+    <h2>직원 전송 링크</h2>
+
+    <div id="resultBox">
+
+      퇴직서를 생성하면
+      직원용 전자서명 링크가
+      표시됩니다.
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="retirement-admin.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>퇴직자 조회 원장</title>
+
+  <style>
+
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      margin:0;
+      background:#f3f5f8;
+      font-family:
+        "Noto Sans KR",
+        sans-serif;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      min-height:100vh;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+
+      background:#fff;
+
+      border-radius:28px;
+
+      padding:40px;
+
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.08);
+    }
+
+    h1{
+      margin-top:0;
+      font-size:32px;
+      margin-bottom:10px;
+      color:#111827;
+    }
+
+    p{
+      color:#6b7280;
+      line-height:1.7;
+      margin-bottom:24px;
+    }
+
+    input{
+      width:100%;
+      height:58px;
+
+      border-radius:16px;
+      border:1px solid #d1d5db;
+
+      padding:0 18px;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      height:58px;
+
+      border:none;
+      border-radius:16px;
+
+      background:#111827;
+      color:#fff;
+
+      font-size:17px;
+      font-weight:800;
+
+      margin-top:18px;
+
+      cursor:pointer;
+    }
+
+    .error{
+      color:#dc2626;
+      margin-top:14px;
+      font-size:14px;
+      display:none;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>
+    퇴직자 조회 원장
+  </h1>
+
+  <p>
+    관리자 비밀번호를 입력하세요.
+  </p>
+
+  <input id="password"
+         type="password"
+         placeholder="비밀번호 입력">
+
+  <button onclick="checkPassword()">
+    원장 열기
+  </button>
+
+  <div id="error"
+       class="error">
+
+    비밀번호가 올바르지 않습니다.
+
+  </div>
+
+</div>
+
+<script>
+
+function checkPassword(){
+
+  const pw =
+    document.getElementById("password").value;
+
+  if(pw === "1234"){
+
+    location.href =
+      "https://docs.google.com/spreadsheets/d/14UH5sJam-D4nFzaHFSRHmnIKLaggefXtpmaKXUfM-wY/edit?gid=1432471636#gid=1432471636";
+
+  }else{
+
+    document.getElementById("error")
+      .style.display = "block";
+  }
+}
+
+</script>
+
+</body>
+</html>

@@ -386,8 +386,23 @@ async function postData(data) {
 }
 
 function won(v) {
-  if (!v) return "0원";
-  return String(v).includes("원") ? v : `${v}원`;
+
+  if(v === null || v === undefined || v === ""){
+    return "0원";
+  }
+
+  const num =
+    Number(
+      String(v)
+        .replace(/,/g,"")
+        .replace(/원/g,"")
+    );
+
+  if(isNaN(num)){
+    return v;
+  }
+
+  return num.toLocaleString("ko-KR") + "원";
 }
 
 function todayKorean() {

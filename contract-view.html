@@ -37,7 +37,28 @@
     .btn{flex:1;min-width:240px;height:68px;border:none;border-radius:16px;font-size:22px;font-weight:800;cursor:pointer;transition:.2s}
     .btn-print{background:#1f3f75;color:#fff}
     @media(max-width:768px){.content{padding:28px;font-size:18px}.top-area h1{font-size:38px;letter-spacing:4px}.section-title{font-size:26px}.contract-table th,.contract-table td{font-size:16px;padding:12px}.sign-area{grid-template-columns:1fr}.sign-box{min-height:auto}.btn{width:100%}}
-    @media print{body{background:#fff}.contract-wrap{box-shadow:none;margin:0;border-radius:0}.bottom-buttons{display:none}}
+   @media print{
+
+  body{
+    background:#fff;
+  }
+
+  .contract-wrap{
+    box-shadow:none;
+    margin:0;
+    border-radius:0;
+    max-width:none;
+    overflow:visible !important;
+  }
+
+  .content{
+    padding:20mm;
+  }
+
+  .bottom-buttons{
+    display:none !important;
+  }
+}
   </style>
 </head>
 

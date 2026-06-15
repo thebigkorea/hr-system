@@ -341,7 +341,7 @@ function signBox(c, signature, result, companyLabel, workerLabel, accountLabel) 
         <p>상호 : 한국의집 롯데월드몰점</p>
         <p>대표자 : 박병호</p>
         <p>주소 : 서울시 송파구 올림픽로 300, 5층</p>
-        <p>연락처 : 070-5015-7233</p>
+        <p>연락처 : 042-712-5035</p>
         <img class="company-seal"
              src="https://thebigkorea.github.io/hr-system/stamp.png"
              style="width:90px;height:auto;display:block;margin-top:12px;">

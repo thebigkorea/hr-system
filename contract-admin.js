@@ -196,35 +196,20 @@ function displayContractType(type) {
   return t;
 }
 
-async function openContract(contractId) {
-  const result = await postData({
-    action: "getContractById",
-    contractId
-  });
+function openContract(contractId){
 
-  if (!result.success) {
-    alert(result.message || "계약서를 불러오지 못했습니다.");
+  if(!contractId){
+    alert("계약번호가 없습니다.");
     return;
   }
 
-  selectedContract = result;
+  const url =
+    "https://thebigkorea.github.io/hr-system/contract-view.html?id="
+    + encodeURIComponent(contractId)
+    + "&v="
+    + Date.now();
 
-  const contractType =
-    result.contractType ||
-    (result.contract && result.contract.contractType) ||
-    "";
-
-  const isPart =
-    String(contractType).includes("계약직") ||
-    String(contractType).includes("아르바이트");
-
-  const isService =
-    String(contractType).includes("용역") ||
-    String(contractType).includes("사업소득");
-
-  renderContractDetail(result, isPart, isService);
-
-  document.getElementById("modal").style.display = "block";
+  window.open(url, "_blank");
 }
 
 function renderContractDetail(result, isPart, isService) {

@@ -455,7 +455,7 @@ function signAdminBox(c, signature, result, companyLabel, workerLabel) {
         <h3>[${workerLabel}]</h3>
         <p>성명 : ${c.empName || ""}</p>
         <p>주민등록번호 : ${c.residentNo || ""}</p>
-        <p>생년월일 : ${c.birth || ""}</p>
+        <p>생년월일 : ${formatDateOnly(c.birth)}</p>
         <p>주소 : ${c.address || ""}</p>
         <p>연락처 : ${c.phone || ""}</p>
         <p>급여계좌 : ${c.bank || ""} ${c.account || ""}</p>
@@ -659,4 +659,20 @@ async function hideExpireBadge(contractId){
   }catch(err){
     alert("오류가 발생했습니다.");
   }
+}
+function formatDateOnly(value){
+
+  if(!value) return "";
+
+  const d = new Date(value);
+
+  if(!isNaN(d.getTime())){
+    return d.toLocaleDateString("ko-KR", {
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit"
+    });
+  }
+
+  return value;
 }

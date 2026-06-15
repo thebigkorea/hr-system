@@ -367,7 +367,7 @@ function signBox(c, signature, result, companyLabel, workerLabel, accountLabel) 
     </div>
 
     <div class="bottom-buttons">
-      <button class="btn btn-print" onclick="window.print()">PDF 저장 / 인쇄</button>
+      <button class="btn btn-print" onclick="printContract()">PDF 저장 / 인쇄</button>
     </div>
   `;
 }
@@ -393,4 +393,138 @@ function won(v) {
 function todayKorean() {
   const today = new Date();
   return `${today.getFullYear()}년 ${String(today.getMonth() + 1).padStart(2, "0")}월 ${String(today.getDate()).padStart(2, "0")}일`;
+}
+function printContract(){
+
+  const html =
+    document.getElementById("contractWrap").outerHTML;
+
+  const printWindow =
+    window.open("", "_blank");
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+      <meta charset="UTF-8">
+      <title>전자근로계약서 인쇄</title>
+
+      <style>
+        body{
+          margin:0;
+          background:#fff;
+          font-family:'Pretendard','Noto Sans KR',sans-serif;
+          color:#222;
+        }
+
+        .contract-wrap{
+          width:100%;
+          max-width:none;
+          margin:0;
+          box-shadow:none;
+          border-radius:0;
+          overflow:visible;
+        }
+
+        .top-area{
+          background:#1f3f75;
+          color:#fff;
+          padding:40px 30px;
+          text-align:center;
+        }
+
+        .top-area h1{
+          margin:0;
+          font-size:42px;
+          letter-spacing:8px;
+          font-weight:900;
+        }
+
+        .content{
+          padding:18mm;
+          line-height:1.7;
+          font-size:16px;
+        }
+
+        .section-title{
+          font-size:22px;
+          font-weight:900;
+          margin-top:35px;
+          margin-bottom:14px;
+          color:#1f3f75;
+          border-left:6px solid #1f3f75;
+          padding-left:12px;
+        }
+
+        .contract-table{
+          width:100%;
+          border-collapse:collapse;
+          margin:14px 0 24px;
+        }
+
+        .contract-table th,
+        .contract-table td{
+          border:1px solid #999;
+          padding:9px;
+          font-size:14px;
+          text-align:center;
+        }
+
+        .contract-table th{
+          background:#1f3f75;
+          color:#fff;
+        }
+
+        .sign-area{
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:24px;
+          margin-top:40px;
+        }
+
+        .sign-box{
+          border:1px solid #999;
+          border-radius:12px;
+          padding:18px;
+          min-height:260px;
+        }
+
+        .sign-box h3{
+          margin-top:0;
+          color:#1f3f75;
+        }
+
+        .company-seal{
+          width:90px;
+        }
+
+        .signature-img{
+          width:180px;
+          border-bottom:1px solid #111;
+        }
+
+        .bottom-buttons{
+          display:none !important;
+        }
+
+        @page{
+          size:A4;
+          margin:10mm;
+        }
+      </style>
+    </head>
+
+    <body>
+      ${html}
+
+      <script>
+        window.onload = function(){
+          window.print();
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
 }

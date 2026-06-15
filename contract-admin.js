@@ -458,6 +458,7 @@ function signAdminBox(c, signature, result, companyLabel, workerLabel) {
         <p>생년월일 : ${c.birth || ""}</p>
         <p>주소 : ${c.address || ""}</p>
         <p>연락처 : ${c.phone || ""}</p>
+        <p>급여계좌 : ${c.bank || ""} ${c.account || ""}</p>
         <p>근로자 전자서명</p>
         ${
           signature
@@ -474,7 +475,19 @@ function closeModal() {
 }
 
 function printContract() {
-  window.print();
+
+  if (!selectedContract || !selectedContract.contractId) {
+    alert("인쇄할 계약서를 찾을 수 없습니다.");
+    return;
+  }
+
+  const url =
+    "https://thebigkorea.github.io/hr-system/contract-view.html?id="
+    + encodeURIComponent(selectedContract.contractId)
+    + "&v="
+    + Date.now();
+
+  window.open(url, "_blank");
 }
 
 function copyWorkerLink() {

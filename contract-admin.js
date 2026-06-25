@@ -635,7 +635,7 @@ function isContractRenewalNeeded(endDate, contractType){
   const diff =
     Math.ceil((end - today) / (1000 * 60 * 60 * 24));
 
-  return diff <= 7;
+  return diff >= 0 && diff <= 7;
 }
 async function hideExpireBadge(contractId){
 

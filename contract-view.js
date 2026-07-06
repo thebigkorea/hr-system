@@ -20,6 +20,10 @@ async function loadContract(contractId) {
       contractId
     });
 
+    console.log("signedAt =", result.signedAt);
+    console.log("contract =", result.contract);
+    console.log("전체 result =", result);    
+
     if (!result.success) {
       showError(result.message || "계약서를 불러오지 못했습니다.");
       return;
@@ -332,7 +336,7 @@ function signBox(c, signature, result, companyLabel, workerLabel, accountLabel) 
     </p>
 
     <p style="text-align:center;font-weight:900;font-size:24px;">
-      ${todayKorean()}
+      ${formatContractDate(result.signedAt || c.contractDate || c.createdAt)}
     </p>
 
     <div class="sign-area">
@@ -555,6 +559,18 @@ function formatDateOnly(value){
       month:"2-digit",
       day:"2-digit"
     });
+  }
+
+  return value;
+}
+function formatContractDate(value){
+
+  if(!value) return "";
+
+  const d = new Date(value);
+
+  if(!isNaN(d.getTime())){
+    return `${d.getFullYear()}년 ${String(d.getMonth()+1).padStart(2,"0")}월 ${String(d.getDate()).padStart(2,"0")}일`;
   }
 
   return value;

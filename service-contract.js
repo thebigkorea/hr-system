@@ -241,9 +241,23 @@ function initSignaturePad() {
   canvas.addEventListener("mouseup", endDraw);
   canvas.addEventListener("mouseleave", endDraw);
 
-  canvas.addEventListener("touchstart", startDrawTouch);
-  canvas.addEventListener("touchmove", drawTouch);
-  canvas.addEventListener("touchend", endDraw);
+  canvas.addEventListener(
+  "touchstart",
+  startDrawTouch,
+  { passive: false }
+);
+
+canvas.addEventListener(
+  "touchmove",
+  drawTouch,
+  { passive: false }
+);
+
+canvas.addEventListener(
+  "touchend",
+  endDraw,
+  { passive: false }
+);
 }
 
 function startDraw(e) {
@@ -266,12 +280,18 @@ function endDraw() {
 }
 
 function startDrawTouch(e) {
+  e.preventDefault();
+
   if (!e.touches || !e.touches[0]) return;
+
   startDraw(e.touches[0]);
 }
 
 function drawTouch(e) {
+  e.preventDefault();
+
   if (!e.touches || !e.touches[0]) return;
+
   draw(e.touches[0]);
 }
 

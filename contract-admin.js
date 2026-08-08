@@ -125,7 +125,33 @@ function renderContracts(list) {
     return;
   }
 
-  list.forEach(c => {
+    const sortedList =
+    [...list].sort(function(a, b){
+
+      const createdA =
+        String(a.createdAt || "").trim();
+
+      const createdB =
+        String(b.createdAt || "").trim();
+
+      // 생성일시가 없는 계약은 맨 아래
+      if(!createdA && !createdB){
+        return 0;
+      }
+
+      if(!createdA){
+        return 1;
+      }
+
+      if(!createdB){
+        return -1;
+      }
+
+      // 생성일시 최신순
+      return createdB.localeCompare(createdA);
+    });
+
+  sortedList.forEach(c => {
     const isDone = c.status === "서명완료";
 
     const tr = document.createElement("tr");

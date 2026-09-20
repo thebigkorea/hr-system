@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>전자근로계약 서명요청서</title>
-
-  <!-- 직원용 공개 계약 링크 보안 -->
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex,nofollow,noarchive">
+
+  <title>전자근로계약 서명요청서</title>
 
   <meta property="og:title" content="전자근로계약 서명요청서">
   <meta property="og:description" content="전자근로계약 내용을 확인하고 전자서명을 진행해 주세요.">
@@ -16,251 +14,54 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://thebigkorea.github.io/hr-system/contract-view.html">
+  <meta property="og:url" content="https://thebigkorea.github.io/thebigkorea-hq/contract-view.html">
 
   <style>
-    body {
-      margin: 0;
-      background: #f3f5f9;
-      font-family: "Pretendard", "Noto Sans KR", sans-serif;
-      color: #0f172a;
+    body{margin:0;background:#f3f5f9;font-family:"Pretendard","Noto Sans KR",sans-serif;color:#0f172a}
+    .loading{width:100%;height:100vh;display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:800;color:#1f3d68;text-align:center;padding:20px;box-sizing:border-box}
+    .contract-wrap{max-width:1100px;margin:40px auto;background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.08);overflow:hidden}
+    .top-area{background:#1f3d68;color:#fff;padding:46px 30px;text-align:center}
+    .top-area h1{margin:0;font-size:44px;letter-spacing:-1px;font-weight:900}
+    .top-area p{margin-top:14px;font-size:18px;opacity:.9}
+    .content{padding:46px;line-height:1.9;font-size:19px}
+    .content h1{text-align:center;font-size:38px;letter-spacing:8px;margin-bottom:34px}
+    .section-title,.content h3{font-size:26px;font-weight:900;margin-top:46px;margin-bottom:18px;color:#1f3d68;border-bottom:1px solid #1f3d68;padding-bottom:10px}
+    table{width:100%;border-collapse:collapse;margin:18px 0 34px}
+    th{background:#1f3d68;color:#fff;padding:14px;border:1px solid #d9dee7;font-size:16px}
+    td{padding:14px;border:1px solid #d9dee7;text-align:center;font-size:16px}
+    .sign-area{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px}
+    .sign-box{border:1px solid #cbd5e1;border-radius:18px;padding:24px;min-height:300px}
+    .stamp{width:90px;vertical-align:middle;margin-left:10px}
+    .signature-img{width:260px;max-width:100%;margin-top:16px;border-bottom:2px solid #111}
+    .signature-guide{background:#fff7ed;border:1px solid #fed7aa;border-radius:18px;padding:20px;margin-top:40px;font-size:18px;font-weight:800}
+    #signatureCanvas{width:100%;height:220px;border:2px solid #cbd5e1;border-radius:14px;background:#fff;touch-action:none;overscroll-behavior:contain}
+    .sign-buttons{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    button{height:62px;border:none;border-radius:15px;color:#fff;font-size:21px;font-weight:900;cursor:pointer}
+    button.gray{background:#64748b} button.green{background:#079669} button.blue{background:#1f3d68}
+    button:disabled{opacity:.6;cursor:not-allowed}.bottom-buttons{margin-top:40px}
+    @media(max-width:768px){
+      .contract-wrap{margin:0;border-radius:0}.top-area{padding:32px 18px}.top-area h1{font-size:30px}
+      .content{padding:26px;font-size:17px}.content h1{font-size:28px;letter-spacing:4px}.content h3{font-size:24px}
+      table{display:block;overflow-x:auto;white-space:nowrap}th,td{font-size:14px;padding:10px}
+      .sign-area,.sign-buttons{grid-template-columns:1fr}
     }
-
-    .loading {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 22px;
-      font-weight: 800;
-      color: #1f3d68;
-      text-align: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .contract-wrap {
-      max-width: 1100px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      overflow: hidden;
-    }
-
-    .top-area {
-      background: #1f3d68;
-      color: #fff;
-      padding: 46px 30px;
-      text-align: center;
-    }
-
-    .top-area h1 {
-      margin: 0;
-      font-size: 44px;
-      letter-spacing: -1px;
-      font-weight: 900;
-    }
-
-    .top-area p {
-      margin-top: 14px;
-      font-size: 18px;
-      opacity: .9;
-    }
-
-    .content {
-      padding: 46px;
-      line-height: 1.9;
-      font-size: 19px;
-    }
-
-    .content h1 {
-      text-align: center;
-      font-size: 38px;
-      letter-spacing: 8px;
-      margin-bottom: 34px;
-    }
-
-    .section-title,
-    .content h3 {
-      font-size: 26px;
-      font-weight: 900;
-      margin-top: 46px;
-      margin-bottom: 18px;
-      color: #1f3d68;
-      border-bottom: 1px solid #1f3d68;
-      padding-bottom: 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 18px 0 34px;
-    }
-
-    th {
-      background: #1f3d68;
-      color: #fff;
-      padding: 14px;
-      border: 1px solid #d9dee7;
-      font-size: 16px;
-    }
-
-    td {
-      padding: 14px;
-      border: 1px solid #d9dee7;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .sign-area {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      margin-top: 30px;
-    }
-
-    .sign-box {
-      border: 1px solid #cbd5e1;
-      border-radius: 18px;
-      padding: 24px;
-      min-height: 300px;
-    }
-
-    .stamp {
-      width: 90px;
-      vertical-align: middle;
-      margin-left: 10px;
-    }
-
-    .signature-img {
-      width: 260px;
-      max-width: 100%;
-      margin-top: 16px;
-      border-bottom: 2px solid #111;
-    }
-
-    .signature-guide {
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
-      border-radius: 18px;
-      padding: 20px;
-      margin-top: 40px;
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    #signatureCanvas {
-      width: 100%;
-      height: 220px;
-      border: 2px solid #cbd5e1;
-      border-radius: 14px;
-      background: #fff;
-      touch-action: none;
-      overscroll-behavior: contain;
-    }
-
-    .sign-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    button {
-      height: 62px;
-      border: none;
-      border-radius: 15px;
-      color: #fff;
-      font-size: 21px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    button.gray { background: #64748b; }
-    button.green { background: #079669; }
-    button.blue { background: #1f3d68; }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .bottom-buttons { margin-top: 40px; }
-
-    @media (max-width: 768px) {
-      .contract-wrap {
-        margin: 0;
-        border-radius: 0;
-      }
-
-      .top-area { padding: 32px 18px; }
-      .top-area h1 { font-size: 30px; }
-
-      .content {
-        padding: 26px;
-        font-size: 17px;
-      }
-
-      .content h1 {
-        font-size: 28px;
-        letter-spacing: 4px;
-      }
-
-      .content h3 { font-size: 24px; }
-
-      table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
-
-      th,
-      td {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      .sign-area { grid-template-columns: 1fr; }
-      .sign-buttons { grid-template-columns: 1fr; }
-    }
-
-    @media print {
-      body { background: #fff; }
-
-      .contract-wrap {
-        box-shadow: none;
-        margin: 0;
-        border-radius: 0;
-      }
-
-      .signature-guide,
-      .sign-buttons,
-      .bottom-buttons {
-        display: none;
-      }
+    @media print{
+      body{background:#fff}.contract-wrap{box-shadow:none;margin:0;border-radius:0}
+      .signature-guide,.sign-buttons,.bottom-buttons{display:none}
     }
   </style>
 </head>
-
 <body>
+  <div id="loading" class="loading">계약서 불러오는 중...</div>
 
-<div id="loading" class="loading">
-  계약서 불러오는 중...
-</div>
-
-<div id="contractWrap" class="contract-wrap" style="display:none;">
-  <div class="top-area">
-    <h1 id="pageTitle">전자근로계약 서명요청서</h1>
-    <p>THE BIG KOREA HR SYSTEM</p>
+  <div id="contractWrap" class="contract-wrap" style="display:none;">
+    <div class="top-area">
+      <h1 id="pageTitle">전자근로계약 서명요청서</h1>
+      <p>THE BIG KOREA HR SYSTEM</p>
+    </div>
+    <div class="content" id="contractContent"></div>
   </div>
 
-  <div class="content" id="contractContent"></div>
-</div>
-
-<!-- 직원 계약서는 ERP 로그인과 독립적으로 publicToken으로 검증 -->
-<!-- 버전값을 붙여 GitHub Pages/브라우저의 이전 JS 캐시 사용 방지 -->
-<script src="contract-view.js?v=20260920-1"></script>
+  <script src="contract-view.js?v=20260920-hq1"></script>
 </body>
 </html>

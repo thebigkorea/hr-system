@@ -1,5 +1,45 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzCO4TLMRGgt_OY-3T92mw58AAKcOwquq0ubepUEJgPO9YPeMV-hNeP7AHy7lvOPog7oQ/exec";
+  "https://script.google.com/macros/s/AKfycbwRGQcXgYhfkTUiklPrHs4uFe7oHpgn8D_jM2jJPpU74tXr3D_h6vGMq72CHXU0EnAb/exec";
+
+
+
+const WORKPLACES = {
+  hq: {
+    workplaceName: "더큰코리아 본사",
+    companyName: "주식회사 더큰코리아",
+    representative: "박병호",
+    address: "대전광역시 유성구 테크노4로 29 201호",
+    phone: "042-712-5035"
+  },
+  koreahouse_jamsil: {
+    workplaceName: "한국의집 롯데월드몰점",
+    companyName: "한국의집 롯데월드몰점",
+    representative: "박병호",
+    address: "서울특별시 송파구 올림픽로 300, 롯데월드몰 5층",
+    phone: "042-712-5035"
+  },
+  gilchaejeong_apgujeong: {
+    workplaceName: "길채정 압구정",
+    companyName: "길채정 압구정",
+    representative: "박병호",
+    address: "서울특별시 강남구 압구정로 343, 갤러리아백화점",
+    phone: "042-712-5035"
+  },
+  sobagongbang_pyeongchon: {
+    workplaceName: "평촌 소바공방",
+    companyName: "소바공방 평촌점",
+    representative: "박병호",
+    address: "경기도 안양시 동안구 시민대로 180, 롯데백화점 평촌점",
+    phone: "042-712-5035"
+  },
+  koreahouse_hyojonggang_paju: {
+    workplaceName: "한국의집 효종갱 파주",
+    companyName: "한국의집 효종갱 파주",
+    representative: "박병호",
+    address: "경기도 파주시 필승로 200, 파주프리미엄아울렛",
+    phone: "042-712-5035"
+  }
+};
 
 let canvas;
 let ctx;
@@ -112,9 +152,18 @@ function calculateTotalPay() {
 
 function collectData() {
   calculateTotalPay();
+  const w = companyInfoForCurrentForm();
+  const dutyRaw = value("jobDuty");
+  const duty = dutyRaw === "기타" ? (value("jobDutyEtc") || "기타") : dutyRaw;
 
   return {
-    contractType: "정규직 근로계약서",
+    contractType: value("contractType") || "정규직 근로계약서",
+    workplaceCode: value("workplaceCode"),
+    workplaceName: w.workplaceName,
+    companyName: w.companyName,
+    companyRepresentative: w.representative,
+    companyAddress: w.address,
+    companyPhone: w.phone,
 
     empName: value("empName"),
     residentNo: value("residentNo"),
@@ -123,14 +172,17 @@ function collectData() {
     address: value("address"),
 
     joinDate: formatDate(value("joinDate")),
+    joinDateRaw: value("joinDate"),
+    startDate: formatDate(value("joinDate")),
+    startDateRaw: value("joinDate"),
     workDays: value("workDays"),
     monthHour: value("monthHour"),
     workTime: `${value("startTime")} ~ ${value("endTime")}`,
     startTime: value("startTime"),
     endTime: value("endTime"),
     breakTime: value("breakTime"),
-    workPlace: value("workPlace"),
-    jobDuty: value("jobDuty"),
+    workPlace: value("workPlace") || w.workplaceName,
+    jobDuty: duty,
 
     basePay: value("basePay"),
     overtimePay: value("overtimePay"),
@@ -138,33 +190,24 @@ function collectData() {
     positionPay: value("positionPay"),
     mealPay: value("mealPay"),
     totalPay: value("totalPay"),
+    payType: "월급제",
 
-    bank: value("bank"),
-    account: value("account"),
+    bankName: value("bankName"),
+    bankAccount: value("bankAccount"),
+    bank: value("bankName"),
+    account: value("bankAccount"),
 
-    representative: "박병호"
+    representative: w.representative
   };
 }
 
 function validateData(d) {
   const required = [
-    "empName",
-    "residentNo",
-    "birth",
-    "phone",
-    "address",
-    "joinDate",
-    "workDays",
-    "monthHour",
-    "startTime",
-    "endTime",
-    "breakTime",
-    "workPlace",
-    "jobDuty",
-    "basePay",
-    "totalPay",
-    "bank",
-    "account"
+    "empName", "residentNo", "birth", "phone", "address",
+    "joinDate", "workDays", "monthHour",
+    "startTime", "endTime", "breakTime",
+    "workPlace", "jobDuty",
+    "basePay", "totalPay", "bankName", "bankAccount"
   ];
 
   for (const k of required) {
@@ -173,61 +216,74 @@ function validateData(d) {
       return false;
     }
   }
-
   return true;
 }
 
 function createContract() {
   const d = collectData();
-
   if (!validateData(d)) return;
 
-  fillContract(d);
+  renderCurrentPreview(d);
   setMessage("정규직 근로계약서가 생성되었습니다.");
-  alert("정규직 근로계약서가 생성되었습니다.");
+}
+
+function getErpToken_() {
+  return String(localStorage.getItem("thebigkorea_erp_session") || "").trim();
 }
 
 async function saveContractAndCreateLink(event) {
-  const btn = event.target;
+  const btn = event?.target || document.getElementById("saveBtn");
   const d = collectData();
 
   if (!validateData(d)) return;
 
-  fillContract(d);
+  renderCurrentPreview(d);
 
-  btn.disabled = true;
-  btn.innerText = "처리중...";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "처리중...";
+  }
+
   setMessage("계약 저장 및 직원 링크 생성 중입니다...");
 
   try {
+    const erpToken = getErpToken_();
+    if (!erpToken) {
+      alert("ERP 로그인 세션이 없습니다. ERP에서 다시 로그인해 주세요.");
+      setMessage("ERP 로그인이 필요합니다.");
+      return;
+    }
+
     const result = await postData({
       action: "saveContractDraft",
+      erpToken: erpToken,
+      ...d,
+      data: d,
       contract: d
     });
 
     if (!result || !result.success) {
-      alert((result && result.message) ? result.message : "계약 저장 실패");
-      setMessage((result && result.message) ? result.message : "계약 저장 실패");
+      const msg = result?.message || "계약 저장 실패";
+      alert(msg);
+      setMessage(msg);
       return;
     }
 
     currentContractId = result.contractId;
-
-    const link =
-      `https://thebigkorea.github.io/hr-system/regular-contract.html?id=${encodeURIComponent(result.contractId)}`;
-
-    document.getElementById("contractLinkBox").style.display = "block";
-    document.getElementById("contractLink").value = link;
+    showLinkResult(result.contractId, result.contractUrl || "");
 
     setMessage("계약 저장 완료. 직원 링크가 생성되었습니다.");
     alert("계약 저장 및 직원 링크 생성이 완료되었습니다.");
 
   } catch (e) {
-    alert("저장 중 오류가 발생했습니다. Apps Script 배포 또는 인터넷 연결을 확인해주세요.");
+    console.error(e);
+    alert("저장 중 오류가 발생했습니다.\n" + (e.message || ""));
     setMessage("저장 중 오류가 발생했습니다.");
   } finally {
-    btn.disabled = false;
-    btn.innerText = "계약 저장 및 직원 링크 생성";
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "계약 저장 및 직원 링크 생성";
+    }
   }
 }
 
@@ -312,27 +368,14 @@ function initSignaturePad() {
   canvas.addEventListener("mouseup", endDraw);
   canvas.addEventListener("mouseleave", endDraw);
 
- canvas.addEventListener(
-  "touchstart",
-  startDrawTouch,
-  { passive: false }
-);
-
-canvas.addEventListener(
-  "touchmove",
-  drawTouch,
-  { passive: false }
-);
-
-canvas.addEventListener(
-  "touchend",
-  endDraw,
-  { passive: false }
-);
+  canvas.addEventListener("touchstart", startDrawTouch, { passive: false });
+  canvas.addEventListener("touchmove", drawTouch, { passive: false });
+  canvas.addEventListener("touchend", endDraw);
 }
 
 function startDraw(e) {
   drawing = true;
+  document.body.style.overflow = "hidden";
 
   const p = getPos(e);
   ctx.beginPath();
@@ -349,21 +392,16 @@ function draw(e) {
 
 function endDraw() {
   drawing = false;
+  document.body.style.overflow = "auto";
 }
 
 function startDrawTouch(e) {
   e.preventDefault();
-
-  if (!e.touches || !e.touches[0]) return;
-
   startDraw(e.touches[0]);
 }
 
 function drawTouch(e) {
   e.preventDefault();
-
-  if (!e.touches || !e.touches[0]) return;
-
   draw(e.touches[0]);
 }
 
@@ -432,7 +470,15 @@ async function completeElectronicContract(event) {
   try {
 
   
-  
+  if (!idCardImage) {
+
+    alert("신분증 사진을 등록해주세요.");
+
+    btn.disabled = false;
+    btn.innerText = "전자계약 완료";
+
+    return;
+  }
 
   const result = await postData({
     action: "signContract",
@@ -571,3 +617,226 @@ function getBirthFromResidentNo(v) {
 
 
 
+
+
+
+/* =========================================================
+   현재 입력 HTML 호환 / 미리보기 / 링크 생성
+   - 완료본은 기존 thebigkorea-hq/contract-view.html 사용
+   - contract-view.html의 기존 디자인은 건드리지 않음
+========================================================= */
+function selectedText(id) {
+  const el = document.getElementById(id);
+  if (!el || el.selectedIndex < 0) return "";
+  return (el.options[el.selectedIndex]?.text || "").trim();
+}
+
+function escHtml(v) {
+  return String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function showPreviewHtml(title, rows, d) {
+  const preview = document.getElementById("preview");
+  if (!preview) return;
+
+  const body = rows.map(([label, val]) => `
+    <tr>
+      <th style="width:28%;padding:10px;border:1px solid #d7dee8;background:#f7f9fc;text-align:left;">${escHtml(label)}</th>
+      <td style="padding:10px;border:1px solid #d7dee8;">${escHtml(val || "")}</td>
+    </tr>
+  `).join("");
+
+  preview.innerHTML = `
+    <div style="padding:28px;background:#fff;color:#172033;font-family:Arial,'Noto Sans KR',sans-serif;">
+      <h2 style="margin:0 0 22px;text-align:center;font-size:26px;">${escHtml(title)}</h2>
+      <p style="margin:0 0 20px;line-height:1.7;">
+        <strong>${escHtml(d.workplaceName || d.workPlace || "주식회사 더큰코리아")}</strong>와
+        <strong>${escHtml(d.empName || "")}</strong>은 아래 내용으로 계약을 체결합니다.
+      </p>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">${body}</table>
+      <div style="margin-top:24px;display:flex;gap:20px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:260px;padding:16px;border:1px solid #d7dee8;border-radius:10px;">
+          <strong>[사업주]</strong><br><br>
+          상호: ${escHtml(d.workplaceName || d.workPlace || "주식회사 더큰코리아")}<br>
+          대표자: ${escHtml(d.representative || "박병호")}
+        </div>
+        <div style="flex:1;min-width:260px;padding:16px;border:1px solid #d7dee8;border-radius:10px;">
+          <strong>[근로자/제공자]</strong><br><br>
+          성명: ${escHtml(d.empName || "")}<br>
+          연락처: ${escHtml(d.phone || "")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function showLinkResult(contractId, contractUrl) {
+  contractUrl = String(contractUrl || "").replace(
+    "https://thebigkorea.github.io/hr-system/contract-view.html",
+    "https://thebigkorea.github.io/thebigkorea-hq/contract-view.html"
+  );
+  const link = String(contractUrl || "").trim();
+
+  const box = document.getElementById("resultBox");
+  if (box) {
+    const buttons = document.querySelector(".buttons");
+    if (buttons && box.parentNode) {
+      buttons.insertAdjacentElement("afterend", box);
+    }
+
+    box.style.display = "block";
+
+    if (!link || !link.includes("&token=")) {
+      box.innerHTML = `
+        <strong>계약서는 저장되었지만 보안 링크를 확인할 수 없습니다.</strong><br>
+        계약번호 : ${escHtml(contractId)}<br>
+        관리자에게 문의해 주세요.
+      `;
+      return "";
+    }
+
+    box.innerHTML = `
+      <strong>계약서가 저장되었습니다.</strong><br>
+      계약번호 : ${escHtml(contractId)}<br>
+      직원에게 아래 보안 링크를 보내 전자서명을 진행하세요.
+      <input id="contractLink" value="${escHtml(link)}" readonly
+             style="width:100%;box-sizing:border-box;margin:12px 0;padding:12px;">
+      <button type="button" onclick="copyContractLink()"
+              style="width:100%;padding:12px;">직원 링크 복사</button>
+    `;
+  }
+  return link;
+}
+
+function makePreview() {
+  createContract();
+}
+
+function saveContract() {
+  const btn = document.getElementById("saveBtn");
+  saveContractAndCreateLink({ target: btn });
+}
+
+function renderCurrentPreview(d) {
+  const preview = document.getElementById("preview");
+  if (!preview) return;
+
+  const intro =
+    `<strong>${escHtml(d.companyName || "")}</strong>(이하 “회사”라 함)과 근로자 ` +
+    `<strong>${escHtml(d.empName || "")}</strong>(이하 “근로자”라 함)은 다음과 같이 근로계약을 체결한다.`;
+
+  const clauses = [
+    ["근로계약기간", `${escHtml(d.joinDate)}부터 기간의 정함이 없는 근로계약으로 한다.`],
+    ["근무장소", escHtml(d.workPlace)],
+    ["업무내용", escHtml(d.jobDuty)],
+    ["근로시간",
+      `<table style="width:100%;border-collapse:collapse;text-align:center;">
+        <tr><th style="border:1px solid #ccd6e3;padding:10px;">근무일수</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">월 기준시간</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">출근시간</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">퇴근시간</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">휴게시간</th></tr>
+        <tr><td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.workDays)}</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.monthHour)}</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.startTime)}</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.endTime)}</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.breakTime)}</td></tr>
+      </table>`],
+    ["임금",
+      `<table style="width:100%;border-collapse:collapse;text-align:center;">
+        <tr><th style="border:1px solid #ccd6e3;padding:10px;">기본급</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">연장수당</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">직무수당</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">직책수당</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">식대</th>
+            <th style="border:1px solid #ccd6e3;padding:10px;">월급총액</th></tr>
+        <tr><td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.basePay)}원</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.overtimePay || "0")}원</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.dutyPay || "0")}원</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.positionPay || "0")}원</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;">${escHtml(d.mealPay || "0")}원</td>
+            <td style="border:1px solid #ccd6e3;padding:10px;"><b>${escHtml(d.totalPay)}원</b></td></tr>
+      </table>
+      <p>급여계좌 : ${escHtml((d.bankName + " " + d.bankAccount).trim())}</p>`],
+    ["근로계약서 교부", "근로자는 본 근로계약서를 전자문서 방식으로 교부받았음을 확인한다."],
+    ["전자계약 및 전자서명", "본 계약은 전자문서 및 전자서명 방식으로 체결할 수 있으며 전자서명은 자필서명 또는 날인과 동일한 효력을 가진다."]
+  ];
+
+  preview.innerHTML = contractPaperHtml(
+    "정규직 근로계약서",
+    intro, clauses, d, "근로자"
+  );
+}
+
+
+
+function companyInfoForCurrentForm() {
+  const code = value("workplaceCode") || "hq";
+  return WORKPLACES[code] || WORKPLACES.hq;
+}
+
+function contractPaperHtml(title, intro, clauses, d, workerLabel) {
+  const w = {
+    companyName: d.companyName || "주식회사 더큰코리아",
+    representative: d.companyRepresentative || d.representative || "박병호",
+    address: d.companyAddress || "",
+    phone: d.companyPhone || ""
+  };
+
+  const clauseHtml = clauses.map((item, idx) => `
+    <section style="margin:26px 0;">
+      <h3 style="margin:0 0 10px;padding-left:10px;border-left:5px solid #24497f;
+                 font-size:19px;color:#173b70;">${idx + 1}. ${escHtml(item[0])}</h3>
+      <div style="font-size:15px;line-height:1.85;white-space:normal;">${item[1]}</div>
+    </section>
+  `).join("");
+
+  return `
+    <div style="max-width:900px;margin:0 auto;background:#fff;padding:42px 38px;
+                color:#111;font-family:'Malgun Gothic','Noto Sans KR',sans-serif;">
+      <h1 style="text-align:center;font-size:30px;letter-spacing:2px;margin:0 0 28px;">
+        ${escHtml(title)}
+      </h1>
+
+      <p style="font-size:15px;line-height:1.9;margin:0 0 30px;">${intro}</p>
+
+      ${clauseHtml}
+
+      <p style="margin:34px 0 18px;text-align:center;font-weight:700;">
+        당사자는 상기 계약의 내용을 명확히 숙지하고 계약 체결하였음을 확인한다.
+      </p>
+
+      <div style="text-align:center;font-weight:700;margin-bottom:28px;">
+        ${escHtml(getTodayKorean ? getTodayKorean() : "")}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;">
+        <div style="border:1px solid #ccd6e3;border-radius:14px;padding:22px;min-height:230px;">
+          <h3 style="font-size:20px;color:#173b70;margin-top:0;">[사업주]</h3>
+          <p>상호 : ${escHtml(w.companyName)}</p>
+          <p>대표자 : ${escHtml(w.representative)}
+            <img src="stamp.png" alt="회사 직인"
+                 style="width:62px;vertical-align:middle;margin-left:8px;">
+          </p>
+          <p>주소 : ${escHtml(w.address)}</p>
+          <p>연락처 : ${escHtml(w.phone)}</p>
+        </div>
+
+        <div style="border:1px solid #ccd6e3;border-radius:14px;padding:22px;min-height:230px;">
+          <h3 style="font-size:20px;color:#173b70;margin-top:0;">[${escHtml(workerLabel)}]</h3>
+          <p>성명 : ${escHtml(d.empName || "")}</p>
+          <p>주민등록번호 : ${escHtml(d.residentNo || "")}</p>
+          <p>생년월일 : ${escHtml(d.birth || "")}</p>
+          <p>주소 : ${escHtml(d.address || "")}</p>
+          <p>연락처 : ${escHtml(d.phone || "")}</p>
+          <p>급여계좌 : ${escHtml(((d.bankName || d.bank || "") + " " + (d.bankAccount || d.account || "")).trim())}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
